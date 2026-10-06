@@ -141,7 +141,7 @@ Baselines are **not measured yet**; spikes S2–S4 in [roadmap.md](roadmap.md) p
 |---|---|---|
 | NFR-COST-01 | Total infra + AI spend during MVP | **₹0/month** out of pocket (free tiers + student benefits, ADR-0012); hard ceiling ₹5,000 if a stage change is forced; breakdown in [tech-stack.md §4](tech-stack.md#4-budget) |
 | NFR-COST-02 | Copilot quota | Per organisation: 10 questions/day in MVP; global daily token budget set below the providers' free limits; Copilot prompts ≤ ~4k tokens — tune after measurement |
-| NFR-COST-03 | AI cost per active company per month | ≤ ₹50 (≈10% of the Pro price hypothesis); verified in cost-model.md |
+| NFR-COST-03 | AI cost per active company per month | ≤ ₹50 (Founder Pro price hypothesis ₹1,499–2,499/year, D-27); verified in cost-model.md |
 | NFR-COST-04 | Alerts at 50% / 80% / 100% of the daily AI budget; at 100% non-essential AI features degrade gracefully; **the system never switches to a paid tier automatically**; cloud billing alerts enabled on every account | MVP |
 
 ---

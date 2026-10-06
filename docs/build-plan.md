@@ -89,7 +89,7 @@ Each brief lists: **Read** (docs), **Build**, **Done when**. Dates and gates fol
 
 **M1 ✓ → M2 → M3 → S1, S2 → M5 → S3 → M6 → S4 → M7 → M8 → M9 → M10 → M11 → M12 → M13 → (hosting approved) S5 → M4 → M14**
 
-Spike slots: S1 and S2 right before M5 · S3 before real rules in M6 · S4 before M7 · S5 before M4. Everything up to M13 runs locally; M4 and M14 wait until the owner approves hosting ([deferred.md §1–§2](deferred.md)). The briefs below follow this order.
+Spike slots: S1 and S2 right before M5 · S3 before real rules in M6 · S4 before M7 · S5 before M4. Reports S1–S4 are due by G0 (13 Dec 2026) at the latest; S5's report is an entry condition of M4 (D-25). Everything up to M13 runs locally; M4 and M14 wait until the owner approves hosting ([deferred.md §1–§2](deferred.md)). The briefs below follow this order.
 
 ### Spikes S1–S5 · throwaway code in `spikes/` (gitignored except reports)
 - **Read:** roadmap.md §3.1, tech-stack.md §3, data-pipeline.md, ai-system.md §7, deployment.md §5, docs/spikes/TEMPLATE.md
@@ -162,7 +162,7 @@ Replaces the former M10 Copilot milestone (Copilot is Phase 2, D-4; its brief is
 - **Done when:** all NFR-SEC MVP items verified locally; drills logged; lawyer-reviewed terms/privacy in place 🔒; G1a criteria met ([roadmap.md §1](roadmap.md#1-phases-and-gates))
 
 ### M4 — One-box production, backups, observability (after S5, when hosting is approved)
-Deferred until the owner approves hosting; full scope and trigger in [deferred.md §1](deferred.md#1-m4--production-hosting-one-box).
+**Entry conditions:** S5 report written and passing (D-25), and the owner approves hosting. Full scope and trigger in [deferred.md §1](deferred.md#1-m4--production-hosting-one-box).
 - **Read:** deployment.md, security-design.md §3–4, ADR-0006, ADR-0012, S5 report, NFR-SEC-12
 - **Build:** `infra/scripts/provision.sh`; hardened server; Caddy with Cloudflare-only origin; deploy workflow with rollback; wal-g + nightly dumps; restore script; Sentry wiring; ops-check job; runbooks `deploy-and-rollback`, `restore`, `server-hardening-and-patching`
 - **Done when:** deploy from `main` works end to end; **restore drill onto a fresh server** meets RPO ≤ 15 min and RTO ≤ 4 h (recorded); M5 retrieval latency and M13 load test re-checked on the production host
@@ -170,4 +170,4 @@ Deferred until the owner approves hosting; full scope and trigger in [deferred.m
 ### M14 — Pilot launch → G1b
 Deferred until M4 is done; full scope and trigger in [deferred.md §2](deferred.md#2-m14--live-pilot).
 - **Build:** pilot onboarding checklist, read-only metrics views (`app_readonly`), feedback triage routine
-- **Done when:** 10 design-partner companies + 1 campus cohort onboarded; G1b tracked from here
+- **Done when:** one incubator cohort (10–20 companies) + 2–3 CA firms onboarded (D-26); G1b tracked from here

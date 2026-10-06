@@ -220,7 +220,7 @@ One engine, many outcomes:
 
 ## 9. Business model
 
-Current direction and prices to test: [status.md](status.md) (D-1, D-7, D-17…D-19). Changes need the owner's explicit OK ([AGENTS.md rule 19](../AGENTS.md)).
+Current direction and prices to test: [status.md](status.md) (D-1, D-7, D-17…D-19, D-27). Changes need the owner's explicit OK ([AGENTS.md rule 19](../AGENTS.md)).
 
 ### 9.1 Model
 
@@ -235,7 +235,7 @@ Current direction and prices to test: [status.md](status.md) (D-1, D-7, D-17…D
 | **Launchpad** | All pre-founder features | Free |
 | **Core Free** | Launch Planner, Obligation Plan, calendar, email reminders, limited Copilot (once Copilot ships, Phase 2) | Free |
 | **CA firms** | Read-only view of shared clients (MVP); fuller workspace later | **Free in Phases 1–2**; a paid CA plan is deferred ([deferred.md §10](deferred.md#10-paid-ca-firm-plan)) |
-| **Founder Pro** (Phase 2) | Events, What-if, Evidence Vault, Health Score, DD Pack, Change Radar, WhatsApp, unlimited Copilot, 3 seats | Set later (D-7) |
+| **Founder Pro** (Phase 2) | Events, What-if, Evidence Vault, Health Score, DD Pack, Change Radar, WhatsApp, unlimited Copilot, 3 seats | ₹1,499–2,499/year (D-27) |
 | **Campus** | Launchpad for E-cells / pre-incubation cohorts | ₹25k–1L per institution/year (not yet revisited) |
 | **API** (later) | Engine for neobanks, incorporation platforms, accounting software | Usage-based |
 
@@ -256,7 +256,7 @@ G2 (end Sep 2027): ~₹10L ARR run-rate, 20 CA firms active, incubators ready to
 
 | Item | v1 hypothesis (28 Sep 2026) | Status |
 |---|---|---|
-| Core Pro | ₹499/month or ₹4,999/year | Superseded: Founder Pro in Phase 2, price set later (D-7, D-18) |
+| Core Pro | ₹499/month or ₹4,999/year | Superseded: Founder Pro in Phase 2 at ₹1,499–2,499/year (D-18, D-27) |
 | CA Workspace | Free ≤ 5 clients; ₹150–250/client/month | Superseded: CA firms free in Phases 1–2 (D-17) |
 | Execution referrals | 10–15% referral fee | Removed: no referral fees or fee-sharing (CA Act, D-1) |
 | Year-2 target | ~₹79L ARR (Core Pro ₹30L, CA ₹28.8L, incubators ₹10L, campus ₹5L, referrals ~₹5L) | Superseded by the G2/G3 targets above |
@@ -311,12 +311,13 @@ G2 (end Sep 2027): ~₹10L ARR run-rate, 20 CA firms active, incubators ready to
 Phases, gates and dates: [status.md](status.md) and [roadmap.md](roadmap.md) (engineering order in [build-plan.md](build-plan.md)). Feature scope per phase:
 
 ### Phase 0 — Validate (Oct – 13 Dec 2026) · gate G0
-- [ ] Interview 15 recently incorporated founders
-- [ ] Interview 10 pre-founders (students + working professionals)
-- [ ] Interview 5 CAs and 2 incubator/E-cell managers
+- [ ] Interview 30 recently incorporated founders
+- [ ] Interview 10 CAs and 3 incubator/E-cell managers
+- [ ] Sign 1 CA reviewer and 1 lawyer
+- [ ] Optional: interview ~10 pre-founders (students + working professionals)
 - [ ] Confirm the buyer order (incubators → CAs → founders, D-1) from evidence
 - [ ] Interview go-criteria (28 Sep): ≥60% founders report missed/late obligation or DD scramble; ≥2 CAs willing to trial; ≥50% pre-founders cite "don't know how to validate/launch" as top blocker
-- [ ] **G0:** pain confirmed (flip rule), 3 pilot letters, CA reviewer signed, spike reports ([status.md](status.md))
+- [ ] **G0:** pain confirmed (flip rule), 3 pilot letters, CA reviewer signed, spike reports S1–S4 ([status.md](status.md))
 
 ### Phase 1 — MVP (14 Dec 2026 – ~May 2027) · gates G1a (local MVP), G1b (live pilot)
 - [ ] Rule Studio: source library, rule drafting, review workflow, evaluation suite
@@ -325,7 +326,7 @@ Phases, gates and dates: [status.md](status.md) and [roadmap.md](roadmap.md) (en
 - [ ] Incubator cohort view and CA read-only view (shared companies)
 - [ ] Fundraise-ready pack v0
 - [ ] Launchpad lite: Team Space, Situation Check questionnaire, Launch Roadmap
-- [ ] Pilot with 10 design-partner companies + 1 campus cohort (after hosting is approved; [deferred.md](deferred.md))
+- [ ] Pilot with one incubator cohort (10–20 companies) + 2–3 CA firms (after hosting is approved; [deferred.md](deferred.md))
 
 ### Phase 2 — Paid pilots (~May – Sep 2027) · gate G2
 - [ ] Copilot (D-4)

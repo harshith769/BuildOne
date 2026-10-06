@@ -26,7 +26,7 @@
 
 | Gate | Target | Criteria |
 |---|---|---|
-| G0 | 13 Dec 2026 | Pain confirmed (flip rule), 3 pilot letters, CA reviewer signed, 5 spike reports |
+| G0 | 13 Dec 2026 | Pain confirmed (flip rule), 3 pilot letters, CA reviewer signed, spike reports S1–S4 (S5's report is an entry condition of M4, D-25) |
 | G1a | ~Feb–Mar 2027 (build started 6 Oct; M1–M3 before G0, rules after a CA reviewer signs) | Local MVP complete: all MUST screens pass acceptance locally; local restore drill passes; zero critical misses on CA-reviewed scenarios |
 | G1b | After M4 + M14 (hosting approved, pilot live) | Zero critical missed obligations; ≥ 60% of pilot companies generate a plan; production restore drill passes; 1 pilot converts to paid |
 | G2 | end Sep 2027 | ~₹10L ARR run-rate; 20 CA firms active; incubators ready to renew |
@@ -64,7 +64,9 @@ Exam weeks: _add your semester exam dates here and leave those weeks empty._
 | D-22 | No cut list; deferred work keeps its full scope in [deferred.md](deferred.md); never remove, shrink or change a feature or the business model without the owner's explicit OK (AGENTS.md rule 19) | Decided 2026-10-06 |
 | D-23 | Local-first build order: M1, M2, M3, M5–M13, then M4 and M14 when hosting is approved. S1 + S2 before M5, S3 before real rules in M6, S4 before M7, S5 before M4 | Decided 2026-10-06 |
 | D-24 | G1 split into G1a (local MVP complete) and G1b (the original G1 criteria, after M4 + M14); G3 defined | Decided 2026-10-06 |
-| D-25 | G0 lists "5 spike reports" by 13 Dec, but under D-23 S5 runs just before M4 (after G0) and S3/S4 may land after G0 | Open — owner to decide whether G0 needs only the spikes due by then |
+| D-25 | G0 requires spike reports S1–S4; S5's report becomes an entry condition of M4 (option a) | Decided 2026-10-06 |
+| D-26 | Phase 0 interview targets: 30 founders, 10 CAs, 3 incubators, plus 1 CA reviewer and 1 lawyer; ~10 pre-founders optional. Pilot (M14) = one incubator cohort (10–20 companies) + 2–3 CA firms | Decided 2026-10-06 |
+| D-27 | Founder Pro price hypothesis ₹1,499–2,499/yr (refines D-7 "Pro later") | Decided 2026-10-06 |
 
 ## Stack versions (checked 2026-10-05)
 
@@ -78,7 +80,7 @@ Python 3.14 · FastAPI 0.142 · Pydantic 2.13 · SQLAlchemy 2.1 · Alembic 1.20 
 | C2 team model | Fixed: one developer (this file) |
 | C3 Python 3.13 vs 3.12 tooling | Fixed: 3.14 everywhere |
 | C4 `superseded` status | = D-9 |
-| C5 spike order | Recorded: S5 → S1 → S2 → S4 → S3 |
+| C5 spike order | Superseded by D-23/D-25: S1, S2 before M5; S3 before real rules in M6; S4 before M7 (S1–S4 by G0); S5 before M4 |
 | C6 `.env` location | Canonical: `infra/compose/.env` |
 | C7 `app/tools/export_openapi` missing | Fixed in M1 |
 | C8 CI file drift | Fixed: single `ci.yml` with a `detect` job |
@@ -105,6 +107,6 @@ Python 3.14 · FastAPI 0.142 · Pydantic 2.13 · SQLAlchemy 2.1 · Alembic 1.20 
 
 | Date | Event |
 |---|---|
-| 2026-10-06 | Session A: docs brought in line with this file; owner decisions D-17…D-24 recorded; local-first build order; [deferred.md](deferred.md) created; AGENTS.md rule 19 |
+| 2026-10-06 | Session A: docs brought in line with this file; owner decisions D-17…D-27 recorded; local-first build order; [deferred.md](deferred.md) created; AGENTS.md rule 19 |
 | 2026-10-06 | M1 done: platform kernel, health checks, baseline migration, worker, RLS and extension gates, frontend skeleton with generated client; 43 backend tests and 4 E2E tests green |
 | 2026-10-05 | Fresh start: starter bundle v2 created (stack re-verified, CI rebuilt, ADR-0012 proposed) |

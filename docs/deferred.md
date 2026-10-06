@@ -18,7 +18,7 @@ When an item comes back: move it into the build order in [roadmap.md](roadmap.md
 
 | # | Item | Deferred because | Trigger to bring it back | Status |
 |---|---|---|---|---|
-| 1 | M4 production hosting | Local-first build (D-23); hosting not yet approved | S5 report passes **and** owner approves a host from ADR-0012 | Deferred |
+| 1 | M4 production hosting | Local-first build (D-23); hosting not yet approved | S5 report passes (M4 entry condition, D-25) **and** owner approves a host from ADR-0012 | Deferred |
 | 2 | M14 live pilot | Needs M4 | M4 done, G1a passed, lawyer-reviewed terms in place | Deferred |
 | 3 | Production R2 buckets and backups | Only needed with a production database | Start of M4 | Deferred |
 | 4 | Domain and DNS | Only needed for a public deployment | Start of M4 (or earlier if the marketing site or waitlist must go public) | Deferred |
@@ -46,7 +46,7 @@ When an item comes back: move it into the build order in [roadmap.md](roadmap.md
   - Rejected: Hetzner (no India region, prices up after 15 Jun 2026); Oracle Always Free (allowance cut June 2026, idle reclaim).
 - **Before M4, spike S5 must show** (ADR-0012 items 1–4): API + worker within ~900 MiB; `initdb` SQL runs without superuser rights; nightly `pg_dump` to R2 and restore into a fresh Postgres 18 both work and are timed; the Azure *Free services* page lists the VM sizes and Flexible Server B1MS for the owner's student account. If any item fails, choose B.
 
-**Trigger:** S5 report written and passing, and the owner approves a host. M4 then runs after M13 and before M14.
+**Trigger:** S5 report written and passing (an M4 entry condition, D-25), and the owner approves a host. M4 then runs after M13 and before M14.
 
 ## 2. M14 — Live pilot
 
@@ -54,7 +54,7 @@ When an item comes back: move it into the build order in [roadmap.md](roadmap.md
 
 **Full scope** (former M14 brief + roadmap pilot items):
 - Pilot onboarding checklist; read-only metrics views (`app_readonly`); feedback triage routine.
-- Onboard 10 design-partner companies + 1 campus cohort (roadmap.md; the handoff proposes one incubator cohort of 10–20 companies + 2–3 CA firms — owner to confirm).
+- Onboard one incubator cohort (10–20 companies) + 2–3 CA firms (D-26).
 - Weekly feedback review; log missed or incorrect obligations as P0 bugs.
 - Exit = **G1b**: zero critical missed obligations; ≥ 60% of pilot companies generate a plan; production restore drill passes; 1 pilot converts to paid.
 
@@ -149,7 +149,7 @@ When an item comes back: move it into the build order in [roadmap.md](roadmap.md
 
 **Why deferred:** D-18.
 
-**Full scope:** Event Triggers, What-if Simulator, Evidence Vault, Compliance Health Score, full Due-Diligence Pack, Change Radar (when built), WhatsApp reminders, unlimited Copilot, 3 seats ([product-vision.md §9](product-vision.md#9-business-model)). Price set later (D-7).
+**Full scope:** Event Triggers, What-if Simulator, Evidence Vault, Compliance Health Score, full Due-Diligence Pack, Change Radar (when built), WhatsApp reminders, unlimited Copilot, 3 seats ([product-vision.md §9](product-vision.md#9-business-model)). Price hypothesis ₹1,499–2,499/year (D-27).
 
 **Trigger:** start of Phase 2.
 

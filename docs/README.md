@@ -19,7 +19,7 @@ Each fact has one home; other documents link to it. **Start here:** [status.md](
 | [requirements.md](requirements.md) | Functional requirements + acceptance criteria | ✅ |
 | [nfr.md](nfr.md) | Availability, performance, security, privacy, AI gates, cost | ✅ |
 | [roadmap.md](roadmap.md) | Phases 0–4, gates G0–G3, local-first build order, non-negotiables, infrastructure milestones | ✅ |
-| [status.md](status.md) | Current phase, gates, decisions D-1…D-25, contradictions, lessons, next action (wins if any doc disagrees) | ✅ |
+| [status.md](status.md) | Current phase, gates, decisions D-1…D-27, contradictions, lessons, next action (wins if any doc disagrees) | ✅ |
 | [deferred.md](deferred.md) | Deferred features and infrastructure with full scope and the trigger that brings each back | ✅ |
 | [build-plan.md](build-plan.md) | Architecture freeze, Claude Code protocol, local-first build order, spike and milestone briefs M1–M14 | ✅ |
 | [ux-screens.md](ux-screens.md) | MVP screen inventory and required states | ✅ |

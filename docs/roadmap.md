@@ -16,7 +16,7 @@
 
 | Phase | When | What happens | Gate |
 |---|---|---|---|
-| **0. Validate** ← now | Oct – 13 Dec 2026 | Interviews, CA reviewer, lawyer, rule sources, interview kit; M1–M3 built early on purpose (needed whatever the interviews show) | **G0** (13 Dec 2026): pain confirmed (flip rule), 3 pilot letters, CA reviewer signed, 5 spike reports (see D-25 in status.md) |
+| **0. Validate** ← now | Oct – 13 Dec 2026 | Interviews, CA reviewer, lawyer, rule sources, interview kit; M1–M3 built early on purpose (needed whatever the interviews show) | **G0** (13 Dec 2026): pain confirmed (flip rule), 3 pilot letters, CA reviewer signed, spike reports S1–S4 (S5's report is an M4 entry condition, D-25) |
 | **1. MVP** | 14 Dec 2026 – ~May 2027 | Local-first build of the MVP (§3): engine + CA-reviewed Telangana Pvt Ltd rules, 6 MVP screens, Launch Planner, Launchpad lite; then hosting (M4) and the pilot (M14) once hosting is approved | **G1a** (~Feb–Mar 2027): local MVP complete — all MUST screens pass acceptance locally; local restore drill passes; zero critical misses on CA-reviewed scenarios · **G1b** (after M4 + M14): zero critical missed obligations; ≥ 60% of pilot companies generate a plan; production restore drill passes; 1 pilot converts to paid |
 | **2. Paid pilots** | ~May – Sep 2027 | Convert pilots; Copilot; CA workspace and events; Founder Pro; billing; incorporate if not done | **G2** (end Sep 2027): ~₹10L ARR run-rate; 20 CA firms active; incubators ready to renew |
 | **3. Scale** | Oct 2027 – Sep 2028 | Karnataka + Maharashtra rules, LLP/OPC, Gazette change tracking, public changelog, Copilot, Benefits finder; seed round | **G3**: customers renew and expand; 2 platform partners in active talks; ~₹60L ARR |
@@ -29,14 +29,15 @@ Copilot starts in Phase 2 (D-4); the Phase 3 scope continues it.
 ## 2. Phase 0 — Validation
 
 **Customer validation** (details in [product-vision.md §13](product-vision.md#13-roadmap))
-- [ ] 15 founder, 10 pre-founder, 5 CA, 2 incubator/E-cell interviews
+- [ ] 30 founder, 10 CA, 3 incubator/E-cell interviews; ~10 pre-founder interviews optional (D-26)
 - [ ] Identify and agree terms with **1 CA reviewer** (design partner) — 🔒 external
+- [ ] Identify **1 lawyer** for terms, privacy notice, disclaimers and Situation Check wording — 🔒 external
 - [ ] Identify 1 campus E-cell or incubator for the pilot cohort — 🔒 external
 - [ ] 3 pilot letters (G0)
 
 **Gate G0 (go / pivot / stop)**
 - [ ] Interview go-criteria met ([product-vision.md §13](product-vision.md#13-roadmap)) or buyer pivot decided
-- [ ] Spike results recorded; remaining `Proposed` ADRs accepted or rewritten; accepted ADRs re-checked against measurements (spikes scheduled after G0 under the local-first order are recorded when they run — D-25)
+- [ ] Spike results recorded; remaining `Proposed` ADRs accepted or rewritten; accepted ADRs re-checked against measurements; reports S1–S4 written (S5 follows before M4, D-25)
 
 ---
 
@@ -62,10 +63,12 @@ Copilot starts in Phase 2 (D-4); the Phase 3 scope continues it.
 | M12 | Data rights, settings, marketing site | |
 | M13 | Hardening | → **G1a** |
 | **S5** | One-box walking skeleton + ADR-0012 items 1–4 | Right before M4 |
-| M4 | Production hosting, backups, observability | When hosting is approved ([deferred.md §1](deferred.md#1-m4--production-hosting-one-box)) |
+| M4 | Production hosting, backups, observability | Entry: S5 report (D-25) and hosting approved ([deferred.md §1](deferred.md#1-m4--production-hosting-one-box)) |
 | M14 | Pilot | → **G1b** ([deferred.md §2](deferred.md#2-m14--live-pilot)) |
 
 ### 3.1 Spikes (throwaway code; results recorded in the linked ADR or tech-stack.md)
+
+Reports S1–S4 are due by G0 (13 Dec 2026); the slots below are the latest points. S5's report is an entry condition of M4 (D-25).
 
 - [ ] **S1 Parsing** (before M5) — parse 20 real official sources (incl. ≥ 3 scanned notifications); measure section-structure fidelity → resolves parser choice ([tech-stack.md §3](tech-stack.md#3-open-decisions-resolved-by-spikes))
 - [ ] **S2 Retrieval** (before M5) — 50 labelled questions; compare full-text only, vector only, hybrid, hybrid + reranker; measure recall@10 and latency → [NFR-AI-06](nfr.md#7-ai-quality-gates), [ADR-0003](adr/0003-postgres-single-datastore.md)
@@ -148,7 +151,7 @@ Full scope and trigger: [deferred.md §1, §3–§5](deferred.md).
 
 ### 4.6 Pilot (M14) → G1b
 
-- [ ] Pilot: onboard 10 design-partner companies + 1 campus cohort
+- [ ] Pilot: onboard one incubator cohort (10–20 companies) + 2–3 CA firms (D-26)
 - [ ] Weekly feedback review; log missed/incorrect obligations as P0 bugs
 - [ ] Qualitative willingness-to-pay evidence collected
 
