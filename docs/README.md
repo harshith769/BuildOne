@@ -18,9 +18,10 @@ Each fact has one home; other documents link to it. **Start here:** [status.md](
 | [product-vision.md](product-vision.md) | Problem, users, features, business model, product roadmap | ✅ |
 | [requirements.md](requirements.md) | Functional requirements + acceptance criteria | ✅ |
 | [nfr.md](nfr.md) | Availability, performance, security, privacy, AI gates, cost | ✅ |
-| [roadmap.md](roadmap.md) | Phases, gates, cut-lines, infrastructure milestones | ✅ |
-| [status.md](status.md) | Current phase, decisions D-1…D-16, contradictions, lessons, next action (wins over older docs until session A) | ✅ |
-| [build-plan.md](build-plan.md) | Architecture freeze, Claude Code protocol, milestone briefs M0–M14 | ✅ |
+| [roadmap.md](roadmap.md) | Phases 0–4, gates G0–G3, local-first build order, non-negotiables, infrastructure milestones | ✅ |
+| [status.md](status.md) | Current phase, gates, decisions D-1…D-27, contradictions, lessons, next action (wins if any doc disagrees) | ✅ |
+| [deferred.md](deferred.md) | Deferred features and infrastructure with full scope and the trigger that brings each back | ✅ |
+| [build-plan.md](build-plan.md) | Architecture freeze, Claude Code protocol, local-first build order, spike and milestone briefs M1–M14 | ✅ |
 | [ux-screens.md](ux-screens.md) | MVP screen inventory and required states | ✅ |
 
 ## Architecture and design (frozen for the MVP build)
@@ -41,7 +42,7 @@ Each fact has one home; other documents link to it. **Start here:** [status.md](
 | [evaluation.md](evaluation.md) | Golden sets, metrics, when they run | ✅ |
 | [rule-operations.md](rule-operations.md) | Rule SOP, CA checklist, incidents | ✅ · 🔒 CA reviewer |
 | [adr/](adr/) | ADR-0001…0012: Accepted except ADR-0009 (🟡 until spike S3) and ADR-0012 (🟡 Proposed, decided by S5); ADR-0006 superseded in part | ✅ / 🟡 |
-| [spikes/](spikes/) | Spike reports S1–S5 (template provided) | ⬜ Phase 0 |
+| [spikes/](spikes/) | Spike reports S1–S5 (template provided) | ⬜ in their build-order slots |
 | [runbooks/](runbooks/) | Operational procedures (list in [deployment.md §7](deployment.md#7-runbooks-written-in-m4-and-m13-under-docsrunbooks)) | ⬜ M4, M13 |
 
 ## Repository and agents

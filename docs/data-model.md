@@ -1,6 +1,6 @@
 # BuildOne — Data Model
 
-> **Status:** v1.0 (frozen for MVP build) · 2026-09-28 · Owner: @harshith769
+> **Status:** v1.1 (frozen for MVP build) · 2026-10-06 (access grants and `ca_firm`/`incubator` orgs moved into the MVP at M3; proposed `superseded` rule status) · Owner: @harshith769
 > Changes to anything marked **Frozen** require an ADR. New tables/columns are allowed via additive migrations.
 
 **What this document answers**
@@ -79,7 +79,7 @@ CREATE POLICY tenant_isolation ON X
   WITH CHECK (org_id = platform.current_org_id() AND tenancy.is_member(org_id));
 ```
 
-Missing settings → `NULL` → policy false → **fails closed**. v1 extends `tenancy.is_member` to also accept an active `tenancy.access_grants` row (CA firms); no table changes needed.
+Missing settings → `NULL` → policy false → **fails closed**. In M3, `tenancy.is_member` is extended to also accept an active `tenancy.access_grants` row (CA firms and incubators, §4.2); no changes to other tables are needed.
 
 ---
 
@@ -115,7 +115,7 @@ Column lists show type and key constraints; `created_at timestamptz NOT NULL DEF
 
 **`tenancy.organizations`**
 - `id uuid PK`
-- `type text NOT NULL CHECK (type IN ('team','company','ca_firm','incubator','campus'))` — MVP creates only `team`, `company`
+- `type text NOT NULL CHECK (type IN ('team','company','ca_firm','incubator','campus'))` — MVP creates `team`, `company`, `ca_firm`, `incubator`; `campus` later
 - `name text NOT NULL`
 - `status text NOT NULL CHECK (status IN ('active','deletion_pending'))`, `deletion_requested_at timestamptz NULL` (CHECK pairs with status)
 - `source_team_id uuid NULL FK organizations ON DELETE SET NULL` — set when a company was created from a Launchpad team (FR-LP-03)
@@ -131,6 +131,15 @@ Column lists show type and key constraints; `created_at timestamptz NOT NULL DEF
 - `id uuid PK`, `org_id FK ON DELETE CASCADE`, `email citext NOT NULL`, `role text CHECK (...)`
 - `token_hash bytea NOT NULL UNIQUE`, `expires_at timestamptz NOT NULL`, `accepted_at timestamptz NULL`, `invited_by uuid FK users`
 - Partial UNIQUE `(org_id, email) WHERE accepted_at IS NULL`
+
+**`tenancy.access_grants`** (MVP, created in M3; the v1 reservation plus `id` and lifecycle columns) — lets one organisation read another's data
+- `id uuid PK`, `grantor_org_id uuid NOT NULL FK organizations ON DELETE CASCADE` (the `company` sharing its data), `grantee_org_id uuid NOT NULL FK organizations ON DELETE CASCADE` (a `ca_firm` or `incubator`); both indexed
+- `scope text NOT NULL CHECK (scope IN ('read','manage'))` — MVP uses only `read`; `manage` is for the later CA Workspace
+- `status text NOT NULL CHECK (status IN ('pending','active','revoked'))`, `created_by uuid FK identity.users`, `accepted_at timestamptz NULL`, `revoked_at timestamptz NULL`
+- Partial UNIQUE `(grantor_org_id, grantee_org_id) WHERE status <> 'revoked'`
+- Uses: a founder shares a company with a CA firm (FR-PART-01); an incubator reads its cohort companies (FR-PART-02)
+- **Read stays read at the database:** the standard policy uses `tenancy.is_member` in both `USING` and `WITH CHECK`, so a `read` grant must not make `is_member` true for writes. M3 designs how (for example a grant check used only in a `SELECT` policy); if that changes the standard policy in §3, write an ADR first ([build-plan.md §1.3](build-plan.md#13-change-control)).
+- Grants never expose `documents.*` rows (the documents visibility predicate in §4.10 still applies).
 
 ### 4.3 `audit`
 
@@ -173,8 +182,8 @@ Column lists show type and key constraints; `created_at timestamptz NOT NULL DEF
 
 **`rules.rule_versions`**
 - `id uuid PK`, `rule_id text NOT NULL`, `version int NOT NULL CHECK (version >= 1)`, UNIQUE `(rule_id, version)`
-- `status text CHECK (status IN ('published','retired'))`
-- `subject text CHECK (subject IN ('org','member'))`, `kind text CHECK (kind IN ('obligation','risk_check','roadmap_trigger'))`
+- `status text CHECK (status IN ('published','retired'))` — **Proposed (D-9, decide at M6):** add `superseded` for a version replaced by a newer version of the same rule, keeping `retired` for rules withdrawn entirely
+- `subject text CHECK (subject IN ('org','member'))`, `kind text CHECK (kind IN ('obligation','risk_check','roadmap_trigger'))` — **Proposed (S3):** add `eligibility` ([rules-engine.md §3](rules-engine.md#3-rule-file-format))
 - `content jsonb NOT NULL` — full validated rule document ([rules-engine.md](rules-engine.md))
 - `content_hash text NOT NULL`, `effective_from date NOT NULL`, `effective_to date NULL` (CHECK `effective_to > effective_from`)
 - `publication_id uuid NOT NULL FK publications`
@@ -267,7 +276,6 @@ Member situation profiles (occupation, state, hours, capital range) are **member
 
 | Table | Purpose | Integration point |
 |---|---|---|
-| `tenancy.access_grants` (`grantor_org_id`, `grantee_org_id`, `scope CHECK ('read','manage')`, `status CHECK ('pending','active','revoked')`) | CA firm access to client companies | `tenancy.is_member` also returns true for active grants |
 | `facts.events` (`org_id`, `type`, `occurred_on date`, `payload jsonb` validated per type) | Event Triggers (C7) | Event → fact changes → re-evaluation |
 | `obligations.evidence` (`obligation_id`, `storage_key`, `extracted_reference text`) | Evidence Vault (C9) | Links to `obligations` |
 | `billing.*` | Subscriptions, entitlements | `tenancy.organizations.id` |

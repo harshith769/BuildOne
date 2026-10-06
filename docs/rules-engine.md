@@ -1,13 +1,14 @@
 # BuildOne — Rules Engine
 
-> **Status:** v1.0 (frozen for MVP build; validated by spike S3) · 2026-09-28 · Owner: @harshith769
+> **Status:** v1.1 (frozen for MVP build; validated by spike S3) · 2026-10-06 (proposed `eligibility` kind, effective dates, versioned threshold facts, Income-tax Act, 2025 citations) · Owner: @harshith769
 > Decision record: [ADR-0009](adr/0009-rules-as-code.md). Machine-readable schema: [`rules/schema/rule.schema.json`](../rules/schema/rule.schema.json). Review process: [rule-operations.md](rule-operations.md).
 
 **What this document answers**
 - The exact format of a rule file and of the fact registry
 - How conditions are evaluated, including unknown facts (three-valued logic)
 - How due dates and recurring periods are computed
-- How versions, deadline extensions, and publication work
+- How versions, effective dates, deadline extensions, and publication work
+- Which changes are still Proposed (decided by spike S3 with the CA reviewer)
 - What an evaluation trace contains and how scenarios test rules
 
 ---
@@ -52,7 +53,7 @@ id: mca.example_commencement_declaration   # ^[a-z0-9_]+(\.[a-z0-9_]+)+$ ; never
 version: 1
 title: "Declaration of commencement of business"
 domain: company_law        # company_law | gst | income_tax | labour | state_tg | launchpad
-kind: obligation           # obligation | risk_check | roadmap_trigger
+kind: obligation           # obligation | risk_check | roadmap_trigger | eligibility (Proposed, §3.1)
 subject: org               # org | member
 applies_to_org_types: [company]
 jurisdiction: IN           # IN | IN-TG
@@ -94,6 +95,17 @@ The example above is **illustrative only**; its content is not a verified legal 
 
 `chunk_id` is filled by the publication job from `source_key` + `section_path` (latest active version). Publication fails if any citation does not resolve.
 
+**Citations for income tax:** rules in the `income_tax` domain cite the **Income-tax Act, 2025** (in force from 1 Apr 2026; TDS is in sections 392–394), never the Income-tax Act, 1961.
+
+### 3.1 Proposed: `eligibility` kind (decided by S3)
+
+Status: **Proposed** — confirmed or revised with ADR-0009 after spike S3. Needed for scheme and programme eligibility (e.g., DPIIT recognition in the fundraise-ready pack, FR-CORE-13; later the Opportunity Finder and Benefits Finder).
+
+- Same condition grammar, three-valued logic, citations, review and explanation fields as other kinds.
+- No `obligation` block and no schedule; instead an optional `eligibility` block with `benefit` (plain text, cited) and `how_to_apply` (list).
+- Outcomes: root `T` → `eligible`, `F` → `not_eligible` (reason = decisive `F` leaf), `U` → `needs_info`. `needs_info` is never dropped.
+- Storage: adds `eligibility` to `rules.rule_versions.kind` and a results table shaped like `launchpad.check_results` (additive migration, [data-model.md §4.5](data-model.md#45-rules-global-read-only-to-services-written-only-by-the-publication-job-as-app_owner)).
+
 ---
 
 ## 4. Conditions
@@ -129,11 +141,11 @@ Each leaf yields `T`, `F`, or `U` (unknown). A leaf is `U` when the fact is miss
 
 Outcome mapping:
 
-| Root | `kind: obligation` | `kind: risk_check` / `roadmap_trigger` |
-|---|---|---|
-| `T` | `applies` → obligation(s) `open` | `flagged` |
-| `F` | `not_applicable` (reason = decisive `F` leaf) | `clear` |
-| `U` | `needs_info` with `unknown_facts` = unknown leaves that could flip the result | `needs_info` |
+| Root | `kind: obligation` | `kind: risk_check` / `roadmap_trigger` | `kind: eligibility` (Proposed) |
+|---|---|---|---|
+| `T` | `applies` → obligation(s) `open` | `flagged` | `eligible` |
+| `F` | `not_applicable` (reason = decisive `F` leaf) | `clear` | `not_eligible` |
+| `U` | `needs_info` with `unknown_facts` = unknown leaves that could flip the result | `needs_info` | `needs_info` |
 
 `needs_info` is **never** silently dropped (FR-CORE-03).
 
@@ -158,6 +170,7 @@ All dates are computed as calendar dates in `Asia/Kolkata`. The evaluator receiv
 
 ## 6. Versions, effective dates, and deadline extensions
 
+- **Every rule version has an effective date range** (`effective.from`, optional `effective.to`), stored on `rules.rule_versions` and shown on the obligation detail screen (FR-CORE-03). The law in force for a period is the rule version effective for that period, not the newest one.
 - **Content change** (conditions, schedule) → new `version` with a new `effective.from`. Occurrences with `due_date < new effective.from` keep their original `rule_version_id` and are **not** recomputed; later occurrences are recomputed with the new version.
 - **One-off deadline extension** by an authority → an entry in `obligation.overrides` of the same rule, published as a new version:
   ```yaml
@@ -166,6 +179,17 @@ All dates are computed as calendar dates in `Asia/Kolkata`. The evaluator receiv
   ```
 - **Retirement** → `status: retired` with `effective.to`; open future occurrences become `superseded` with reason.
 - Exactly one published version per `rule_id` at a time (database constraint).
+- **Proposed (D-9, decide at M6):** a `superseded` rule-version status for a version replaced by a newer version of the same rule, so `retired` means only "rule withdrawn" ([data-model.md §4.5](data-model.md#45-rules-global-read-only-to-services-written-only-by-the-publication-job-as-app_owner)).
+
+### 6.1 Proposed: thresholds as versioned facts (D-10, decided by S3 with the CA)
+
+Some conditions depend on legal thresholds that are expected to change, for example the **small-company** definition (paid-up capital and turnover limits), which the pending **Corporate Laws (Amendment) Bill, 2026** would revise.
+
+- The company's own values (paid-up capital, turnover) are ordinary facts.
+- Threshold values are **not** literals scattered across rules and never live in code (AGENTS.md rule 15). They are kept in one cited, versioned definition under `rules/` with `effective.from` / `effective.to`, so a change in the law is one reviewed publication with a new effective date.
+- Evaluation picks the threshold version effective for the period being evaluated, and the trace records which version was used.
+- Until the Bill is enacted and notified, rules use the thresholds currently in force, cited to their source.
+- Exact file format and whether thresholds are facts in `rules/facts.yaml` or a separate registry are settled in S3 and recorded here.
 
 ---
 
