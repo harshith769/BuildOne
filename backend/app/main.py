@@ -13,6 +13,8 @@ from app.modules.identity.api import FAKE_AUTHORIZE_PATH, auth_router, fake_idp_
 from app.modules.identity.providers.base import IdentityProvider
 from app.modules.identity.providers.fake import FakeIdentityProvider
 from app.modules.identity.service import IdentityService
+from app.modules.tenancy.api import invitations_router, orgs_router
+from app.modules.tenancy.service import TenancyService
 from app.platform import health
 from app.platform.clock import Clock, SystemClock
 from app.platform.config import Settings, get_settings
@@ -76,6 +78,9 @@ def create_app(
     app.state.identity = IdentityService(
         engine=app.state.engine, settings=settings, clock=clock, provider=provider
     )
+    app.state.tenancy = TenancyService(
+        engine=app.state.engine, settings=settings, clock=clock, identity=app.state.identity
+    )
     fake_idp = isinstance(provider, FakeIdentityProvider) and settings.environment != "production"
 
     install_error_handlers(app, root_domain=settings.root_domain)
@@ -104,6 +109,8 @@ def create_app(
     app.include_router(health.router)
     app.include_router(auth_router)
     app.include_router(me_router)
+    app.include_router(orgs_router)
+    app.include_router(invitations_router)
     if fake_idp:
         app.include_router(fake_idp_router)
     return app

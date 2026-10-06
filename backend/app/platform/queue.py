@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import procrastinate
 
+from app.modules.identity import jobs as identity_jobs
 from app.platform import jobs as platform_jobs
 from app.platform.config import Settings
 from app.platform.db import CONNECT_OPTIONS, libpq_conninfo
@@ -15,6 +16,7 @@ from app.platform.db import CONNECT_OPTIONS, libpq_conninfo
 # (namespace, blueprint) pairs. Add each module's blueprint here as modules gain jobs.
 BLUEPRINTS: list[tuple[str, procrastinate.Blueprint]] = [
     ("platform", platform_jobs.blueprint),
+    ("identity", identity_jobs.blueprint),
 ]
 
 
