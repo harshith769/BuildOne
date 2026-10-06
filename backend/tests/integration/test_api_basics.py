@@ -37,7 +37,10 @@ async def client(api_settings: Settings) -> AsyncIterator[httpx.AsyncClient]:
 
     app.include_router(probe)
     transport = httpx.ASGITransport(app=app, raise_app_exceptions=False)
-    async with httpx.AsyncClient(transport=transport, base_url="http://test") as c:
+    # Unsafe requests must carry the app's Origin (OriginCheckMiddleware), like the SPA's do.
+    async with httpx.AsyncClient(
+        transport=transport, base_url="http://test", headers={"Origin": api_settings.app_origin}
+    ) as c:
         yield c
     await app.state.engine.dispose()
 

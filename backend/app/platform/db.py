@@ -47,14 +47,24 @@ def libpq_conninfo(sqlalchemy_url: str) -> str:
     )
 
 
+async def set_tenant_context(
+    conn: AsyncConnection, *, user_id: uuid.UUID | None = None, org_id: uuid.UUID | None = None
+) -> None:
+    """Set (or replace) the RLS context for the rest of the current transaction.
+
+    For code that learns the user only inside the transaction (e.g. resolving a session cookie).
+    """
+    await conn.execute(
+        _SET_CONTEXT,
+        {"user_id": str(user_id) if user_id else "", "org_id": str(org_id) if org_id else ""},
+    )
+
+
 @asynccontextmanager
 async def tenant_transaction(
     engine: AsyncEngine, *, user_id: uuid.UUID | None = None, org_id: uuid.UUID | None = None
 ) -> AsyncIterator[AsyncConnection]:
     """One transaction with the RLS context set first. Commits on success, rolls back on error."""
     async with engine.begin() as conn:
-        await conn.execute(
-            _SET_CONTEXT,
-            {"user_id": str(user_id) if user_id else "", "org_id": str(org_id) if org_id else ""},
-        )
+        await set_tenant_context(conn, user_id=user_id, org_id=org_id)
         yield conn

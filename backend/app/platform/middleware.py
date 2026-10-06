@@ -1,13 +1,15 @@
-"""ASGI middleware: request ID on every request, response header and log line; one access log per request."""
+"""ASGI middleware: request ID and access log on every request; Origin check on unsafe requests."""
 
 from __future__ import annotations
 
 import time
 
 import structlog
+from starlette.responses import JSONResponse
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from app.platform.context import request_id_from_header, set_request_id
+from app.platform.errors import PROBLEM_CONTENT_TYPE, problem_body
 from app.platform.logging import get_logger, safe_path
 
 REQUEST_ID_HEADER = "x-request-id"
@@ -51,3 +53,45 @@ class RequestContextMiddleware:
                 status=status_code,
                 duration_ms=round((time.perf_counter() - started) * 1000, 1),
             )
+
+
+UNSAFE_METHODS = frozenset({"POST", "PUT", "PATCH", "DELETE"})
+
+
+class OriginCheckMiddleware:
+    """CSRF layer 2 (docs/auth-and-tenancy.md §3): unsafe requests under /v1 must come from the app origin.
+
+    A missing or different `Origin` header gets 403 before any route runs. `exempt_paths` exists only for the
+    fake identity provider's own form (served from the API origin in local development and tests); main.py
+    passes it only when that provider is configured, which Settings forbids in production.
+    """
+
+    def __init__(
+        self, app: ASGIApp, *, allowed_origin: str, root_domain: str, exempt_paths: frozenset[str]
+    ) -> None:
+        self.app = app
+        self.allowed_origin = allowed_origin.rstrip("/")
+        self.root_domain = root_domain
+        self.exempt_paths = exempt_paths
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if (
+            scope["type"] == "http"
+            and scope.get("method") in UNSAFE_METHODS
+            and scope.get("path", "").startswith("/v1/")
+            and scope.get("path") not in self.exempt_paths
+        ):
+            origin = dict(scope.get("headers") or []).get(b"origin", b"").decode("latin-1")
+            if origin.rstrip("/") != self.allowed_origin:
+                body = problem_body(
+                    status=403,
+                    code="forbidden",
+                    title="You don't have permission to do this",
+                    detail="Request origin not allowed",
+                    root_domain=self.root_domain,
+                )
+                await JSONResponse(body, status_code=403, media_type=PROBLEM_CONTENT_TYPE)(
+                    scope, receive, send
+                )
+                return
+        await self.app(scope, receive, send)
