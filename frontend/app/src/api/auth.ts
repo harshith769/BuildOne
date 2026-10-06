@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { ApiError, api, apiUrl, toProblem } from "./client";
+import { ApiError, api, apiUrl, unwrap } from "./client";
 import type { components } from "./schema";
 
 export type Me = components["schemas"]["MeOut"];
@@ -11,17 +11,6 @@ export const ME_KEY = ["me"] as const;
 /** Where the browser goes to sign in; the API redirects to the identity provider. */
 export function signInUrl(returnTo: string): string {
   return apiUrl(`/v1/auth/login?${new URLSearchParams({ return_to: returnTo }).toString()}`);
-}
-
-async function unwrap<T>(promise: Promise<{ data?: T; error?: unknown; response: Response }>): Promise<T> {
-  try {
-    const { data, error, response } = await promise;
-    if (response.ok) return data as T;
-    throw new ApiError(toProblem(error, response));
-  } catch (err) {
-    if (err instanceof ApiError) throw err;
-    throw new ApiError(toProblem(err));
-  }
 }
 
 /** The signed-in user, or null when nobody is signed in (401). Other failures are errors. */

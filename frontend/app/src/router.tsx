@@ -1,13 +1,47 @@
-import { createRootRoute, createRoute, createRouter, Link, Outlet } from "@tanstack/react-router";
+import { createRootRoute, createRoute, createRouter, Link, Outlet, useNavigate, useParams } from "@tanstack/react-router";
+import { useState } from "react";
 
 import { useMe, useSignOut } from "@/api/auth";
+import { useMyOrgs } from "@/api/orgs";
 import { RequireUser } from "@/auth/RequireUser";
 import { Button } from "@/components/ui/button";
 import { ConsentPage } from "@/routes/ConsentPage";
+import { CreateOrgPage } from "@/routes/CreateOrgPage";
 import { HomePage } from "@/routes/HomePage";
+import { InvitePage, takeInviteToken } from "@/routes/InvitePage";
+import { OrgPage } from "@/routes/OrgPage";
 import { SignInPage } from "@/routes/SignInPage";
 import { StatusPage } from "@/routes/StatusPage";
 import { WelcomePage } from "@/routes/WelcomePage";
+
+/** Switch between the organisations I belong to (FR-PLT-02); each screen shows one organisation's data. */
+function OrgSwitcher() {
+  const me = useMe();
+  const orgs = useMyOrgs();
+  const navigate = useNavigate();
+  const params = useParams({ strict: false });
+  if (!me.data || me.data.consent_required || !orgs.data || orgs.data.length === 0) return null;
+  const current = typeof params.orgId === "string" ? params.orgId : "";
+  return (
+    <select
+      aria-label="Organisation"
+      className="max-w-48 rounded-lg border border-line bg-surface px-2 py-1 text-sm"
+      value={current}
+      onChange={(e) => {
+        if (e.target.value) void navigate({ to: "/orgs/$orgId", params: { orgId: e.target.value } });
+      }}
+    >
+      <option value="" disabled>
+        Choose an organisation
+      </option>
+      {orgs.data.map((org) => (
+        <option key={org.id} value={org.id}>
+          {org.name}
+        </option>
+      ))}
+    </select>
+  );
+}
 
 function AccountMenu() {
   const me = useMe();
@@ -43,7 +77,10 @@ function Shell() {
             <img src="/favicon.svg" alt="" className="h-6 w-6" />
             BuildOne
           </Link>
-          <AccountMenu />
+          <div className="flex items-center gap-3">
+            <OrgSwitcher />
+            <AccountMenu />
+          </div>
         </div>
       </header>
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
@@ -96,10 +133,44 @@ const signInRoute = createRoute({
 
 const welcomeRoute = createRoute({ getParentRoute: () => rootRoute, path: "/welcome", component: WelcomePage });
 const consentRoute = createRoute({ getParentRoute: () => rootRoute, path: "/consent", component: ConsentPage });
+const createOrgRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/orgs/new",
+  component: () => <RequireUser>{() => <CreateOrgPage />}</RequireUser>,
+});
+
+const orgRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/orgs/$orgId",
+  component: function OrgRoute() {
+    const { orgId } = orgRoute.useParams();
+    return <RequireUser>{(me) => <OrgPage key={orgId} orgId={orgId} me={me} />}</RequireUser>;
+  },
+});
+
+const inviteRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/invite",
+  component: function InviteRoute() {
+    // Before RequireUser: the token must be taken out of the URL fragment before any sign-in redirect.
+    const [token] = useState(takeInviteToken);
+    return <RequireUser>{(me) => <InvitePage token={token} me={me} />}</RequireUser>;
+  },
+});
+
 const statusRoute = createRoute({ getParentRoute: () => rootRoute, path: "/status", component: StatusPage });
 
 export const router = createRouter({
-  routeTree: rootRoute.addChildren([homeRoute, signInRoute, welcomeRoute, consentRoute, statusRoute]),
+  routeTree: rootRoute.addChildren([
+    homeRoute,
+    signInRoute,
+    welcomeRoute,
+    consentRoute,
+    createOrgRoute,
+    orgRoute,
+    inviteRoute,
+    statusRoute,
+  ]),
 });
 
 declare module "@tanstack/react-router" {

@@ -70,3 +70,15 @@ export function toProblem(error: unknown, response?: Response): Problem {
     request_id: response?.headers.get("x-request-id") ?? undefined,
   };
 }
+
+/** Await an openapi-fetch call: the data on success, else an ApiError carrying the problem details. */
+export async function unwrap<T>(promise: Promise<{ data?: T; error?: unknown; response: Response }>): Promise<T> {
+  try {
+    const { data, error, response } = await promise;
+    if (response.ok) return data as T;
+    throw new ApiError(toProblem(error, response));
+  } catch (err) {
+    if (err instanceof ApiError) throw err;
+    throw new ApiError(toProblem(err));
+  }
+}
