@@ -53,6 +53,9 @@ def alembic_config(owner_url: str) -> Config:
     return config
 
 
+RLS_CHECK_ROLE_SQL = BACKEND_DIR.parent / "infra" / "postgres" / "initdb" / "10-rls-check-role.sql"
+
+
 def _ensure_roles(conn: psycopg.Connection) -> None:
     for role in ROLES:
         exists = conn.execute("SELECT 1 FROM pg_roles WHERE rolname = %s", (role,)).fetchone()
@@ -61,6 +64,8 @@ def _ensure_roles(conn: psycopg.Connection) -> None:
             conn.execute(f"CREATE ROLE {role} LOGIN PASSWORD '{ROLE_PASSWORD}'{bypass}")
         else:
             conn.execute(f"ALTER ROLE {role} LOGIN PASSWORD '{ROLE_PASSWORD}'{bypass}")
+    # The same idempotent SQL that initdb and `make db-roles` run (ADR-0013).
+    conn.execute(RLS_CHECK_ROLE_SQL.read_text())  # type: ignore[arg-type]
 
 
 def create_database(prefix: str = "buildone_test") -> EphemeralDatabase:

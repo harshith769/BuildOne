@@ -11,12 +11,13 @@ from __future__ import annotations
 import uuid
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from functools import lru_cache
 
 from sqlalchemy import text
 from sqlalchemy.engine import make_url
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine, create_async_engine
 
-from app.platform.config import Settings
+from app.platform.config import Settings, get_settings
 
 # Procrastinate's tables and functions are unqualified, so connections look them up in its schema.
 # Module tables are always schema-qualified (identity.users, tenancy.organizations, ...).
@@ -38,6 +39,12 @@ def create_engine(settings: Settings) -> AsyncEngine:
         pool_pre_ping=True,
         connect_args={"options": CONNECT_OPTIONS},
     )
+
+
+@lru_cache(maxsize=1)
+def job_engine() -> AsyncEngine:
+    """The worker process's engine (app_worker URL from DATABASE_URL), shared by all jobs."""
+    return create_engine(get_settings())
 
 
 def libpq_conninfo(sqlalchemy_url: str) -> str:

@@ -24,6 +24,7 @@ from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+from app.modules.audit import service as audit
 from app.modules.identity import models
 from app.modules.identity.providers.base import IdentityError, IdentityProvider
 from app.modules.identity.security import (
@@ -75,6 +76,7 @@ class LoginStart:
 class IssuedSession:
     """A new session. The raw tokens go into cookies and are never stored."""
 
+    session_id: uuid.UUID
     session_token: str
     csrf_token: str
     absolute_expires_at: datetime
@@ -131,6 +133,13 @@ class SessionInfo:
     ip: str | None
     user_agent: str | None
     is_current: bool
+
+
+@dataclass(frozen=True, slots=True)
+class Profile:
+    user_id: uuid.UUID
+    email: str
+    display_name: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -233,6 +242,7 @@ class IdentityService:
             await self._drop_session_by_token(conn, current_session_token)
             await set_tenant_context(conn, user_id=user_id)
             issued = await self._create_session(conn, user_id, client)
+            await self._audit_session(conn, "identity.signed_in", user_id, issued.session_id)
         return SignedIn(session=issued, return_to=return_to)
 
     def read_signup(self, signup_cookie: str | None) -> SignupProfile:
@@ -278,6 +288,9 @@ class IdentityService:
                 )
                 await self._record_consents(conn, user_id, terms_version, privacy_version)
                 issued = await self._create_session(conn, user_id, client)
+                await self._audit_session(
+                    conn, "identity.signed_in", user_id, issued.session_id, new_account=True
+                )
         except IntegrityError as exc:
             raise Conflict(
                 "An account with this email or sign-in already exists. Sign in again."
@@ -349,6 +362,7 @@ class IdentityService:
             await conn.execute(
                 delete(models.sessions).where(models.sessions.c.id == ctx.session_id)
             )
+            await self._audit_session(conn, "identity.signed_out", ctx.user_id, ctx.session_id)
 
     async def get_me(self, ctx: SessionContext) -> Me:
         async with tenant_transaction(self._engine, user_id=ctx.user_id) as conn:
@@ -419,18 +433,61 @@ class IdentityService:
                     models.sessions.c.id == session_id, models.sessions.c.user_id == ctx.user_id
                 )
             )
-        if result.rowcount == 0:
-            raise NotFound("Session not found")
+            if result.rowcount == 0:
+                raise NotFound("Session not found")
+            await self._audit_session(conn, "identity.session_revoked", ctx.user_id, session_id)
 
     async def revoke_other_sessions(self, ctx: SessionContext) -> int:
         async with tenant_transaction(self._engine, user_id=ctx.user_id) as conn:
-            result = await conn.execute(
-                delete(models.sessions).where(
-                    models.sessions.c.user_id == ctx.user_id,
-                    models.sessions.c.id != ctx.session_id,
+            revoked = (
+                (
+                    await conn.execute(
+                        delete(models.sessions)
+                        .where(
+                            models.sessions.c.user_id == ctx.user_id,
+                            models.sessions.c.id != ctx.session_id,
+                        )
+                        .returning(models.sessions.c.id)
+                    )
                 )
+                .scalars()
+                .all()
             )
-        return int(result.rowcount)
+            for session_id in revoked:
+                await self._audit_session(
+                    conn, "identity.session_revoked", ctx.user_id, session_id, bulk=True
+                )
+        return len(revoked)
+
+    # --- profiles (for other modules) ----------------------------------------------------------------
+
+    async def email_of(self, user_id: uuid.UUID) -> str:
+        async with tenant_transaction(self._engine, user_id=user_id) as conn:
+            email = (
+                await conn.execute(select(models.users.c.email).where(models.users.c.id == user_id))
+            ).scalar_one()
+        return str(email)
+
+    async def co_member_profiles(
+        self, viewer_id: uuid.UUID, user_ids: list[uuid.UUID]
+    ) -> dict[uuid.UUID, Profile]:
+        """Names and emails of the given users that share an organisation with `viewer_id`."""
+        if not user_ids:
+            return {}
+        async with tenant_transaction(self._engine, user_id=viewer_id) as conn:
+            rows = (
+                await conn.execute(
+                    text(
+                        "SELECT user_id, email, display_name "
+                        "FROM identity.co_member_profiles(CAST(:ids AS uuid[]))"
+                    ),
+                    {"ids": [str(u) for u in user_ids]},
+                )
+            ).all()
+        return {
+            r.user_id: Profile(user_id=r.user_id, email=r.email, display_name=r.display_name)
+            for r in rows
+        }
 
     # --- internals -----------------------------------------------------------------------------------
 
@@ -456,9 +513,10 @@ class IdentityService:
         absolute = now + timedelta(days=self._settings.session_absolute_days)
         idle = min(now + timedelta(days=self._settings.session_idle_days), absolute)
         token, csrf = new_token(), new_token()
+        session_id = new_id()
         await conn.execute(
             insert(models.sessions).values(
-                id=new_id(),
+                id=session_id,
                 user_id=user_id,
                 token_hash=hash_token(token),
                 csrf_token_hash=hash_token(csrf),
@@ -471,7 +529,30 @@ class IdentityService:
                 updated_at=now,
             )
         )
-        return IssuedSession(session_token=token, csrf_token=csrf, absolute_expires_at=absolute)
+        return IssuedSession(
+            session_id=session_id,
+            session_token=token,
+            csrf_token=csrf,
+            absolute_expires_at=absolute,
+        )
+
+    async def _audit_session(
+        self,
+        conn: AsyncConnection,
+        action: str,
+        user_id: uuid.UUID,
+        session_id: uuid.UUID,
+        **metadata: Any,
+    ) -> None:
+        await audit.record(
+            conn,
+            action=action,
+            actor_user_id=user_id,
+            target_table="identity.sessions",
+            target_id=session_id,
+            occurred_at=self._clock.now(),
+            metadata=metadata,
+        )
 
     async def _drop_session_by_token(self, conn: AsyncConnection, token: str | None) -> None:
         """Signing in again replaces the browser's previous session instead of orphaning it."""

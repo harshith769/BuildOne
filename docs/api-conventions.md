@@ -41,7 +41,7 @@ Cursor-based: `?limit=50&cursor=<opaque>`; `limit` max 200. Response: `{"items":
 
 ## 4. Idempotency
 
-`Idempotency-Key` header (UUID) **required** on: create invitation, upload-URL creation, Copilot message, organisation creation, incorporation handoff, data export request. Stored in `platform.idempotency_keys` for 24 h, same transaction as the business write; same key + different body → 409.
+`Idempotency-Key` header (UUID) **required** on: create invitation, upload-URL creation, Copilot message, organisation creation, incorporation handoff, data export request. Stored in `platform.idempotency_keys` for 24 h, same transaction as the business write; same key + different body → 409. Keys are per user; a missing or non-UUID key → 400. The stored response **never holds secrets**: where the live response carries one (an invitation's one-time link), the replay returns the resource without it (`invite_link: null`, `link_available: false`). Built in M3 for organisation creation and invitations; the other endpoints use it when they are built.
 
 ## 5. Streaming (Copilot)
 

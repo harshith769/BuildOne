@@ -155,6 +155,16 @@ When an item comes back: move it into the build order in [roadmap.md](roadmap.md
 
 ---
 
+## 12. `manage` grant write scope
+
+**Why deferred:** D-29 (2026-10-06, M3). `manage` stays a valid access-grant scope in the schema (no CHECK forbids it), but the database write check never accepts any grant, whatever its scope, and the API refuses to create a `manage` grant (422 `grant_scope_not_available`, "This access level isn't available yet"). An existing `manage` grant reads exactly like `read`.
+
+**Full scope:** manage grant write scope — CA Workspace (A2 client event feed, A3 review/sign-off/staff tasks). Needs an ADR before enabling. Open question for the CA interviews: may a CA firm change the company's own data (facts, obligations), or only its own workflow data on the client, with changes to company data going to the founder as suggestions to approve?
+
+**Trigger:** the CA Workspace milestone (Phase 2), after the CA interviews answer the open question; an ADR comes first ([ADR-0013](adr/0013-rls-check-functions-and-read-write-split.md)).
+
+---
+
 ## Other later features
 
 Features tagged v1/v2 in [product-vision.md §6](product-vision.md#6-features) and `LATER` in [requirements.md](requirements.md) (Founder Alignment, Validation Sprint, Opportunity Finder, Connect, Event Triggers, What-if, Evidence Vault, Health Score, full DD Pack, Change Radar, change-detection queue, CA Workspace, incubator portfolio view) keep their scope in those documents and come back by phase ([roadmap.md](roadmap.md)).

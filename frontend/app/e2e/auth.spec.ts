@@ -1,18 +1,8 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
+
+import { signInWithFakeIdp, uniqueEmail } from "./helpers";
 
 // Full stack: Vite -> API (:8001) -> fake identity provider -> real Postgres. No mocks.
-
-function uniqueEmail(label: string): string {
-  return `e2e-${label}-${Date.now()}-${Math.floor(Math.random() * 1e6)}@example.test`;
-}
-
-async function signInWithFakeIdp(page: Page, email: string, name: string) {
-  await page.getByRole("button", { name: "Continue" }).click();
-  await expect(page.getByRole("heading", { name: "Fake sign-in" })).toBeVisible();
-  await page.getByLabel("Email", { exact: true }).fill(email);
-  await page.getByLabel("Name", { exact: true }).fill(name);
-  await page.getByRole("button", { name: "Sign in" }).click();
-}
 
 test("a new user signs up, stays signed in, signs out, and signs back in", async ({ page }) => {
   const email = uniqueEmail("signup");

@@ -25,3 +25,10 @@ export function formatPaise(paise: number): string {
   if (!Number.isInteger(paise)) throw new Error("paise must be an integer");
   return rupees.format(paise / 100);
 }
+
+/** Instants arrive as ISO 8601 UTC; shown as the calendar date in India (DD MMM YYYY). */
+export function formatInstant(isoInstant: string): string {
+  const instant = new Date(isoInstant);
+  if (Number.isNaN(instant.getTime())) throw new Error(`Not an ISO instant: ${isoInstant}`);
+  return dateFormatter.format(instant);
+}

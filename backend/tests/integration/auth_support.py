@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from collections.abc import AsyncIterator, Callable
 from contextlib import asynccontextmanager
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from urllib.parse import parse_qs, urlsplit
 
@@ -32,9 +32,13 @@ class AuthHarness:
     clock: FrozenClock
     settings: Settings
 
+    extra_clients: list[httpx.AsyncClient] = field(default_factory=list)
+
     def new_client(self) -> httpx.AsyncClient:
-        """A second browser against the same app (its own cookie jar)."""
-        return _client(self.app)
+        """A second browser against the same app (its own cookie jar). Closed with the harness."""
+        client = _client(self.app)
+        self.extra_clients.append(client)
+        return client
 
 
 def _client(app: FastAPI) -> httpx.AsyncClient:
@@ -59,7 +63,10 @@ async def auth_harness(
     provider = provider_factory(clock) if provider_factory else None
     app = create_app(settings, clock=clock, identity_provider=provider)
     async with _client(app) as client:
-        yield AuthHarness(app=app, client=client, clock=clock, settings=settings)
+        harness = AuthHarness(app=app, client=client, clock=clock, settings=settings)
+        yield harness
+        for extra in harness.extra_clients:
+            await extra.aclose()
     await app.state.engine.dispose()
 
 
