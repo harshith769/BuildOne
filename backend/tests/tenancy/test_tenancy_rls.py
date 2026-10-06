@@ -401,6 +401,38 @@ def test_accept_needs_the_right_token_and_role(test_db: EphemeralDatabase, world
         )
 
 
+def test_expired_invitation_cannot_be_accepted_even_by_direct_sql(
+    test_db: EphemeralDatabase, world: World
+) -> None:
+    """Migration 0006: the token check also requires expires_at > now(), whatever the app's clock says."""
+    expired_id, token_hash = _id(), hashlib.sha256(b"expired-token").digest()
+    with admin_connection(test_db) as conn:
+        conn.execute(
+            "INSERT INTO tenancy.invitations (id, org_id, email, role, token_hash, expires_at, invited_by) "
+            "VALUES (%s, %s, 'late@example.com', 'viewer', %s, now() - interval '1 minute', %s)",
+            (expired_id, world.company, token_hash, world.owner),
+        )
+    try:
+        with as_user(test_db, world.outsider, world.company, token_hash=token_hash) as conn:
+            with pytest.raises(psycopg.errors.InsufficientPrivilege):
+                conn.execute(
+                    "INSERT INTO tenancy.memberships (org_id, user_id, role) VALUES (%s, %s, 'viewer')",
+                    (world.company, world.outsider),
+                )
+        with as_user(test_db, world.outsider, world.company, token_hash=token_hash) as conn:
+            updated = conn.execute(
+                "UPDATE tenancy.invitations SET accepted_at = now() WHERE id = %s", (expired_id,)
+            )
+            assert updated.rowcount == 0
+            assert (
+                _count(conn, "SELECT count(*) FROM tenancy.invitations WHERE id = %s", expired_id)
+                == 0
+            )
+    finally:
+        with admin_connection(test_db) as conn:
+            conn.execute("DELETE FROM tenancy.invitations WHERE id = %s", (expired_id,))
+
+
 @pytest.mark.parametrize(
     "change",
     ["role = 'owner'", "email = 'me@example.com'", "expires_at = now() + interval '1 year'"],
