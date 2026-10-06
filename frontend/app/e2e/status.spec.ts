@@ -8,7 +8,7 @@ test("shows every check as working when the API is ready", async ({ page }) => {
       body: JSON.stringify({ status: "ready", checks: { database: "ok", migrations: "ok", queue: "ok" } }),
     }),
   );
-  await page.goto("/");
+  await page.goto("/status");
   await expect(page.getByRole("heading", { name: "System status" })).toBeVisible();
   await expect(page.getByTestId("readiness-summary")).toHaveText("All systems are working.");
   await expect(page.getByText("Working", { exact: true })).toHaveCount(3);
@@ -23,7 +23,7 @@ test("shows which part is down when the API is not ready", async ({ page }) => {
       body: JSON.stringify({ status: "not_ready", checks: { database: "ok", migrations: "ok", queue: "fail" } }),
     }),
   );
-  await page.goto("/");
+  await page.goto("/status");
   await expect(page.getByTestId("readiness-summary")).toContainText("not working right now");
   await expect(page.getByText("Not working", { exact: true })).toHaveCount(1);
 });
@@ -43,7 +43,7 @@ test("shows the request ID when the API fails", async ({ page }) => {
       }),
     }),
   );
-  await page.goto("/");
+  await page.goto("/status");
   await expect(page.getByRole("alert")).toContainText("req-e2e-12345678");
   await expect(page.getByRole("button", { name: "Try again" })).toBeVisible();
 });
