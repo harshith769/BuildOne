@@ -12,8 +12,11 @@ setup:            ## install backend + frontend deps and git hooks
 	$(FE) install
 	pre-commit install
 
-dev:              ## start local stack (db, minio, api, worker) + SPA
-	$(COMPOSE) up -d --build
+dev:              ## start local stack (db, minio, migrations, api, worker) + SPA
+	$(COMPOSE) build api
+	$(COMPOSE) up -d postgres minio
+	$(COMPOSE) run --rm migrate
+	$(COMPOSE) up -d api worker
 	$(FE) dev
 
 down:
@@ -33,14 +36,18 @@ typecheck:
 contracts:
 	$(BE) uv run lint-imports
 
+# Tests need a superuser URL for a Postgres server (local: the compose postgres on localhost:5432).
+TEST_DATABASE_ADMIN_URL ?= postgresql+psycopg://postgres:postgres@localhost:5432/buildone
+export TEST_DATABASE_ADMIN_URL
+
 test:
 	$(BE) uv run pytest -q
 
 test-tenancy:
 	$(BE) uv run pytest -q tests/tenancy
 
-migrate:
-	$(BE) uv run alembic upgrade head
+migrate:          ## apply migrations as app_owner (compose `migrate` service)
+	$(COMPOSE) run --rm migrate
 
 migration:
 	$(BE) uv run alembic revision -m "$(m)"

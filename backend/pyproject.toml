@@ -9,7 +9,7 @@ dependencies = [
   "uvicorn[standard]>=0.54",
   "pydantic>=2.13",
   "pydantic-settings>=2.10",
-  "sqlalchemy>=2.1",
+  "sqlalchemy[asyncio]>=2.1",
   "psycopg[binary]>=3.3",
   "alembic>=1.20",
   "procrastinate>=3.10",
@@ -18,7 +18,7 @@ dependencies = [
   "httpx>=0.27",
   "pyyaml>=6.0",
   "jsonschema>=4.22",
-  "uuid-utils>=1.0",
+  "tzdata>=2026.5",              # zoneinfo data for Asia/Kolkata on slim images
   "python-dateutil>=2.9",
   "icalendar>=7.3",
   "pgvector>=0.5",
@@ -34,7 +34,7 @@ dependencies = [
 [dependency-groups]
 dev = [
   "pytest>=9.1",
-  "pytest-asyncio>=0.23",
+  "pytest-asyncio>=1.4",
   "hypothesis>=6.168",
   "mypy>=2.4",
   "ruff>=0.16",
@@ -42,6 +42,7 @@ dev = [
   "pip-audit>=2.10",
   "types-PyYAML",
   "types-python-dateutil",
+  "types-jsonschema",
 ]
 
 [tool.ruff]
@@ -50,10 +51,13 @@ target-version = "py314"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "S", "ASYNC", "RUF", "DTZ", "T20"]
-ignore = []
+# `ruff format` owns code line length; long docstrings and comments are allowed.
+ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101"]
+# Migrations build DDL from constant schema names (never user input).
+"migrations/**" = ["S608"]
 
 [tool.mypy]
 strict = true
@@ -62,10 +66,13 @@ python_version = "3.14"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
 testpaths = ["tests"]
 markers = ["integration: needs Postgres", "tenancy: cross-tenant isolation"]
 
-# Import contracts (verify wildcard syntax against import-linter docs in M1).
+# Import contracts. Wildcards verified with import-linter 2.15 in M1. Adapter packages don't import their
+# SDKs yet, so unmatched ignores are allowed until those adapters exist (M2, M5, M7).
 [tool.importlinter]
 root_package = "app"
 include_external_packages = true
@@ -80,8 +87,9 @@ forbidden_modules = ["app.modules.ai"]
 name = "AI provider SDKs only inside the AI adapters"
 type = "forbidden"
 source_modules = ["app"]
-forbidden_modules = ["groq", "google.genai"]
-ignore_imports = ["app.modules.ai.providers.** -> groq", "app.modules.ai.providers.** -> google.genai"]
+forbidden_modules = ["groq", "google"]  # google-genai installs as the `google` namespace
+ignore_imports = ["app.modules.ai.providers.** -> groq", "app.modules.ai.providers.** -> google"]
+unmatched_ignore_imports_alerting = "none"
 
 [[tool.importlinter.contracts]]
 name = "Identity SDK only inside the identity adapter"
@@ -89,6 +97,7 @@ type = "forbidden"
 source_modules = ["app"]
 forbidden_modules = ["workos"]
 ignore_imports = ["app.modules.identity.providers.** -> workos"]
+unmatched_ignore_imports_alerting = "none"
 
 [[tool.importlinter.contracts]]
 name = "S3 SDK only inside the storage adapter"
@@ -96,3 +105,4 @@ type = "forbidden"
 source_modules = ["app"]
 forbidden_modules = ["boto3", "botocore"]
 ignore_imports = ["app.platform.storage.** -> boto3", "app.platform.storage.** -> botocore"]
+unmatched_ignore_imports_alerting = "none"
