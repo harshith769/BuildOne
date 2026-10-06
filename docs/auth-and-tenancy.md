@@ -1,6 +1,6 @@
 # BuildOne — Authentication, Sessions, and Tenancy
 
-> **Status:** v1.0 (frozen for MVP build) · 2026-09-28 · Owner: @harshith769
+> **Status:** v1.1 (frozen for MVP build) · 2026-10-06 (M2: new users get no row before 18+ and terms acceptance, D-28) · Owner: @harshith769
 > Decision record: [ADR-0007](adr/0007-identity-workos-sessions.md). Tables and RLS: [data-model.md §3–4](data-model.md#3-request-context-and-rls-frozen).
 
 **What this document answers**
@@ -13,13 +13,13 @@
 
 ## 1. Sign-in flow (Authorization Code + PKCE via WorkOS AuthKit)
 
-1. SPA navigates to `GET /v1/auth/login?return_to=<path>` → API creates `state` + PKCE verifier (stored in a short-lived signed cookie, 10 min) → redirects to AuthKit.
+1. SPA navigates to `GET /v1/auth/login?return_to=<path>` → API validates `return_to` (a relative path; anything else is 400 — open-redirect protection), creates `state` + PKCE verifier (stored in the short-lived signed cookie `bo_login`, 10 min, `Path=/v1/auth`) → redirects to AuthKit.
 2. AuthKit authenticates (email one-time code/link or Google) → redirects to `GET /v1/auth/callback?code&state`.
-3. API validates `state` (single use), exchanges code with PKCE verifier, receives the WorkOS user profile.
-4. API upserts `identity.users` by `idp_user_id`. First sign-in → requires **18+ confirmation and terms/privacy acceptance** screen before any other endpoint works (403 `consent_required`).
-5. API creates a session row and sets cookies; redirects to `return_to` (must be a relative path — open-redirect protection).
+3. API validates `state` against `bo_login` and clears that cookie (single use; the code itself is also single-use at the provider), exchanges the code with the PKCE verifier, receives the verified user profile. Any failure redirects to `<app>/sign-in?error=<code>` without a session.
+4. **Existing user** (found by `idp_user_id`): API creates a session row, sets cookies and redirects to `<app><return_to>`. If the current terms/privacy versions were not yet accepted, every endpoint except `/v1/me*` and sign-out returns 403 `consent_required` until `POST /v1/me/consent`, which rotates the session.
+5. **New user** (D-28): no row is written yet. The verified profile goes into the signed cookie `bo_signup` (30 min, `Path=/v1/auth`, with a `bo_csrf` cookie) and the browser goes to `<app>/welcome`, the **18+ confirmation and terms/privacy acceptance** screen (S2). `POST /v1/auth/signup` creates the user (`age_confirmed_at`), both consent rows and the session in one transaction. "I'm under 18" (`POST /v1/auth/signup/decline`) clears the cookies; nothing about the person is stored (NFR-PRV-04).
 
-**Adapter seam:** `identity/providers/workos.py` implements `IdentityProvider`; `identity/providers/fake.py` is used in local dev and tests (CI never calls WorkOS). Fallback provider (direct Google OIDC) implements the same interface ([ADR-0011](adr/0011-portability-rules.md)).
+**Adapter seam:** `identity/providers/workos.py` implements `IdentityProvider`; `identity/providers/fake.py` is used in local dev, tests and E2E (CI never calls WorkOS). The fake provider serves its own form at `/v1/auth/fake/authorize` from the API origin; that route, and its exemption from the Origin check (§3), exist only when `IDENTITY_PROVIDER=fake`, which settings refuse in production. Fallback provider (direct Google OIDC) implements the same interface ([ADR-0011](adr/0011-portability-rules.md)).
 
 ## 2. Sessions and cookies (Frozen)
 
@@ -32,11 +32,13 @@
 | Logout | Deletes the session row; clears cookies |
 | Multiple sessions | Allowed; listed at `GET /v1/me/sessions`; revocable individually or all-but-current |
 | Rotation | New session token on sign-in and after consent acceptance |
+| Local development | On `localhost` the cookies are host-only (no `Domain`); browsers accept `Secure` cookies on `http://localhost` |
 
 ## 3. CSRF (Frozen)
 
 - `SameSite=Lax` **plus** double-submit token: cookie `bo_csrf` (not HttpOnly, per-session random) must equal header `X-CSRF-Token` on `POST/PUT/PATCH/DELETE`.
 - `Origin` header must match the allowlisted app origin on unsafe methods.
+- Before a session exists (`POST /v1/auth/signup`), the double-submit token is bound to the signed `bo_signup` cookie instead of a session row.
 - CORS: allow only `https://app.<root-domain>` (and `http://localhost:5173` in dev) with credentials; never `*`.
 
 ## 4. Authorization model

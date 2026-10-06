@@ -56,6 +56,8 @@ ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101"]
+# Cross-tenant suites interpolate constant table names (never user input).
+"tests/tenancy/**" = ["S101", "S608"]
 # Migrations build DDL from constant schema names (never user input).
 "migrations/**" = ["S608"]
 

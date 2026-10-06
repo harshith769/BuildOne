@@ -1,8 +1,11 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// E2E runs against the Vite dev server. Tests mock API responses with page.route() unless they say otherwise,
-// so they need no backend. Full-stack flows (sign-in -> plan) arrive with M2 and M8.
+// E2E runs the real stack on its own ports (clear of `make dev`): the API with a fresh database and the fake
+// identity provider on :8001 (backend/tests/e2e_server.py; needs TEST_DATABASE_ADMIN_URL), and Vite on :5174
+// proxying /v1 to it. Specs may still mock individual API responses with page.route().
 const executablePath = process.env.PLAYWRIGHT_CHROMIUM_PATH; // optional: a preinstalled Chromium
+const API_PORT = 8001;
+const APP_PORT = 5174;
 
 export default defineConfig({
   testDir: "./e2e",
@@ -11,7 +14,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? "github" : "list",
   use: {
-    baseURL: "http://localhost:5173",
+    baseURL: `http://localhost:${APP_PORT}`,
     trace: "retain-on-failure",
   },
   projects: [
@@ -20,10 +23,23 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"], ...(executablePath ? { launchOptions: { executablePath } } : {}) },
     },
   ],
-  webServer: {
-    command: "pnpm dev",
-    url: "http://localhost:5173",
-    reuseExistingServer: !process.env.CI,
-    timeout: 60_000,
-  },
+  webServer: [
+    {
+      command: "uv run python -m tests.e2e_server",
+      cwd: "../../backend",
+      url: `http://localhost:${API_PORT}/healthz`,
+      env: { E2E_API_PORT: String(API_PORT), E2E_APP_ORIGIN: `http://localhost:${APP_PORT}` },
+      reuseExistingServer: false,
+      timeout: 120_000,
+      gracefulShutdown: { signal: "SIGTERM", timeout: 10_000 },
+      stdout: "pipe",
+    },
+    {
+      command: `pnpm exec vite --port ${APP_PORT} --strictPort`,
+      url: `http://localhost:${APP_PORT}`,
+      env: { VITE_DEV_API_TARGET: `http://localhost:${API_PORT}` },
+      reuseExistingServer: false,
+      timeout: 60_000,
+    },
+  ],
 });

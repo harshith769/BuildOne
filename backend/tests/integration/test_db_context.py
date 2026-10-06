@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncEngine
 
 from app.platform.db import tenant_transaction
 from app.platform.ids import new_id
-from tests.conftest import EphemeralDatabase, owner_connection
+from tests.support.db import EphemeralDatabase, owner_connection
 
 _CONTEXT = text("SELECT platform.current_user_id(), platform.current_org_id()")
 

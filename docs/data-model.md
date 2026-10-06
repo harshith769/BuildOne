@@ -89,6 +89,10 @@ Column lists show type and key constraints; `created_at timestamptz NOT NULL DEF
 
 ### 4.1 `identity`
 
+Identity tables are user-scoped, not tenant-scoped: RLS is **enabled** with a `user_isolation` policy (`id`/`user_id = platform.current_user_id()`) but **not forced**, so two `SECURITY DEFINER` lookups owned by `app_owner` can run before the user is known: `identity.find_session(token_hash)` (session cookie → session and user) and `identity.find_user_by_idp(idp_user_id)` (IdP callback → user). EXECUTE on them is granted only to `app_api` and `app_worker`. Services never connect as `app_owner`, so the policies always apply to them (M2, migration `0002_identity`).
+
+A user row is created only when the person confirms 18+ and accepts the terms (D-28); until then the verified profile lives in a signed cookie ([auth-and-tenancy.md §1](auth-and-tenancy.md#1-sign-in-flow-authorization-code--pkce-via-workos-authkit)).
+
 **`identity.users`** (not tenant-scoped; RLS: row visible when `id = current_user_id()`)
 - `id uuid PK`
 - `email citext NOT NULL UNIQUE`
