@@ -1,0 +1,106 @@
+# Production topology (one-box). Local dev adds compose.dev.yml. See docs/deployment.md.
+name: buildone
+
+services:
+  postgres:
+    build: ../postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: buildone
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      APP_OWNER_PASSWORD: ${APP_OWNER_PASSWORD}
+      APP_API_PASSWORD: ${APP_API_PASSWORD}
+      APP_WORKER_PASSWORD: ${APP_WORKER_PASSWORD}
+      APP_INGEST_PASSWORD: ${APP_INGEST_PASSWORD}
+      APP_READONLY_PASSWORD: ${APP_READONLY_PASSWORD}
+      WALG_S3_PREFIX: ${WALG_S3_PREFIX}
+      AWS_ACCESS_KEY_ID: ${WALG_AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${WALG_AWS_SECRET_ACCESS_KEY}
+      AWS_ENDPOINT: ${WALG_AWS_ENDPOINT}
+      AWS_REGION: auto
+      AWS_S3_FORCE_PATH_STYLE: "true"
+    command:
+      - postgres
+      - -c
+      - wal_level=replica
+      - -c
+      - archive_mode=on
+      - -c
+      - archive_command=wal-g wal-push %p
+      - -c
+      - archive_timeout=60
+      - -c
+      - shared_buffers=128MB
+      - -c
+      - effective_cache_size=512MB
+      - -c
+      - work_mem=8MB
+      - -c
+      - max_connections=40
+    volumes:
+      # Postgres 18 images keep data under /var/lib/postgresql/18/docker; mount the parent, not .../data.
+      - pgdata:/var/lib/postgresql
+      - ../postgres/initdb:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d buildone"]
+      interval: 5s
+      retries: 20
+    mem_limit: 700m
+    networks: [internal]
+
+  api:
+    image: ${BACKEND_IMAGE:-buildone-backend:local}
+    build: ../../backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL_API}
+    depends_on:
+      postgres: { condition: service_healthy }
+    mem_limit: 450m
+    networks: [internal, edge]
+
+  worker:
+    image: ${BACKEND_IMAGE:-buildone-backend:local}
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL_WORKER}
+    command: ["python", "-m", "app.worker"]
+    depends_on:
+      postgres: { condition: service_healthy }
+    mem_limit: 550m
+    networks: [internal]
+
+  migrate:
+    image: ${BACKEND_IMAGE:-buildone-backend:local}
+    profiles: ["migrate"]
+    env_file: .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL_OWNER}
+    # Rule publication (`python -m app.modules.rules.publish`) is added to this command in M6.
+    command: ["alembic", "upgrade", "head"]
+    depends_on:
+      postgres: { condition: service_healthy }
+    networks: [internal]
+
+  caddy:
+    image: caddy:2
+    profiles: ["prod"]
+    restart: unless-stopped
+    ports: ["443:443"]
+    environment:
+      ROOT_DOMAIN: ${ROOT_DOMAIN}
+    volumes:
+      - ../caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ../caddy/certs:/etc/caddy/certs:ro
+    mem_limit: 50m
+    networks: [edge]
+
+volumes:
+  pgdata:
+
+networks:
+  internal:
+    internal: true
+  edge: {}

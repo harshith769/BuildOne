@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(make:*)",
+      "Bash(uv run:*)",
+      "Bash(uv sync:*)",
+      "Bash(pnpm:*)",
+      "Bash(docker compose:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.production)",
+      "Read(./infra/compose/.env)",
+      "Bash(git push --force:*)"
+    ]
+  }
+}

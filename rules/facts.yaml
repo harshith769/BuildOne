@@ -1,0 +1,19 @@
+# Fact registry — docs/rules-engine.md §2. Draft v1: finalised in spike S3 / M6. Keys are immutable once published.
+registry_version: 1
+facts:
+  # ---- Company (subject: org) ----
+  - {key: entity_type, subject: org, value_type: enum, allowed_values: [pvt_ltd, llp, opc, not_incorporated], org_types: [company], label: "Legal structure", help: "As shown on your certificate of incorporation."}
+  - {key: incorporation_date, subject: org, value_type: date, org_types: [company], label: "Date of incorporation", help: "From your certificate of incorporation."}
+  - {key: has_share_capital, subject: org, value_type: bool, org_types: [company], label: "Has share capital", help: "Whether the company was incorporated with share capital."}
+  - {key: state_code, subject: org, value_type: state_code, org_types: [company, team], label: "State of registered office", help: "Two-letter state code, e.g. TG."}
+  - {key: director_count, subject: org, value_type: int, org_types: [company], label: "Number of directors", help: "Current directors on the board."}
+  - {key: employee_count, subject: org, value_type: int, org_types: [company], label: "Number of employees", help: "People on payroll, excluding directors who are not employees."}
+  - {key: gst_registered, subject: org, value_type: bool, org_types: [company], label: "Registered for GST", help: "Whether you hold a GSTIN."}
+  - {key: turnover_band, subject: org, value_type: enum, allowed_values: [none_yet, band_1, band_2, band_3], org_types: [company], label: "Expected annual turnover", help: "Band boundaries are defined with the CA in S3."}
+  - {key: business_activities, subject: org, value_type: enum_list, allowed_values: [software_services, saas, ecommerce, trading, manufacturing, food, other], org_types: [company, team], label: "Business activities", help: "Select all that apply."}
+  # ---- Pre-founder member (subject: member) ----
+  - {key: occupation, subject: member, value_type: enum, allowed_values: [student, employed, self_employed, other], org_types: [team], label: "Current occupation", help: "Your situation today."}
+  - {key: has_employment_contract, subject: member, value_type: bool, org_types: [team], label: "Signed an employment contract", help: "With your current employer."}
+  - {key: uses_university_resources, subject: member, value_type: bool, org_types: [team], label: "Using university resources", help: "Labs, funding, or staff time for this idea."}
+  - {key: weekly_hours, subject: member, value_type: int, org_types: [team], label: "Hours per week", help: "Time you expect to spend on the startup."}
+  - {key: capital_contribution_band, subject: member, value_type: enum, allowed_values: [none, small, medium, large], org_types: [team], label: "Money you plan to put in", help: "Rough range only."}

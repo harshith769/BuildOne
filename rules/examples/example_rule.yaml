@@ -1,0 +1,34 @@
+# ILLUSTRATIVE ONLY — not a verified legal statement. Shows the format; every value is a placeholder.
+id: example.company_law_one_time_filing
+version: 1
+title: "Example one-time filing after incorporation"
+domain: company_law
+kind: obligation
+subject: org
+applies_to_org_types: [company]
+jurisdiction: IN
+authority: "Example authority"
+effective: {from: 2000-01-01, to: null}
+criticality: standard
+applies_if:
+  all:
+    - {fact: entity_type, op: in, value: [pvt_ltd]}
+    - {fact: has_share_capital, op: is_true}
+obligation:
+  form: "EXAMPLE-1"
+  schedule:
+    type: one_time
+    due: {anchor: incorporation_date, offset: {days: 180}}
+  documents: ["Example document"]
+  overrides: []
+explanation:
+  summary: "Example summary written in plain language and approved by the CA reviewer."
+  what_to_do: ["Example step one.", "Example step two."]
+  penalty: null
+citations:
+  - {source_key: example_source, section_path: "Example Act > Section 1", chunk_id: null}
+review:
+  drafted_by: "human:example"
+  reviewed_by: null
+  reviewed_on: null
+  notes: "Illustrative"

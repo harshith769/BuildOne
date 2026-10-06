@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+# Node
+node_modules/
+dist/
+.astro/
+playwright-report/
+test-results/
+# Env & secrets
+.env
+.env.*
+!.env.example
+*.pem
+# Local artefacts
+spikes/*
+!spikes/.gitkeep
+knowledge/reports/
+*.dump
+.DS_Store
+# Claude Code local files (personal settings, never shared)
+.claude/settings.local.json
+CLAUDE.local.md

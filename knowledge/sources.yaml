@@ -1,0 +1,11 @@
+# Official source registry — docs/data-pipeline.md §3. Only government sources. Fill during M0/M5.
+# - key: companies_act_2013
+#   title: "Companies Act, 2013"
+#   authority: "Ministry of Corporate Affairs"
+#   jurisdiction: IN
+#   doc_type: act
+#   official_url: "<official government URL>"
+#   effective_from: YYYY-MM-DD
+#   published_on: null
+#   notes: ""
+[]

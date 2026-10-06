@@ -1,0 +1,24 @@
+# Local development overrides: no WAL archiving, exposed ports, live reload, MinIO for S3.
+# The bind mount ../../backend:/app is safe because the image's virtualenv lives in /opt/venv.
+services:
+  postgres:
+    command: ["postgres", "-c", "archive_mode=off", "-c", "max_connections=40"]
+    ports: ["127.0.0.1:5432:5432"]
+    networks: [internal, edge]
+
+  api:
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    volumes: ["../../backend:/app:cached"]
+    ports: ["127.0.0.1:8000:8000"]
+
+  worker:
+    volumes: ["../../backend:/app:cached"]
+
+  minio:
+    image: minio/minio
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio-secret
+    ports: ["127.0.0.1:9000:9000", "127.0.0.1:9001:9001"]
+    networks: [internal, edge]

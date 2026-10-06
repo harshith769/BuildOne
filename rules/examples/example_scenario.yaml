@@ -1,0 +1,17 @@
+# ILLUSTRATIVE ONLY — shows the scenario format (docs/rules-engine.md §9).
+id: scn_example
+reviewed_by: null
+as_of: 2026-10-01
+org_type: company
+facts:
+  entity_type: pvt_ltd
+  has_share_capital: true
+  incorporation_date: 2026-06-01
+  state_code: TG
+  employee_count: unknown
+expected:
+  applies:
+    - {rule_id: example.company_law_one_time_filing, period_key: once, due_date: 2026-11-28}
+  not_applicable: []
+  needs_info: []
+  must_not_include: []

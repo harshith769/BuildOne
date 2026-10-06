@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildone/rules/rule.schema.json",
+  "title": "BuildOne rule",
+  "description": "Format defined in docs/rules-engine.md. Type/op compatibility and fact existence are checked additionally against rules/facts.yaml.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "title", "domain", "kind", "subject", "applies_to_org_types", "jurisdiction", "authority", "effective", "criticality", "applies_if", "explanation", "citations", "review"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9_]+(\\.[a-z0-9_]+)+$"},
+    "version": {"type": "integer", "minimum": 1},
+    "title": {"type": "string", "minLength": 3},
+    "domain": {"enum": ["company_law", "gst", "income_tax", "labour", "state_tg", "launchpad"]},
+    "kind": {"enum": ["obligation", "risk_check", "roadmap_trigger"]},
+    "subject": {"enum": ["org", "member"]},
+    "applies_to_org_types": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["team", "company", "ca_firm", "incubator", "campus"]}},
+    "jurisdiction": {"enum": ["IN", "IN-TG"]},
+    "authority": {"type": "string", "minLength": 2},
+    "effective": {
+      "type": "object", "additionalProperties": false, "required": ["from", "to"],
+      "properties": {"from": {"type": "string", "format": "date"}, "to": {"type": ["string", "null"], "format": "date"}}
+    },
+    "criticality": {"enum": ["critical", "standard"]},
+    "applies_if": {"$ref": "#/$defs/condition"},
+    "obligation": {
+      "type": "object", "additionalProperties": false, "required": ["schedule", "documents", "overrides"],
+      "properties": {
+        "form": {"type": "string"},
+        "schedule": {"$ref": "#/$defs/schedule"},
+        "documents": {"type": "array", "items": {"type": "string"}},
+        "overrides": {"type": "array", "items": {"$ref": "#/$defs/override"}}
+      }
+    },
+    "explanation": {
+      "type": "object", "additionalProperties": false, "required": ["summary", "what_to_do"],
+      "properties": {
+        "summary": {"type": "string", "minLength": 20},
+        "what_to_do": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "penalty": {"type": ["string", "null"]}
+      }
+    },
+    "citations": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/citation"}},
+    "review": {
+      "type": "object", "additionalProperties": false, "required": ["drafted_by", "reviewed_by", "reviewed_on"],
+      "properties": {
+        "drafted_by": {"type": "string", "pattern": "^(ai:[a-z_]+@v[0-9]+|human:.+)$"},
+        "reviewed_by": {"type": ["string", "null"]},
+        "reviewed_on": {"type": ["string", "null"], "format": "date"},
+        "notes": {"type": "string"}
+      }
+    }
+  },
+  "allOf": [
+    {"if": {"properties": {"kind": {"const": "obligation"}}}, "then": {"required": ["obligation"]}}
+  ],
+  "$defs": {
+    "condition": {
+      "oneOf": [
+        {"type": "object", "additionalProperties": false, "required": ["all"], "properties": {"all": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/condition"}}}},
+        {"type": "object", "additionalProperties": false, "required": ["any"], "properties": {"any": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/condition"}}}},
+        {"type": "object", "additionalProperties": false, "required": ["not"], "properties": {"not": {"$ref": "#/$defs/condition"}}},
+        {"$ref": "#/$defs/leaf"}
+      ]
+    },
+    "leaf": {
+      "type": "object", "additionalProperties": false, "required": ["fact", "op"],
+      "properties": {
+        "fact": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+        "op": {"enum": ["eq", "ne", "in", "not_in", "contains", "contains_any", "gt", "gte", "lt", "lte", "between", "is_true", "is_false", "is_known"]},
+        "value": {}
+      },
+      "allOf": [
+        {"if": {"properties": {"op": {"enum": ["is_true", "is_false", "is_known"]}}}, "then": {"not": {"required": ["value"]}}, "else": {"required": ["value"]}},
+        {"if": {"properties": {"op": {"enum": ["in", "not_in", "contains_any"]}}}, "then": {"properties": {"value": {"type": "array", "minItems": 1}}}},
+        {"if": {"properties": {"op": {"const": "between"}}}, "then": {"properties": {"value": {"type": "array", "minItems": 2, "maxItems": 2}}}}
+      ]
+    },
+    "offset": {
+      "type": "object", "additionalProperties": false, "minProperties": 1,
+      "properties": {"days": {"type": "integer"}, "months": {"type": "integer"}, "years": {"type": "integer"}}
+    },
+    "schedule": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false, "required": ["type", "due"],
+          "properties": {
+            "type": {"const": "one_time"},
+            "due": {"type": "object", "additionalProperties": false, "required": ["anchor", "offset"],
+                    "properties": {"anchor": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"}, "offset": {"$ref": "#/$defs/offset"}}}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false, "required": ["type", "frequency", "period_basis", "due"],
+          "properties": {
+            "type": {"const": "recurring"},
+            "frequency": {"enum": ["monthly", "quarterly", "annual"]},
+            "period_basis": {"enum": ["calendar", "financial_year"]},
+            "start_anchor": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+            "due": {
+              "oneOf": [
+                {"type": "object", "additionalProperties": false, "required": ["after_period_end"], "properties": {"after_period_end": {"$ref": "#/$defs/offset"}}},
+                {"type": "object", "additionalProperties": false, "required": ["day_of_following_month"], "properties": {"day_of_following_month": {"type": "integer", "minimum": 1, "maximum": 28}}}
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "override": {
+      "type": "object", "additionalProperties": false, "required": ["period_key", "due", "citation"],
+      "properties": {"period_key": {"type": "string"}, "due": {"type": "string", "format": "date"}, "citation": {"$ref": "#/$defs/citation"}}
+    },
+    "citation": {
+      "type": "object", "additionalProperties": false, "required": ["source_key", "section_path"],
+      "properties": {"source_key": {"type": "string", "pattern": "^[a-z0-9_]+$"}, "section_path": {"type": "string", "minLength": 3}, "chunk_id": {"type": ["string", "null"]}}
+    }
+  }
+}

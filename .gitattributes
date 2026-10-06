@@ -1,0 +1,8 @@
+# Normalise line endings to LF (CRLF breaks shell scripts in containers; see docs/status.md lessons).
+* text=auto eol=lf
+*.sh text eol=lf
+Makefile text eol=lf
+*.png binary
+*.jpg binary
+*.pdf binary
+*.zip binary
