@@ -2,7 +2,9 @@
 
 Compliance and eligibility engine for young Indian companies. Incubators, their startups and their CAs see which obligations and schemes apply to each company, why, and what's missing, using CA-reviewed rules with sources.
 
-**Status:** pre-build (Phase 0: validation and spikes). See [docs/status.md](docs/status.md). MVP scope: Telangana, Private Limited companies in their first 24 months.
+**Status:** Phase 0 (validation); M1 (foundation) done, building local-first. See [docs/status.md](docs/status.md). MVP scope: Telangana, Private Limited companies in their first 24 months.
+
+**Licence:** this repository is public but has **no licence — all rights reserved**. No permission is granted to use, copy, modify or distribute the code beyond what GitHub's Terms of Service allow for public repositories.
 
 ## Prerequisites
 
@@ -29,6 +31,7 @@ make e2e           # Playwright (first time: pnpm --dir frontend/app exec playwr
 - Current phase, decisions, next action: [docs/status.md](docs/status.md)
 - Product: [docs/product-vision.md](docs/product-vision.md)
 - How to build it: [docs/build-plan.md](docs/build-plan.md)
+- Deferred work (full scope + triggers): [docs/deferred.md](docs/deferred.md)
 - Everything else: [docs/README.md](docs/README.md)
 - Coding agents: [AGENTS.md](AGENTS.md)
 

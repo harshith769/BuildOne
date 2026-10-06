@@ -259,7 +259,7 @@ Browser ─► Cloudflare (DNS, CDN, firewall, TLS)
 Files: Cloudflare R2 (private buckets)
 ```
 
-**Environments:** `local` (identical Compose topology on the developer machine) · `ci` (ephemeral Postgres + pgvector container per pipeline run) · `production` (one-box). No permanent staging server in MVP; if the Azure for Students bonus is confirmed, it hosts staging ([ADR-0006](adr/0006-hosting-digitalocean-cloudflare.md)).
+**Environments:** `local` (identical Compose topology on the developer machine) · `ci` (ephemeral Postgres + pgvector container per pipeline run) · `production` (one-box). No permanent staging server in MVP; production hosting is decided in [ADR-0012](adr/0012-hosting-after-student-pack-change.md).
 
 **Rebuild procedure:** provision a new server → run the provisioning script → restore the latest base backup + WAL from R2 → point Cloudflare DNS → verify. Rehearsed monthly (NFR-REL-03).
 

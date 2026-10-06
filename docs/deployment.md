@@ -73,4 +73,4 @@ Log fields: `ts`, `level`, `event`, `request_id`, `user_id`, `org_id`, `route`, 
 
 ## 7. Runbooks (written in M4 and M13, under `docs/runbooks/`)
 
-`deploy-and-rollback.md` · `restore.md` + `restore-log.md` · `bad-rule-revert.md` · `ai-provider-outage.md` · `server-hardening-and-patching.md` · `credit-expiry-migration.md` (month ~10) · `stage-2-managed-postgres.md`.
+`deploy-and-rollback.md` · `restore.md` + `restore-log.md` · `bad-rule-revert.md` · `ai-provider-outage.md` · `server-hardening-and-patching.md` · `credit-expiry-migration.md` (free-period end, [ADR-0012](adr/0012-hosting-after-student-pack-change.md) re-evaluation triggers) · `stage-2-managed-postgres.md`.

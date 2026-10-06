@@ -40,6 +40,7 @@ Targets become functional during milestone M1 ([docs/build-plan.md](docs/build-p
 16. **No real personal data in fixtures, evals, logs, or commits**; use synthetic data.
 17. **Do not read or print `.env` files or secrets.**
 18. **Update the owning doc in the same change** when behaviour differs from `docs/` (each fact has one home).
+19. **Never remove, shrink or change a product feature or the business model without the owner's explicit OK** (recorded in `docs/status.md`). Anything deferred keeps its full scope in [docs/deferred.md](docs/deferred.md).
 
 ## Known pitfalls
 

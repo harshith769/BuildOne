@@ -112,7 +112,7 @@
 
 | Step-up | When | Approximate cost |
 |---|---|---|
-| 4 GB server | Sustained memory pressure | ~$24/month (credit lasts ~8 months) |
+| 4 GB server | Sustained memory pressure | ~$24/month on the paid fallback; hosting terms in [ADR-0012](adr/0012-hosting-after-student-pack-change.md) |
 | Managed Postgres (stage 2) | First paying customer | ~$15/month smallest node ([DO pricing guide](https://github.com/baafxc4/digitalocean-postgresql-pricing)) |
 | Paid AI overflow | Daily cap regularly hit — explicit owner decision | Claude Haiku 4.5 $1/$5 or Gemini 3.1 Flash-Lite $0.25/$1.50 per 1M tokens ([Anthropic](https://platform.claude.com/docs/en/about-claude/pricing), [Costgoat](https://costgoat.com/pricing/gemini-api)) |
 | HA standby database (stage 4) | Paid-launch 99.9% target | Roughly doubles database cost ([DO pricing guide](https://github.com/diudllkq/digitalocean-postgresql-comparison)) |
