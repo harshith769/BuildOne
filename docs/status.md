@@ -85,6 +85,7 @@ Python 3.14 · FastAPI 0.142 · Pydantic 2.13 · SQLAlchemy 2.1 · Alembic 1.20 
 9. Postgres 18 images mount at `/var/lib/postgresql`.
 10. `astral-sh/setup-uv` publishes no floating major tag (`@v10` fails); pin a full version such as `@v10.2.0`.
 11. gitleaks-action fails on the very first push of a new repo (it scans `<root>^..HEAD`); later pushes and PRs scan normally.
+12. MinIO removed its images from Docker Hub (Sep 2026). Local and CI S3 now use SeaweedFS (`chrislusf/seaweedfs:4.48`, `weed mini`). Pin image tags, and consider a registry mirror if another image disappears.
 
 ## Log
 

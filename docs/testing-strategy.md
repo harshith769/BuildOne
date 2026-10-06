@@ -25,7 +25,7 @@
 |---|---|
 | Identity provider | `FakeIdentityProvider` (same interface as WorkOS adapter) |
 | AI providers | `FakeProvider` returning recorded fixtures from `backend/tests/fixtures/ai/`; contract tests against real providers run on demand only |
-| Object storage | MinIO container in CI/local (S3 API) |
+| Object storage | SeaweedFS container in CI/local (S3 API; `weed mini`) |
 | Email | In-memory outbox |
 | Clock | Injected `Clock`; tests freeze to fixed dates incl. month-end and FY boundaries |
 

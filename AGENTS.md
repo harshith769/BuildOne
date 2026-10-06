@@ -7,7 +7,7 @@ BuildOne is a compliance copilot for Indian startups: a Python 3.14 / FastAPI mo
 | Task | Command |
 |---|---|
 | Install everything | `make setup` |
-| Start local stack (Postgres, MinIO, API with reload, worker, SPA) | `make dev` · stop: `make down` |
+| Start local stack (Postgres, local S3 (SeaweedFS), API with reload, worker, SPA) | `make dev` · stop: `make down` |
 | All checks (run before declaring any task done) | `make check` |
 | Backend tests only / tenancy suite | `make test` · `make test-tenancy` |
 | Lint + format / types / import contracts | `make lint` · `make typecheck` · `make contracts` |
