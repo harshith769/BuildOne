@@ -21,10 +21,14 @@ cp infra/compose/.env.example infra/compose/.env   # fill local values; never co
 corepack enable    # provides the pnpm version pinned in frontend/app/package.json
 make setup
 make dev           # migrations run automatically · API http://localhost:8000 · SPA http://localhost:5173
-export TEST_DATABASE_ADMIN_URL=postgresql+psycopg://postgres:<POSTGRES_PASSWORD from .env>@localhost:<POSTGRES_HOST_PORT>/buildone
+export POSTGRES_HOST_PORT=5433   # only if your .env uses 5433; the Makefile defaults to 5432
 make check         # all checks (backend tests use a throwaway database)
 make e2e           # Playwright (first time: pnpm --dir frontend/app exec playwright install chromium)
 ```
+
+Backend tests and E2E connect as `buildone_test`, a superuser that `make dev` creates in the local compose Postgres (`make test-role`, idempotent; it also comes back after a volume reset). **Local development only, never used in CI or any hosted environment**; CI exports its own `TEST_DATABASE_ADMIN_URL`, and an exported value always wins.
+
+`make dev` signs you in with a fake identity provider (any email, no password). `make e2e` starts its own API (port 8001, fresh database, fake identity provider) and Vite (port 5174), so it needs `TEST_DATABASE_ADMIN_URL` too and can run alongside `make dev`.
 
 ## Documentation
 

@@ -16,7 +16,7 @@
 | Integration | pytest + real Postgres (CI service container / local compose) | Every endpoint, RLS, migrations up/down, idempotency keys, job idempotency, notification uniqueness, budget accounting | Every endpoint |
 | Cross-tenant suite | `backend/tests/tenancy/` | For every tenant table and endpoint: user of org A cannot read/write org B (API and direct SQL with RLS context) | Mandatory gate |
 | Rule scenarios | `rules/scenarios/` | Obligation recall/due dates | Mandatory gate |
-| E2E | Playwright (`frontend/app/e2e/`) | Sign-in (fake IdP) → intake → obligation plan → explanation → mark done → ICS feed; Launchpad team → handoff | 5–8 flows |
+| E2E | Playwright (`frontend/app/e2e/`) against the real API (fresh database, fake IdP; `backend/tests/e2e_server.py`) | Sign-in (fake IdP) → intake → obligation plan → explanation → mark done → ICS feed; Launchpad team → handoff | 5–8 flows |
 | AI evals | [evaluation.md](evaluation.md) | Prompt/model quality | On demand |
 
 ## 2. Test doubles (only at external boundaries)
