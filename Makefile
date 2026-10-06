@@ -4,7 +4,7 @@ COMPOSE := docker compose --env-file infra/compose/.env -f infra/compose/compose
 BE := cd backend &&
 FE := pnpm --dir frontend/app
 
-.PHONY: setup dev down check lint fmt typecheck contracts test test-tenancy migrate migration openapi \
+.PHONY: setup dev down test-role check lint fmt typecheck contracts test test-tenancy migrate migration openapi \
         rules-validate eval-rules eval-retrieval eval-ai ingest rule-draft frontend-check e2e audit
 
 setup:            ## install backend + frontend deps and git hooks
@@ -16,11 +16,20 @@ dev:              ## start local stack (db, s3, migrations, api, worker) + SPA
 	$(COMPOSE) build api
 	$(COMPOSE) up -d postgres s3
 	$(COMPOSE) run --rm migrate
+	$(MAKE) test-role
 	$(COMPOSE) up -d api worker
 	$(FE) dev
 
 down:
 	$(COMPOSE) down
+
+# LOCAL DEV ONLY (never CI or any hosted environment): a throwaway superuser for backend tests and E2E, so
+# nobody needs the real superuser password from infra/compose/.env. Idempotent; `make dev` recreates it after
+# a volume reset. Uses the container's local socket (trust auth), so no password is read.
+test-role:        ## create the local-only test superuser buildone_test if missing
+	docker exec -i buildone-postgres-1 psql -U postgres -d buildone -v ON_ERROR_STOP=1 -q <<< \
+	  "DO \$$\$$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'buildone_test') THEN \
+	   CREATE ROLE buildone_test SUPERUSER LOGIN PASSWORD 'buildone-test-only'; END IF; END \$$\$$;"
 
 check: lint typecheck contracts test rules-validate eval-rules frontend-check  ## everything CI runs (except e2e)
 
@@ -36,8 +45,11 @@ typecheck:
 contracts:
 	$(BE) uv run lint-imports
 
-# Tests need a superuser URL for a Postgres server (local: the compose postgres on localhost:5432).
-TEST_DATABASE_ADMIN_URL ?= postgresql+psycopg://postgres:postgres@localhost:5432/buildone
+# Tests need a superuser URL for a Postgres server. Locally: the compose postgres with the local-only
+# `buildone_test` role (`make test-role`); set POSTGRES_HOST_PORT=5433 if your .env uses that port.
+# An exported TEST_DATABASE_ADMIN_URL always wins (CI sets its own).
+POSTGRES_HOST_PORT ?= 5432
+TEST_DATABASE_ADMIN_URL ?= postgresql+psycopg://buildone_test:buildone-test-only@localhost:$(POSTGRES_HOST_PORT)/buildone
 export TEST_DATABASE_ADMIN_URL
 
 test:

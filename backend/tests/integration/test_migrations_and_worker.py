@@ -5,7 +5,7 @@ from alembic import command
 
 from app.platform.config import Settings
 from app.platform.queue import create_queue_app
-from tests.conftest import EphemeralDatabase, alembic_config, owner_connection
+from tests.support.db import EphemeralDatabase, alembic_config, owner_connection
 
 EXPECTED_SCHEMAS = {
     "identity",

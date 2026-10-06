@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import psycopg
 
-from tests.conftest import EphemeralDatabase, owner_connection
+from tests.support.db import EphemeralDatabase, owner_connection
 
 ALLOWED_EXTENSIONS = {"plpgsql", "vector", "pg_trgm", "citext"}
 SYSTEM_SCHEMAS = ("pg_catalog", "information_schema", "pg_toast", "procrastinate")
