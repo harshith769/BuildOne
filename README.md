@@ -12,13 +12,16 @@ Compliance and eligibility engine for young Indian companies. Incubators, their 
 - Node.js 24 LTS and `pnpm` (from M1; version pinned in `frontend/app/package.json`)
 - `make`, `git`, `gh` (GitHub CLI), `pre-commit` (`uv tool install pre-commit`)
 
-## Quick start (after milestone M1)
+## Quick start
 
 ```bash
 cp infra/compose/.env.example infra/compose/.env   # fill local values; never commit
+corepack enable    # provides the pnpm version pinned in frontend/app/package.json
 make setup
-make dev        # API http://localhost:8000 · SPA http://localhost:5173
-make check      # all checks
+make dev           # migrations run automatically · API http://localhost:8000 · SPA http://localhost:5173
+export TEST_DATABASE_ADMIN_URL=postgresql+psycopg://postgres:<POSTGRES_PASSWORD from .env>@localhost:5432/buildone
+make check         # all checks (backend tests use a throwaway database)
+make e2e           # Playwright (first time: pnpm --dir frontend/app exec playwright install chromium)
 ```
 
 ## Documentation

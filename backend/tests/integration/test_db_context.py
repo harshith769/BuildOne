@@ -64,3 +64,8 @@ def test_api_role_can_use_the_job_queue(test_db: EphemeralDatabase) -> None:
         options="-c search_path=procrastinate,public",
     ) as conn:
         assert conn.execute("SELECT count(*) FROM procrastinate_jobs").fetchone() == (0,)
+
+
+async def test_sessions_run_in_utc(api_engine: AsyncEngine) -> None:
+    async with api_engine.connect() as conn:
+        assert (await conn.execute(text("SHOW timezone"))).scalar() == "UTC"

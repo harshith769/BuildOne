@@ -7,8 +7,8 @@
 
 - **Phase:** 0 (validation). Gate **G0 not met**.
 - **Repo:** fresh start on 2026-10-05 from starter bundle v2. The earlier `harshith769/BuildOne` repo was deleted; nothing in it was lost that isn't in this bundle.
-- **Code:** none yet (correct for Phase 0). Spikes run as throwaway code in `spikes/`, reports in `docs/spikes/`.
-- **Next action:** spike S5 (one-box locally + hosting check for ADR-0012), while running the interview kit.
+- **Code:** M1 (foundation) done on 2026-10-06, started before G0 on purpose: M1–M3 are needed whatever the interviews show. Rules content (M6) still waits for a CA reviewer.
+- **Next action:** M2 (sign-in and sessions), with spike S5 and the interview kit in parallel.
 
 ## Direction (Refined Plan v3, 2026-10-05)
 
@@ -26,7 +26,7 @@
 | Gate | Target | Criteria |
 |---|---|---|
 | G0 | 13 Dec 2026 | Pain confirmed (flip rule), 3 pilot letters, CA reviewer signed, 5 spike reports |
-| G1 | ~late Apr–May 2027 (19-week build from 14 Dec) | Zero critical missed obligations; ≥ 60% of pilot companies generate a plan; restore drill passes; 1 pilot converts |
+| G1 | ~Feb–Mar 2027 (build started 6 Oct; M1–M3 before G0, rules after a CA reviewer signs) | Zero critical missed obligations; ≥ 60% of pilot companies generate a plan; restore drill passes; 1 pilot converts |
 | G2 | end Sep 2027 | ~₹10L ARR run-rate; 20 CA firms active; incubators ready to renew |
 
 Exam weeks: _add your semester exam dates here and leave those weeks empty._
@@ -66,7 +66,7 @@ Python 3.14 · FastAPI 0.142 · Pydantic 2.13 · SQLAlchemy 2.1 · Alembic 1.20 
 | C4 `superseded` status | = D-9 |
 | C5 spike order | Recorded: S5 → S1 → S2 → S4 → S3 |
 | C6 `.env` location | Canonical: `infra/compose/.env` |
-| C7 `app/tools/export_openapi` missing | Add in M1 |
+| C7 `app/tools/export_openapi` missing | Fixed in M1 |
 | C8 CI file drift | Fixed: single `ci.yml` with a `detect` job |
 | C9 old pricing in repo docs | Session A |
 | C10 entity counts | Always quote with their base |
@@ -88,4 +88,5 @@ Python 3.14 · FastAPI 0.142 · Pydantic 2.13 · SQLAlchemy 2.1 · Alembic 1.20 
 
 | Date | Event |
 |---|---|
+| 2026-10-06 | M1 done: platform kernel, health checks, baseline migration, worker, RLS and extension gates, frontend skeleton with generated client; 43 backend tests and 4 E2E tests green |
 | 2026-10-05 | Fresh start: starter bundle v2 created (stack re-verified, CI rebuilt, ADR-0012 proposed) |

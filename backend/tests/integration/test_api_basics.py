@@ -115,3 +115,14 @@ async def test_openapi_served_under_v1(client: httpx.AsyncClient) -> None:
     response = await client.get("/v1/openapi.json")
     assert response.status_code == 200
     assert "/readyz" in response.json()["paths"]
+
+
+async def test_cors_allows_only_the_app_origin(client: httpx.AsyncClient) -> None:
+    allowed = await client.options(
+        "/healthz",
+        headers={"Origin": "http://localhost:5173", "Access-Control-Request-Method": "GET"},
+    )
+    assert allowed.headers["access-control-allow-origin"] == "http://localhost:5173"
+    assert allowed.headers["access-control-allow-credentials"] == "true"
+    other = await client.get("/healthz", headers={"Origin": "https://evil.example"})
+    assert "access-control-allow-origin" not in other.headers

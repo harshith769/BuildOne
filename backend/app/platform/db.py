@@ -21,6 +21,8 @@ from app.platform.config import Settings
 # Procrastinate's tables and functions are unqualified, so connections look them up in its schema.
 # Module tables are always schema-qualified (identity.users, tenancy.organizations, ...).
 SEARCH_PATH = "procrastinate,public"
+# Sessions run in UTC whatever the server default is; legal dates are computed in Python (app.platform.clock).
+CONNECT_OPTIONS = f"-c search_path={SEARCH_PATH} -c timezone=UTC"
 
 _SET_CONTEXT = text(
     "SELECT set_config('app.user_id', :user_id, true), set_config('app.org_id', :org_id, true)"
@@ -34,7 +36,7 @@ def create_engine(settings: Settings) -> AsyncEngine:
         pool_size=settings.db_pool_size,
         max_overflow=settings.db_max_overflow,
         pool_pre_ping=True,
-        connect_args={"options": f"-c search_path={SEARCH_PATH}"},
+        connect_args={"options": CONNECT_OPTIONS},
     )
 
 

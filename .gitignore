@@ -26,3 +26,4 @@ knowledge/reports/
 # Claude Code local files (personal settings, never shared)
 .claude/settings.local.json
 CLAUDE.local.md
+.import_linter_cache/

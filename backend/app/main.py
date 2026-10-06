@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from importlib.metadata import PackageNotFoundError, version
 
 from fastapi import APIRouter, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.platform import health
 from app.platform.config import Settings, get_settings
@@ -44,6 +45,18 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.engine = create_engine(settings)  # lazy: connects on first use
 
     install_error_handlers(app, root_domain=settings.root_domain)
+    # The SPA (app.<domain>) calls the API (api.<domain>) with the session cookie, so only that one origin
+    # may make credentialed cross-origin requests. Added before RequestContextMiddleware, so the request
+    # ID middleware is outermost and every response, including preflights, carries X-Request-ID.
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=[settings.app_origin],
+        allow_credentials=True,
+        allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
+        allow_headers=["Content-Type", "X-CSRF-Token", "Idempotency-Key", "X-Request-ID"],
+        expose_headers=["X-Request-ID"],
+        max_age=600,
+    )
     app.add_middleware(RequestContextMiddleware)
 
     app.include_router(health.router)

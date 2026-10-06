@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+/* Design tokens. Plain, calm and readable: this is a compliance tool people must trust. */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+  --color-ink: #16263d;
+  --color-ink-muted: #4b5a70;
+  --color-paper: #f7f5f0;
+  --color-surface: #ffffff;
+  --color-line: #dcd7cc;
+  --color-brand: #1f3a5f;
+  --color-brand-contrast: #f7f5f0;
+  --color-ok: #1f7a4d;
+  --color-warn: #a35c00;
+  --color-bad: #b42318;
+  --radius-card: 0.75rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-ink: #e8edf4;
+    --color-ink-muted: #a7b3c4;
+    --color-paper: #0f1724;
+    --color-surface: #162133;
+    --color-line: #2a3a52;
+    --color-brand: #8fb3e3;
+    --color-brand-contrast: #0f1724;
+    --color-ok: #5fcf97;
+    --color-warn: #f0b35a;
+    --color-bad: #f2867c;
+  }
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
