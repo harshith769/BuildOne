@@ -4,7 +4,7 @@ COMPOSE := docker compose --env-file infra/compose/.env -f infra/compose/compose
 BE := cd backend &&
 FE := pnpm --dir frontend/app
 
-.PHONY: setup dev down test-role check lint fmt typecheck contracts test test-tenancy migrate migration openapi \
+.PHONY: setup dev down db-roles test-role check lint fmt typecheck contracts test test-tenancy migrate migration openapi \
         rules-validate eval-rules eval-retrieval eval-ai ingest rule-draft frontend-check e2e audit
 
 setup:            ## install backend + frontend deps and git hooks
@@ -15,6 +15,7 @@ setup:            ## install backend + frontend deps and git hooks
 dev:              ## start local stack (db, s3, migrations, api, worker) + SPA
 	$(COMPOSE) build api
 	$(COMPOSE) up -d postgres s3
+	$(MAKE) db-roles
 	$(COMPOSE) run --rm migrate
 	$(MAKE) test-role
 	$(COMPOSE) up -d api worker
@@ -22,6 +23,12 @@ dev:              ## start local stack (db, s3, migrations, api, worker) + SPA
 
 down:
 	$(COMPOSE) down
+
+# Roles added after the volume was first initialised (initdb runs only once). Idempotent; ADR-0013.
+db-roles:         ## apply infra/postgres/initdb/*-role.sql to the local compose Postgres
+	@until docker exec buildone-postgres-1 pg_isready -U postgres -q; do sleep 1; done
+	docker exec -i buildone-postgres-1 psql -U postgres -d buildone -v ON_ERROR_STOP=1 -q \
+	  < infra/postgres/initdb/10-rls-check-role.sql
 
 # LOCAL DEV ONLY (never CI or any hosted environment): a throwaway superuser for backend tests and E2E, so
 # nobody needs the real superuser password from infra/compose/.env. Idempotent; `make dev` recreates it after
