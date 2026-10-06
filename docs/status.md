@@ -83,6 +83,8 @@ Python 3.14 · FastAPI 0.142 · Pydantic 2.13 · SQLAlchemy 2.1 · Alembic 1.20 
 7. Free tiers change without notice (Oracle in June 2026, DigitalOcean Pack credit in August 2026) → portability rules and re-checks at each milestone.
 8. SSH keys need passphrases and `ssh-agent`.
 9. Postgres 18 images mount at `/var/lib/postgresql`.
+10. `astral-sh/setup-uv` publishes no floating major tag (`@v10` fails); pin a full version such as `@v10.2.0`.
+11. gitleaks-action fails on the very first push of a new repo (it scans `<root>^..HEAD`); later pushes and PRs scan normally.
 
 ## Log
 

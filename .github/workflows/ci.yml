@@ -51,7 +51,7 @@ jobs:
         run: |
           docker run -d --name minio -p 9000:9000 \
             -e MINIO_ROOT_USER=minio -e MINIO_ROOT_PASSWORD=minio-secret minio/minio server /data
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.2.0   # no floating major tag exists; pin the full version
         with:
           enable-cache: true
           cache-dependency-glob: backend/uv.lock
@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.2.0   # no floating major tag exists; pin the full version
       - name: Validate example and published rules against the JSON Schema
         run: |
           shopt -s globstar nullglob
@@ -98,7 +98,7 @@ jobs:
           cache-dependency-path: frontend/app/pnpm-lock.yaml
       - run: pnpm --dir frontend/app install --frozen-lockfile
       - run: make frontend-check
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.2.0   # no floating major tag exists; pin the full version
         if: needs.detect.outputs.backend == 'true'
       - name: OpenAPI drift check
         if: needs.detect.outputs.backend == 'true'
