@@ -17,6 +17,7 @@ from tests.integration.tenancy_support import (
     create_org,
     idem,
     new_actor,
+    real_time_clock,
     revoke_grant,
     share,
     unique_email,
@@ -26,7 +27,7 @@ from tests.support.db import EphemeralDatabase
 
 @pytest.fixture
 async def h(api_settings: Settings) -> AsyncIterator[AuthHarness]:
-    async with auth_harness(api_settings) as harness:
+    async with auth_harness(api_settings, clock=real_time_clock()) as harness:
         yield harness
 
 

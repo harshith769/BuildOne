@@ -4,12 +4,24 @@ from __future__ import annotations
 
 import uuid
 from dataclasses import dataclass
+from datetime import UTC, datetime
 from urllib.parse import urlsplit
 
 import httpx
 
+from app.platform.clock import FrozenClock
 from tests.integration.auth_support import AuthHarness, csrf_headers, sign_up
 from tests.support.db import EphemeralDatabase, admin_connection
+
+
+def real_time_clock() -> FrozenClock:
+    """A frozen clock starting at the real current time.
+
+    For tests that accept invitations: the database refuses tokens whose `expires_at` is past its own
+    `now()` (migration 0006), so invitations must be created near real time. Other tests keep the fixed
+    `auth_support.START` and stay deterministic.
+    """
+    return FrozenClock(datetime.now(UTC).replace(microsecond=0))
 
 
 def unique_email(label: str = "user") -> str:

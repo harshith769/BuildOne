@@ -479,16 +479,24 @@ class TenancyService:
             ).scalar_one_or_none()
             if existing is not None:
                 raise Conflict("You're already a member of this organisation.")
-            # Membership first: the policy checks the invitation is still unaccepted.
-            await conn.execute(
-                insert(models.memberships).values(
-                    org_id=row.org_id,
-                    user_id=user_id,
-                    role=row.role,
-                    created_at=now,
-                    updated_at=now,
+            # Membership first: the policy checks the invitation is still unaccepted and unexpired.
+            try:
+                await conn.execute(
+                    insert(models.memberships).values(
+                        org_id=row.org_id,
+                        user_id=user_id,
+                        role=row.role,
+                        created_at=now,
+                        updated_at=now,
+                    )
                 )
-            )
+            except DBAPIError as exc:
+                # The database refused the token (e.g. expired by its own clock): same answer as the API's.
+                if isinstance(exc.orig, pg_errors.InsufficientPrivilege):
+                    raise NotFound(
+                        "This invitation link is invalid, expired or already used."
+                    ) from exc
+                raise
             i = models.invitations.c
             await conn.execute(
                 update(models.invitations)
