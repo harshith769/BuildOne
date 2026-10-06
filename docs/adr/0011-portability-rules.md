@@ -20,7 +20,7 @@ The MVP runs on free tiers and credits that can change without notice; for examp
 |---|---|---|
 | Database | PostgreSQL wire protocol; extensions limited to `vector` and `pg_trgm` | Any managed or self-hosted Postgres |
 | Compute | OCI/Docker images, configuration via environment variables | Any VM, container platform, or Kubernetes |
-| Files | S3 API through the internal storage interface | R2, S3, DigitalOcean Spaces, MinIO |
+| Files | S3 API through the internal storage interface | R2, S3, DigitalOcean Spaces, SeaweedFS (local/CI; MinIO images left Docker Hub in Sep 2026) |
 | Identity | OIDC through the `identity` module adapter; internal user IDs | Any OIDC provider or direct Google sign-in |
 | AI | `ai` gateway module only | Any provider by configuration |
 | Frontend | Static build output | Any static host / CDN |

@@ -42,16 +42,18 @@ jobs:
       CI: "true"
       TEST_DATABASE_ADMIN_URL: postgresql+psycopg://postgres:postgres@localhost:5432/buildone
       S3_ENDPOINT_URL: http://localhost:9000
-      S3_ACCESS_KEY_ID: minio
-      S3_SECRET_ACCESS_KEY: minio-secret
+      S3_ACCESS_KEY_ID: dev-access-key
+      S3_SECRET_ACCESS_KEY: dev-secret-key
       IDENTITY_PROVIDER: fake
     steps:
       - uses: actions/checkout@v7
-      - name: Start MinIO (S3 test double)
+      # MinIO images were removed from Docker Hub in Sep 2026; SeaweedFS is the local/CI S3 stand-in.
+      - name: Start SeaweedFS (S3 test double)
         run: |
-          docker run -d --name minio -p 9000:9000 \
-            -e MINIO_ROOT_USER=minio -e MINIO_ROOT_PASSWORD=minio-secret minio/minio server /data
-      - uses: astral-sh/setup-uv@v10
+          docker run -d --name s3 -p 9000:8333 \
+            -e AWS_ACCESS_KEY_ID=dev-access-key -e AWS_SECRET_ACCESS_KEY=dev-secret-key \
+            -e S3_BUCKET=buildone-files-dev chrislusf/seaweedfs:4.48 mini -dir=/data
+      - uses: astral-sh/setup-uv@v10.2.0   # no floating major tag exists; pin the full version
         with:
           enable-cache: true
           cache-dependency-glob: backend/uv.lock
@@ -75,7 +77,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.2.0   # no floating major tag exists; pin the full version
       - name: Validate example and published rules against the JSON Schema
         run: |
           shopt -s globstar nullglob
@@ -98,7 +100,7 @@ jobs:
           cache-dependency-path: frontend/app/pnpm-lock.yaml
       - run: pnpm --dir frontend/app install --frozen-lockfile
       - run: make frontend-check
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.2.0   # no floating major tag exists; pin the full version
         if: needs.detect.outputs.backend == 'true'
       - name: OpenAPI drift check
         if: needs.detect.outputs.backend == 'true'

@@ -12,9 +12,9 @@ setup:            ## install backend + frontend deps and git hooks
 	$(FE) install
 	pre-commit install
 
-dev:              ## start local stack (db, minio, migrations, api, worker) + SPA
+dev:              ## start local stack (db, s3, migrations, api, worker) + SPA
 	$(COMPOSE) build api
-	$(COMPOSE) up -d postgres minio
+	$(COMPOSE) up -d postgres s3
 	$(COMPOSE) run --rm migrate
 	$(COMPOSE) up -d api worker
 	$(FE) dev
