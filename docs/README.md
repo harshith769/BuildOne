@@ -41,7 +41,7 @@ Each fact has one home; other documents link to it. **Start here:** [status.md](
 | [testing-strategy.md](testing-strategy.md) | Test levels, doubles, CI budget | ✅ |
 | [evaluation.md](evaluation.md) | Golden sets, metrics, when they run | ✅ |
 | [rule-operations.md](rule-operations.md) | Rule SOP, CA checklist, incidents | ✅ · 🔒 CA reviewer |
-| [adr/](adr/) | ADR-0001…0012: Accepted except ADR-0009 (🟡 until spike S3) and ADR-0012 (🟡 Proposed, decided by S5); ADR-0006 superseded in part | ✅ / 🟡 |
+| [adr/](adr/) | ADR-0001…0013: Accepted except ADR-0009 (🟡 until spike S3) and ADR-0012 (🟡 Proposed, decided by S5); ADR-0006 superseded in part; ADR-0013 (RLS check functions, read/write split) Accepted, host capability checked by S5 | ✅ / 🟡 |
 | [spikes/](spikes/) | Spike reports S1–S5 (template provided) | ⬜ in their build-order slots |
 | [runbooks/](runbooks/) | Operational procedures (list in [deployment.md §7](deployment.md#7-runbooks-written-in-m4-and-m13-under-docsrunbooks)) | ⬜ M4, M13 |
 

@@ -26,6 +26,8 @@ make check         # all checks (backend tests use a throwaway database)
 make e2e           # Playwright (first time: pnpm --dir frontend/app exec playwright install chromium)
 ```
 
+`make dev` also applies roles added after your volume was created (`make db-roles`, idempotent; today: `app_rls_check`, ADR-0013).
+
 Backend tests and E2E connect as `buildone_test`, a superuser that `make dev` creates in the local compose Postgres (`make test-role`, idempotent; it also comes back after a volume reset). **Local development only, never used in CI or any hosted environment**; CI exports its own `TEST_DATABASE_ADMIN_URL`, and an exported value always wins.
 
 `make dev` signs you in with a fake identity provider (any email, no password). `make e2e` starts its own API (port 8001, fresh database, fake identity provider) and Vite (port 5174), so it needs `TEST_DATABASE_ADMIN_URL` too and can run alongside `make dev`.

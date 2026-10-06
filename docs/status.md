@@ -7,9 +7,9 @@
 
 - **Phase:** 0 (validation). Gate **G0 not met**.
 - **Repo:** fresh start on 2026-10-05 from starter bundle v2. The earlier `harshith769/BuildOne` repo was deleted; nothing in it was lost that isn't in this bundle.
-- **Code:** M1 (foundation) and M2 (sign-in and sessions) done on 2026-10-06, started before G0 on purpose: M1–M3 are needed whatever the interviews show. Rules content (M6) still waits for a CA reviewer.
-- **Build order (local-first, 6 Oct):** M1 ✓, M2 ✓, M3, M5, M6, M7, M8, M9, M10, M11, M12, M13, then M4 and M14 when hosting is approved. Spikes: S1 and S2 right before M5, S3 before real rules in M6, S4 before M7, S5 before M4. Detail: [roadmap.md](roadmap.md), [build-plan.md](build-plan.md).
-- **Next action:** M3 (tenancy, access grants, audit, idempotency): design the membership check first (see carry-forward notes), with the interview kit in parallel.
+- **Code:** M1 (foundation), M2 (sign-in and sessions) and M3 (tenancy, grants, audit) done on 2026-10-06, started before G0 on purpose: M1–M3 are needed whatever the interviews show. Rules content (M6) still waits for a CA reviewer.
+- **Build order (local-first, 6 Oct):** M1 ✓, M2 ✓, M3 ✓, M5, M6, M7, M8, M9, M10, M11, M12, M13, then M4 and M14 when hosting is approved. Spikes: S1 and S2 right before M5, S3 before real rules in M6, S4 before M7, S5 before M4. Detail: [roadmap.md](roadmap.md), [build-plan.md](build-plan.md).
+- **Next action:** spikes S1 and S2, then M5 (knowledge ingestion and retrieval), with the interview kit in parallel.
 
 ## Direction (Refined Plan v3, 2026-10-05)
 
@@ -67,11 +67,14 @@ Exam weeks: _add your semester exam dates here and leave those weeks empty._
 | D-25 | G0 requires spike reports S1–S4; S5's report becomes an entry condition of M4 (option a) | Decided 2026-10-06 |
 | D-26 | Phase 0 interview targets: 30 founders, 10 CAs, 3 incubators, plus 1 CA reviewer and 1 lawyer; ~10 pre-founders optional. Pilot (M14) = one incubator cohort (10–20 companies) + 2–3 CA firms | Decided 2026-10-06 |
 | D-27 | Founder Pro price hypothesis ₹1,499–2,499/yr (refines D-7 "Pro later") | Decided 2026-10-06 |
+| D-29 | `manage` access grants reserved: a valid scope, but the DB write check never accepts any grant and the API refuses to create `manage` (422 `grant_scope_not_available`); write scope decided with the CA Workspace via an ADR ([deferred.md §12](deferred.md)) | Decided 2026-10-06 (M3) |
 | D-28 | No user row before 18+ and terms acceptance: a new user's verified profile waits in a signed 30-minute cookie; under-18 stores nothing. `identity.users.age_confirmed_at` stays `NOT NULL` ([auth-and-tenancy.md §1](auth-and-tenancy.md)) | Decided 2026-10-06 (M2) |
 
-## Carry-forward notes for the next milestone
+## Carry-forward notes
 
-- **M3 (must design first):** `tenancy.is_member` as a `SECURITY DEFINER` function owned by `app_owner` is still subject to `FORCE ROW LEVEL SECURITY` on `tenancy.memberships`, because `app_owner` has no `BYPASSRLS`. The standard policy (data-model.md §3) would then hide every membership row from the function (or recurse). M3 must design the membership check before writing the migration, e.g. a `memberships` policy on `user_id = platform.current_user_id()`. If the standard policy has to change, write an ADR first (build-plan §1.3). Found in M2: the identity tables use RLS enabled but not forced for the same reason (data-model.md §4.1).
+- **M3 membership check — solved** by [ADR-0013](adr/0013-rls-check-functions-and-read-write-split.md): check functions owned by `app_rls_check` (NOLOGIN, BYPASSRLS). **S5 must confirm** the managed host's admin can create that role; otherwise apply ADR-0013's fallback.
+- **M10 (share screens):** an unverified organisation can call itself an incubator (or CA firm) and ask companies to share. The share/accept screen must show clearly who is asking (name, type, who created it, when) before a founder accepts.
+- **M8:** every company-data table uses `app.platform.rls.company_data_policies()`; the schema guard fails on any table it can't classify.
 
 ## Stack versions (checked 2026-10-05)
 
@@ -112,6 +115,7 @@ Python 3.14 · FastAPI 0.142 · Pydantic 2.13 · SQLAlchemy 2.1 · Alembic 1.20 
 
 | Date | Event |
 |---|---|
+| 2026-10-06 | M3 done: organisations, memberships (last-owner trigger), invitations (token in fragment and body, link once), access grants (company → CA firm/incubator, either side initiates, read-only at the DB), audit log, idempotency keys, hourly session and idempotency sweepers, identity audit events, screens S3/S4 + invite page + org switcher; ADR-0013 (check functions owned by `app_rls_check`, read/write policy split); D-29; cross-tenant suite at the DB and over every org endpoint; 310 backend tests and 9 E2E tests green |
 | 2026-10-06 | M2 done: identity seam (fake + WorkOS adapters), sign-in with PKCE + state, server-side sessions (hash only, 30 d idle / 90 d absolute, rotation), CSRF double-submit + Origin check, 18+ and terms consent with no user row before acceptance (D-28), `/v1/me`, sessions list/revoke, screens S1/S2; 132 backend tests and 7 E2E tests green. Local test DB access via the `buildone_test` role (`make test-role`, local dev only, never CI or hosted) so `infra/compose/.env` is never read |
 | 2026-10-06 | Session A: docs brought in line with this file; owner decisions D-17…D-27 recorded; local-first build order; [deferred.md](deferred.md) created; AGENTS.md rule 19 |
 | 2026-10-06 | M1 done: platform kernel, health checks, baseline migration, worker, RLS and extension gates, frontend skeleton with generated client; 43 backend tests and 4 E2E tests green |

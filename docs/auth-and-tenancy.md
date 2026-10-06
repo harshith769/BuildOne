@@ -1,6 +1,6 @@
 # BuildOne — Authentication, Sessions, and Tenancy
 
-> **Status:** v1.1 (frozen for MVP build) · 2026-10-06 (M2: new users get no row before 18+ and terms acceptance, D-28) · Owner: @harshith769
+> **Status:** v1.2 (frozen for MVP build) · 2026-10-06 (M3: grantee access level, invitation token flow, ADR-0013) · Owner: @harshith769
 > Decision record: [ADR-0007](adr/0007-identity-workos-sessions.md). Tables and RLS: [data-model.md §3–4](data-model.md#3-request-context-and-rls-frozen).
 
 **What this document answers**
@@ -45,33 +45,43 @@
 
 RBAC per organisation + ownership checks + RLS.
 
-| Action | owner | member | viewer |
-|---|---|---|---|
-| View org data (facts, obligations, explanations) | ✓ | ✓ | ✓ |
-| Edit facts, confirm proposals, mark obligations done | ✓ | ✓ | — |
-| Use Copilot | ✓ | ✓ | — |
-| Upload personal document (Situation Check) | ✓ | ✓ | — |
-| Invite members / change roles / remove members | ✓ | — | — |
-| Export org data | ✓ | — | — |
-| Delete organisation | ✓ | — | — |
-| Launchpad → incorporation handoff | ✓ | — | — |
+| Action | owner | member | viewer | grantee |
+|---|---|---|---|---|
+| View org name and type | ✓ | ✓ | ✓ | ✓ |
+| View org data (facts, obligations, explanations) | ✓ | ✓ | ✓ | ✓ |
+| Edit facts, confirm proposals, mark obligations done | ✓ | ✓ | — | — |
+| Use Copilot | ✓ | ✓ | — | — |
+| Upload personal document (Situation Check) | ✓ | ✓ | — | — |
+| See members; see access grants | ✓ | ✓ | ✓ | — |
+| Invite members / change roles / remove members | ✓ | — | — | — |
+| Share, accept or revoke access grants | ✓ | — | — | — |
+| Export org data | ✓ | — | — | — |
+| Delete organisation | ✓ | — | — | — |
+| Launchpad → incorporation handoff | ✓ | — | — | — |
 
-Permission checks are centralised in `tenancy/service.py` (`require(ctx, action)`), never scattered `if role ==` checks.
+**grantee** = a member (any role) of a CA firm or incubator holding an **active** access grant from the company. Grantees only ever view, whatever the grant's scope (`manage` is reserved, D-29). Any member may leave an organisation; the last owner can't leave or be demoted (409 `last_owner`).
+
+Permission checks are centralised in `tenancy/service.py` (`require(ctx, action)`, matrix in `tenancy/permissions.py`), never scattered `if role ==` checks.
 
 ## 5. Enforcement layers
 
 | Layer | Responsibility |
 |---|---|
 | Middleware | Resolve session → `user_id`; reject unauthenticated; reject `consent_required`; attach `request_id` |
-| Org dependency (`/v1/orgs/{org_id}/…`) | Load membership for `(org_id, user_id)`; 404 if not a member (no existence leak); attach role |
+| Org dependency (`/v1/orgs/{org_id}/…`) | Load membership for `(org_id, user_id)`, or an active grant held by one of the caller's orgs; 404 if neither (no existence leak); attach role or `grantee` |
 | Service | `require(ctx, action)` per the matrix; ownership checks (e.g., documents) |
-| Database | `SET LOCAL app.user_id/app.org_id` at transaction start; RLS policies ([data-model.md §3](data-model.md#3-request-context-and-rls-frozen)) |
+| Database | `SET LOCAL app.user_id/app.org_id` at transaction start; RLS policies with read checks (members and active grantees) and write checks (owners and members; owners for people and sharing) ([data-model.md §3](data-model.md#3-request-context-and-rls-frozen), [ADR-0013](adr/0013-rls-check-functions-and-read-write-split.md)) |
 
 The organisation always comes from the URL path validated against membership — **never from the request body**.
 
 ## 6. Invitations
 
-`POST /v1/orgs/{org_id}/invitations` (owner) → email (or copyable link if email channel disabled) containing a single-use token (hash stored, 7-day expiry). Accept → must be signed in; if signed-in email differs from invited email, explicit confirmation required; membership created; token consumed.
+`POST /v1/orgs/{org_id}/invitations` (owner, `Idempotency-Key`) → email (or copyable link if email channel disabled) containing a single-use token (hash stored, 7-day expiry). Accept → must be signed in; if signed-in email differs from invited email, explicit confirmation required; membership created; token consumed.
+
+- The link is `<app>/invite#token=<token>`: the token sits in the **fragment**, which browsers never send to a server, and the SPA keeps it in `sessionStorage` (that tab only) across sign-in, then removes it from the URL.
+- `POST /v1/invitations/lookup` and `POST /v1/invitations/accept` take the token **in the body** (`{token, confirm_email_mismatch}`). Unknown, expired or used → 404; different email without confirmation → 409 `invitation_email_mismatch`; already a member → 409.
+- The link is returned **once**, in the creation response. A replay with the same `Idempotency-Key` returns the invitation with `invite_link: null`, `link_available: false`; the token is not rotated (that would break a link already copied) — revoke and invite again if it's lost.
+- At the database the accepting user proves the token with `SET LOCAL app.invitation_token_hash`; the membership insert and the `accepted_at` update are allowed only for that invitation's org and role ([data-model.md §4.2](data-model.md#42-tenancy)).
 
 ## 7. Calendar feed capability URL
 

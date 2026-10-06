@@ -46,6 +46,7 @@ Targets become functional during milestone M1 ([docs/build-plan.md](docs/build-p
 
 - **`SET LOCAL` is per transaction**: set `app.user_id`/`app.org_id` at the start of every transaction, including in jobs; `current_setting(name, true)` returns NULL when unset (fails closed).
 - **Table owner bypasses RLS unless `FORCE ROW LEVEL SECURITY`** is set; services must never connect as `app_owner`.
+- **Tenancy checks are owned by `app_rls_check`** (NOLOGIN, BYPASSRLS; ADR-0013): new company-data tables use `app.platform.rls.company_data_policies()`; `tenancy.can_read` goes only in SELECT policies. Never use `RETURNING` on a table whose SELECT policy the writer can't pass yet (`organizations`, `audit.events`). Existing local volumes need `make db-roles` (run by `make dev`).
 - **pgvector's extension name is `vector`**, and extensions are created by the superuser in `infra/postgres/initdb/`, not in Alembic.
 - **Procrastinate lives in its own `procrastinate` schema** and its SQL is unqualified: every connection sets `search_path=procrastinate,public` and `timezone=UTC` (`app.platform.db.CONNECT_OPTIONS`). Module tables are always schema-qualified.
 - **IDs come from `app.platform.ids.new_id()`** (stdlib `uuid.uuid7()`, Python 3.14); never `uuid4()` for stored IDs.

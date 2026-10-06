@@ -32,7 +32,7 @@ What changes against ADR-0006:
 ## What S5 must show before this is Accepted
 
 1. The API + worker containers run within ~900 MiB total with realistic limits.
-2. The `initdb` SQL runs on a managed-Postgres-like setup without superuser rights (locally: a non-superuser admin role).
+2. The `initdb` SQL runs on a managed-Postgres-like setup without superuser rights (locally: a non-superuser admin role). This includes `10-rls-check-role.sql`: the admin role must be able to create `app_rls_check` with `BYPASSRLS` ([ADR-0013](0013-rls-check-functions-and-read-write-split.md)); if it can't, apply ADR-0013's fallback.
 3. Nightly `pg_dump` to R2 and restore into a fresh Postgres 18 both work and are timed.
 4. Eligibility: the Azure portal's *Free services* page lists the VM sizes and Flexible Server B1MS for Harshith's student account.
 
