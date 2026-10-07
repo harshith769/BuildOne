@@ -121,7 +121,7 @@ Spike slots: S1 and S2 right before M5 · S3 before real rules in M6 · S4 befor
 - **Read:** M5 log entry and D-31 in status.md, ADR-0014, S2 report, evaluation.md
 - **Build:** measure on the real corpus, each alone and combined, recall@10 and p95: (a) domain/jurisdiction filter (questions tagged by domain in `evals/retrieval.jsonl`; search restricted to that domain's sources), (b) the idf5 hybrid, (c) finer leaves for long sections. Ship the filter only if the product can always supply the domain. A change to ranking needs an ADR superseding the relevant part of ADR-0014
 - **Done when:** real-corpus recall@10 ≥ 90% on the labelled set (target unchanged) with p95 < 300 ms under the production memory limits; due before M9 (first founder-facing use). If only the domain filter reaches it, the gate counts on the filtered path (M9, rule-draft) and unfiltered recall@10 ≥ 90% becomes a Copilot entry condition ([deferred.md §13](deferred.md))
-- **Status (2026-10-07):** measured, not done: best 85.1% (filter + finer leaves); see the status.md log
+- **Status (2026-10-07):** measured, not done: best 85.1% (filter + finer leaves); contextual chunks and two-stage ranking also tried and lowered recall. Waits for the CA label review and interview questions; M6 goes ahead (status.md log)
 
 ### M6 — Rules engine, fact registry, publication, scenarios (real rules after S3)
 - **Read:** rules-engine.md, rule-operations.md, data-model.md §4.4–4.6, S3 report
