@@ -1,0 +1,221 @@
+source: companies_incorporation_rules_2014
+window:
+  pages:
+  - 1
+  - 15
+  unit: rule
+basis: 'Draft from the text layer, every rule checked by reading. Numbering recorded
+  exactly as printed, including the source''s own errors: rule 20 prints (2) twice
+  and no (3); rule 21 prints (2) twice; rule 22 prints (4) twice and "(8).". Rules
+  10, 11 and 31 have no printed heading. Score as ordered sequences, not sets.'
+outline:
+- path: '1'
+  heading: Short title and commencement
+  page: 1
+- path: 1 > (1)
+- path: 1 > (2)
+- path: '2'
+  heading: Definitions
+  page: 1
+- path: 2 > (1)
+- path: 2 > (2)
+- path: '3'
+  heading: One Person Company
+  page: 1
+- path: 3 > (1)
+- path: 3 > (2)
+- path: 3 > (3)
+- path: 3 > (4)
+- path: 3 > (5)
+- path: 3 > (6)
+- path: 3 > (7)
+- path: '4'
+  heading: Nomination by the subscriber or member of One Person Company
+  page: 1
+- path: 4 > (1)
+- path: 4 > (2)
+- path: 4 > (3)
+- path: 4 > (4)
+- path: 4 > (5)
+- path: 4 > (6)
+- path: '5'
+  heading: Penalty
+  page: 2
+- path: '6'
+  heading: One Person Company to convert itself into a public company or a private
+    company in certain cases
+  page: 2
+- path: 6 > (1)
+- path: 6 > (2)
+- path: 6 > (3)
+- path: 6 > (4)
+- path: 6 > (5)
+- path: 6 > (6)
+- path: '7'
+  heading: Conversion of private company into One Person Company
+  page: 2
+- path: 7 > (1)
+- path: 7 > (2)
+- path: 7 > (3)
+- path: 7 > (4)
+- path: 7 > (5)
+- path: '8'
+  heading: Undesirable names
+  page: 3
+- path: 8 > (1)
+- path: 8 > (2)
+- path: 8 > (3)
+- path: 8 > (4)
+- path: 8 > (5)
+- path: 8 > (6)
+- path: 8 > (7)
+- path: 8 > (8)
+- path: '9'
+  heading: Reservation of name
+  page: 6
+- path: '10'
+  page: 6
+- path: '11'
+  page: 6
+- path: '12'
+  heading: Application for incorporation of companies
+  page: 6
+- path: '13'
+  heading: Signing of memorandum and articles
+  page: 6
+- path: 13 > (1)
+- path: 13 > (2)
+- path: 13 > (3)
+- path: 13 > (4)
+- path: 13 > (5)
+- path: '14'
+  heading: Declaration by professionals
+  page: 7
+- path: '15'
+  heading: Affidavit from subscribers and first directors
+  page: 7
+- path: '16'
+  heading: Particulars of every subscriber to be filed with the Registrar at the time
+    of incorporation
+  page: 7
+- path: 16 > (1)
+- path: 16 > (2)
+- path: '17'
+  heading: Particulars of first directors of the company and their consent to act
+    as such
+  page: 8
+- path: '18'
+  heading: Certificate of incorporation
+  page: 8
+- path: '19'
+  heading: License under section 8 for new companies with charitable objects etc
+  page: 8
+- path: 19 > (1)
+- path: 19 > (2)
+- path: 19 > (3)
+- path: '20'
+  heading: License for existing companies
+  page: 8
+- path: 20 > (1)
+- path: 20 > (2)
+- path: 20 > (2)
+- path: 20 > (4)
+- path: 20 > (5)
+- path: 20 > (6)
+- path: 20 > (7)
+- path: '21'
+  heading: Conditions for conversion of a company registered under Section 8 into
+    a company of any other kind
+  page: 9
+- path: 21 > (1)
+- path: 21 > (2)
+- path: 21 > (2)
+- path: 21 > (3)
+- path: 21 > (4)
+- path: '22'
+  heading: Other conditions to be complied with by companies registered under section
+    8 seeking conversion into any other kind
+  page: 10
+- path: 22 > (1)
+- path: 22 > (2)
+- path: 22 > (3)
+- path: 22 > (4)
+- path: 22 > (4)
+- path: 22 > (5)
+- path: 22 > (6)
+- path: 22 > (7)
+- path: 22 > (8)
+- path: 22 > (9)
+- path: 22 > (10)
+- path: 22 > (11)
+- path: '23'
+  heading: Intimation to Registrar of revocation of licence issued under section 8
+  page: 11
+- path: '24'
+  heading: Declaration at the time of commencement of business
+  page: 11
+- path: '25'
+  heading: Verification of registered office
+  page: 11
+- path: 25 > (1)
+- path: 25 > (2)
+- path: '26'
+  heading: Publication of name by company
+  page: 11
+- path: '27'
+  heading: Notice and verification of change of situation of the registered office
+  page: 11
+- path: '28'
+  heading: Shifting of registered office within the same State
+  page: 11
+- path: 28 > (1)
+- path: 28 > (2)
+- path: '29'
+  heading: Alteration of Memorandum by change of name
+  page: 12
+- path: 29 > (1)
+- path: 29 > (2)
+- path: '30'
+  heading: Shifting of registered office from one State or Union territory to another
+    State
+  page: 12
+- path: 30 > (1)
+- path: 30 > (2)
+- path: 30 > (3)
+- path: 30 > (4)
+- path: 30 > (5)
+- path: 30 > (6)
+- path: 30 > (7)
+- path: 30 > (8)
+- path: '31'
+  page: 13
+- path: '32'
+  heading: Change of objects for which money is raised through prospectus
+  page: 13
+- path: 32 > (1)
+- path: 32 > (2)
+- path: 32 > (3)
+- path: '33'
+  heading: Alteration of articles
+  page: 13
+- path: 33 > (1)
+- path: 33 > (2)
+- path: '34'
+  heading: Copies of memorandum and articles, etc. to be given to members on request
+    being made by them
+  page: 14
+- path: 34 > (1)
+- path: 34 > (2)
+- path: 34 > (3)
+- path: '35'
+  heading: Service of documents
+  page: 14
+- path: 35 > (1)
+- path: 35 > (2)
+- path: 35 > (3)
+- path: 35 > (4)
+- path: 35 > (5)
+- path: 35 > (6)
+- path: FORM NO. INC.1
+  heading: Application for reservation of Name
+  page: 15

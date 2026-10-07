@@ -28,8 +28,10 @@ dependencies = [
   "workos>=10.5",
   "groq>=1.7",
   "google-genai>=2.28",
-  # Embedding runtime and parser are added after spikes S1/S2.
   "email-validator>=2.2",
+  "onnxruntime>=1.30.0",
+  "tokenizers>=0.23.2",
+  "numpy>=2.5.3",
 ]
 
 [dependency-groups]
@@ -44,7 +46,15 @@ dev = [
   "types-PyYAML",
   "types-python-dateutil",
   "types-jsonschema",
+  "rapidfuzz>=3.14",
 ]
+# Laptop ingestion and CI only (parsers); never installed in the server image (Dockerfile: --no-default-groups).
+ingest = [
+  "pymupdf>=1.28.2",
+]
+
+[tool.uv]
+default-groups = ["dev", "ingest"]
 
 [tool.ruff]
 line-length = 100
@@ -66,6 +76,15 @@ ignore = ["E501"]
 strict = true
 plugins = ["pydantic.mypy"]
 python_version = "3.14"
+
+# Libraries without type information: boto3/botocore (storage adapter), onnxruntime (embedder), PyMuPDF (parsers).
+[[tool.mypy.overrides]]
+module = ["boto3", "boto3.*", "botocore", "botocore.*", "onnxruntime"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["app.modules.knowledge.parsing.pdf", "app.modules.knowledge.parsing.ocr"]
+disallow_untyped_calls = false
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
@@ -107,5 +126,27 @@ name = "S3 SDK only inside the storage adapter"
 type = "forbidden"
 source_modules = ["app"]
 forbidden_modules = ["boto3", "botocore"]
-ignore_imports = ["app.platform.storage.** -> boto3", "app.platform.storage.** -> botocore"]
+ignore_imports = ["app.platform.storage -> boto3", "app.platform.storage -> botocore", "app.platform.storage.** -> boto3", "app.platform.storage.** -> botocore"]
 unmatched_ignore_imports_alerting = "none"
+
+[[tool.importlinter.contracts]]
+name = "PDF library only inside the knowledge parsers (ingestion CLI; not installed on the server)"
+type = "forbidden"
+source_modules = ["app"]
+forbidden_modules = ["pymupdf", "fitz"]
+ignore_imports = ["app.modules.knowledge.parsing.** -> pymupdf"]
+unmatched_ignore_imports_alerting = "none"
+
+[[tool.importlinter.contracts]]
+name = "Embedding runtime only inside the ONNX embedder (never in the API process, ADR-0014)"
+type = "forbidden"
+source_modules = ["app"]
+forbidden_modules = ["onnxruntime", "tokenizers"]
+ignore_imports = ["app.modules.knowledge.embedding.onnx -> onnxruntime", "app.modules.knowledge.embedding.onnx -> tokenizers"]
+unmatched_ignore_imports_alerting = "none"
+
+[[tool.importlinter.contracts]]
+name = "Knowledge service and API never reach the parser, the ingestion CLI or the ONNX embedder"
+type = "forbidden"
+source_modules = ["app.main", "app.modules.knowledge.service", "app.modules.knowledge.embedding.client"]
+forbidden_modules = ["app.modules.knowledge.parsing", "app.modules.knowledge.ingest", "app.modules.knowledge.ingestion", "app.modules.knowledge.embedding.onnx"]

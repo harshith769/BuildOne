@@ -1,0 +1,146 @@
+source: cgst_rules_2017_part_a
+window:
+  pages:
+  - 1
+  - 15
+  unit: rule
+basis: 'Draft from the text layer, corrected by reading: FORM mentions inside rule
+  text removed; rule 7 has no sub-rules (its numbers are table columns); rules 11-14
+  sub-rules fixed; inserted or substituted sub-rules 3(3A), 8(4A), 9(5), 12(1A) as
+  printed. The footnote under rule 7 reprints the pre-2020 table: not part of the
+  rule.'
+tables:
+- page: 5
+  in: CHAPTER II > 7
+  header:
+  - Sl. No.
+  - Section under which composition levy is opted
+  - Category of registered persons
+  - Rate of tax
+  column_numbers:
+  - (1)
+  - (1A)
+  - (2)
+  - (3)
+  rows: 4
+outline:
+- path: CHAPTER I
+  heading: PRELIMINARY
+  page: 1
+- path: CHAPTER I > 1
+  heading: Short title and Commencement
+  page: 1
+- path: CHAPTER I > 1 > (1)
+- path: CHAPTER I > 1 > (2)
+- path: CHAPTER I > 2
+  heading: Definitions
+  page: 1
+- path: CHAPTER II
+  heading: COMPOSITION [LEVY]
+  page: 2
+- path: CHAPTER II > 3
+  heading: Intimation for composition levy
+  page: 2
+- path: CHAPTER II > 3 > (1)
+- path: CHAPTER II > 3 > (2)
+- path: CHAPTER II > 3 > (3)
+- path: CHAPTER II > 3 > (3A)
+- path: CHAPTER II > 3 > (4)
+- path: CHAPTER II > 3 > (5)
+- path: CHAPTER II > 4
+  heading: Effective date for composition levy
+  page: 3
+- path: CHAPTER II > 4 > (1)
+- path: CHAPTER II > 4 > (2)
+- path: CHAPTER II > 5
+  heading: Conditions and restrictions for composition levy
+  page: 3
+- path: CHAPTER II > 5 > (1)
+- path: CHAPTER II > 5 > (2)
+- path: CHAPTER II > 6
+  heading: Validity of composition levy
+  page: 4
+- path: CHAPTER II > 6 > (1)
+- path: CHAPTER II > 6 > (2)
+- path: CHAPTER II > 6 > (3)
+- path: CHAPTER II > 6 > (4)
+- path: CHAPTER II > 6 > (5)
+- path: CHAPTER II > 6 > (6)
+- path: CHAPTER II > 6 > (7)
+- path: CHAPTER II > 7
+  heading: Rate of tax of the composition levy
+  page: 5
+- path: CHAPTER III
+  heading: REGISTRATION
+  page: 7
+- path: CHAPTER III > 8
+  heading: Application for registration
+  page: 7
+- path: CHAPTER III > 8 > (1)
+- path: CHAPTER III > 8 > (2)
+- path: CHAPTER III > 8 > (3)
+- path: CHAPTER III > 8 > (4)
+- path: CHAPTER III > 8 > (4A)
+- path: CHAPTER III > 8 > (5)
+- path: CHAPTER III > 8 > (6)
+- path: CHAPTER III > 9
+  heading: Verification of the application and approval
+  page: 8
+- path: CHAPTER III > 9 > (1)
+- path: CHAPTER III > 9 > (2)
+- path: CHAPTER III > 9 > (3)
+- path: CHAPTER III > 9 > (4)
+- path: CHAPTER III > 9 > (5)
+- path: CHAPTER III > 10
+  heading: Issue of registration certificate
+  page: 11
+- path: CHAPTER III > 10 > (1)
+- path: CHAPTER III > 10 > (2)
+- path: CHAPTER III > 10 > (3)
+- path: CHAPTER III > 10 > (4)
+- path: CHAPTER III > 10 > (5)
+- path: CHAPTER III > 10A
+  heading: Furnishing of Bank Account Details
+  page: 11
+- path: CHAPTER III > 10A > (1)
+- path: CHAPTER III > 11
+  heading: Separate registration for multiple places of business within a State or
+    a Union territory
+  page: 13
+- path: CHAPTER III > 11 > (1)
+- path: CHAPTER III > 11 > (2)
+- path: CHAPTER III > 11 > (3)
+- path: CHAPTER III > 12
+  heading: Grant of registration to persons required to deduct tax at source or to
+    collect tax at source
+  page: 14
+- path: CHAPTER III > 12 > (1)
+- path: CHAPTER III > 12 > (1A)
+- path: CHAPTER III > 12 > (2)
+- path: CHAPTER III > 12 > (3)
+- path: CHAPTER III > 13
+  heading: Grant of registration to non-resident taxable person
+  page: 14
+- path: CHAPTER III > 13 > (1)
+- path: CHAPTER III > 13 > (2)
+- path: CHAPTER III > 13 > (3)
+- path: CHAPTER III > 13 > (4)
+- path: CHAPTER III > 14
+  heading: Grant of registration to a person supplying online information and database
+    access or retrieval services from a place outside India to a non-taxable online
+    recipient
+  page: 15
+- path: CHAPTER III > 14 > (1)
+- path: CHAPTER III > 14 > (2)
+- path: CHAPTER III > 15
+  heading: Extension in period of operation by casual taxable person and non-resident
+    taxable person
+  page: 15
+- path: CHAPTER III > 15 > (1)
+- path: CHAPTER III > 15 > (2)
+- path: CHAPTER III > 16
+  heading: Suomoto registration
+  page: 15
+- path: CHAPTER III > 16 > (1)
+- path: CHAPTER III > 16 > (2)
+- path: CHAPTER III > 16 > (3)

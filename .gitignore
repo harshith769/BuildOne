@@ -27,3 +27,4 @@ knowledge/reports/
 .claude/settings.local.json
 CLAUDE.local.md
 .import_linter_cache/
+knowledge/inbox/

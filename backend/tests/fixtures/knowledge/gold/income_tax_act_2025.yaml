@@ -1,0 +1,75 @@
+source: income_tax_act_2025
+window:
+  pages:
+  - 1
+  - 24
+  unit: section
+  scope: sections 392-394 only (owner)
+basis: 'Gazette as enacted (Act 30 of 2025), not as amended by the Finance Act 2026.
+  Section headings are margin notes (left margin, x<110pt), not inline: a parser must
+  attach them to "392. (1)" etc. Sub-sections like "(2)(a)" start with a clause. Part
+  heading printed "B.—Deduction and collection at source". s.391 (before) and s.395
+  (after) are out of scope.'
+tables:
+- page: 3
+  in: B > 393 > (1)
+  rows: null
+  note: multi-page; scored on detection only
+- page: 10
+  in: B > 393 > (2)
+  rows: null
+  note: multi-page; scored on detection only
+- page: 13
+  in: B > 393 > (3)
+  rows: null
+  note: multi-page; scored on detection only
+- page: 15
+  in: B > 393 > (4)
+  rows: null
+  note: multi-page; scored on detection only
+- page: 21
+  in: B > 393 > (6)
+  rows: null
+  note: multi-page; scored on detection only
+- page: 22
+  in: B > 394 > (1)
+  rows: null
+  note: multi-page; scored on detection only
+outline:
+- path: B
+  heading: Deduction and collection at source
+  page: 1
+- path: B > 392
+  heading: Salary and accumulated balance due to an employee
+  page: 1
+- path: B > 392 > (1)
+- path: B > 392 > (2)
+- path: B > 392 > (3)
+- path: B > 392 > (4)
+- path: B > 392 > (5)
+- path: B > 392 > (6)
+- path: B > 392 > (7)
+- path: B > 392 > (8)
+- path: B > 393
+  heading: Tax to be deducted at source
+  page: 3
+- path: B > 393 > (1)
+- path: B > 393 > (2)
+- path: B > 393 > (3)
+- path: B > 393 > (4)
+- path: B > 393 > (5)
+- path: B > 393 > (6)
+- path: B > 393 > (7)
+- path: B > 393 > (8)
+- path: B > 393 > (9)
+- path: B > 393 > (10)
+- path: B > 393 > (11)
+- path: B > 394
+  heading: Collection of tax at source
+  page: 22
+- path: B > 394 > (1)
+- path: B > 394 > (2)
+- path: B > 394 > (3)
+- path: B > 394 > (4)
+- path: B > 394 > (5)
+- path: B > 394 > (6)

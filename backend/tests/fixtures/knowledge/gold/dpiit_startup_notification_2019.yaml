@@ -1,0 +1,152 @@
+source: dpiit_startup_notification_2019
+window:
+  pages:
+  - 1
+  - 5
+  unit: paragraph
+  language: English half (pp. 1-5 Hindi)
+basis: Written by hand from the page text. Paragraphs sit under margin side-headings;
+  para 1 clause list skips (h) as printed; para 1(a) uses i./ii./iii.; para 4(iii)
+  printed "iii)". The Hindi body (pp. 1-5) is Unicode, but the masthead uses a legacy
+  font.
+outline:
+- path: G.S.R. 127(E)
+  page: 1
+- path: Definitions
+  heading: Definitions
+  page: 1
+- path: Definitions > 1
+  page: 1
+- path: Definitions > 1 > (a)
+- path: Definitions > 1 > (a) > i
+- path: Definitions > 1 > (a) > ii
+- path: Definitions > 1 > (a) > iii
+- path: Definitions > 1 > (a) > Proviso
+- path: Definitions > 1 > (a) > Explanation
+- path: Definitions > 1 > (b)
+- path: Definitions > 1 > (c)
+- path: Definitions > 1 > (c) > (i)
+- path: Definitions > 1 > (c) > (ii)
+- path: Definitions > 1 > (c) > (iii)
+- path: Definitions > 1 > (d)
+- path: Definitions > 1 > (e)
+- path: Definitions > 1 > (f)
+- path: Definitions > 1 > (g)
+- path: Definitions > 1 > (i)
+- path: Definitions > 1 > (j)
+- path: Definitions > 1 > (k)
+- path: Recognition
+  heading: Recognition
+  page: 2
+- path: Recognition > 2
+  page: 2
+- path: Recognition > 2 > (i)
+- path: Recognition > 2 > (ii)
+- path: Recognition > 2 > (ii) > (a)
+- path: Recognition > 2 > (ii) > (b)
+- path: Recognition > 2 > (iii)
+- path: Recognition > 2 > (iii) > (a)
+- path: Recognition > 2 > (iii) > (b)
+- path: Certification for the purposes of section 80-IAC of the Act
+  heading: Certification for the purposes of section 80-IAC of the Act
+  page: 2
+- path: Certification for the purposes of section 80-IAC of the Act > 3
+  page: 2
+- path: Certification for the purposes of section 80-IAC of the Act > 3 > (i)
+- path: Certification for the purposes of section 80-IAC of the Act > 3 > (ii)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act
+  heading: Exemption for the purpose of clause (viib) of sub-section (2) of section
+    56 of the Act
+  page: 3
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4
+  page: 3
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (i)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (ii)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (ii) > Proviso
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (ii) > Proviso > (a)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (ii) > Proviso > (b)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (ii) > Second proviso
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (iii)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (iii) > (a)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (iii) > (b)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (iii) > (c)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (iii) > (d)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (iii) > (e)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (iii) > (f)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (iii) > (g)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (iii) > (h)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > (iii) > Proviso
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > Explanation
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > Explanation > (i)
+- path: Exemption for the purpose of clause (viib) of sub-section (2) of section 56
+    of the Act > 4 > Explanation > (ii)
+- path: Declaration
+  heading: Declaration
+  page: 4
+- path: Declaration > 5
+  page: 4
+- path: Scope
+  heading: Scope
+  page: 4
+- path: Scope > 6
+  page: 4
+- path: Scope > 7
+  page: 4
+- path: Revocation
+  heading: Revocation
+  page: 4
+- path: Revocation > 8
+  page: 4
+- path: Revocation > 8 > (1)
+- path: Revocation > 8 > (2)
+- path: Revocation > 9
+  page: 4
+- path: Effect
+  heading: Effect
+  page: 4
+- path: Effect > 10
+  page: 4
+- path: APPENDIX-I
+  heading: APPENDIX-I
+  page: 4
+- path: APPENDIX-I > Form-1
+  heading: Application for certificate for the purposes of section 80-IAC of the Income-tax
+    Act, 1961
+  page: 4
+- path: APPENDIX-I > Form-1 > 1
+- path: APPENDIX-I > Form-1 > 2
+- path: APPENDIX-I > Form-1 > 3
+- path: APPENDIX-I > Form-1 > 4
+- path: APPENDIX-I > Form-1 > 5
+- path: APPENDIX-I > Form-1 > 6
+- path: APPENDIX-I > Form-1 > 7
+- path: APPENDIX-I > Form-1 > 8
+- path: APPENDIX-I > Form-1 > Declaration
+  page: 5
+- path: APPENDIX-I > Form-1 > Documents > 1
+- path: APPENDIX-I > Form-1 > Documents > 2
+- path: APPENDIX-I > Form 2
+  heading: Declaration by a Startup for exemption under Section 56(2)(viib) of the
+    Income Tax Act, 1961
+  page: 5
+- path: APPENDIX-I > Form 2 > 2

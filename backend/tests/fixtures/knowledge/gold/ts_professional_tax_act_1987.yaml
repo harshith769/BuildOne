@@ -1,0 +1,200 @@
+source: ts_professional_tax_act_1987
+window:
+  pages:
+  - 1
+  - 1
+  unit: section
+  format: html
+  scope: all 37 sections
+basis: 'Official HTML (tgct.gov.in): an index page that prints section numbers, and
+  one page per section whose title is the heading. Section numbers are printed only
+  in the index (and as "5-A:", "5-B:", "18-A:" for inserted sections); sub-section
+  numbers exist only as <ol type=1> markup (rendered 1., 2., ...). s.23''s (a)/(b)
+  list is a separate <ol type=a> (Explanation), not sub-sections. s.33''s second list
+  item begins mid-sentence ("column / (2) of the Second Schedule"): kept as printed.
+  Headings as printed on the section page, trailing colon dropped; 5-B has no printed
+  heading. AP text as enacted, with insertion notes.'
+outline:
+- path: '1'
+  heading: Short title, extent and commencement
+  page: 1
+- path: 1 > (1)
+- path: 1 > (2)
+- path: 1 > (3)
+- path: '2'
+  heading: Definitions
+  page: 1
+- path: '3'
+  heading: Appointment of a Commissioner and other officers
+  page: 1
+- path: 3 > (1)
+- path: 3 > (2)
+- path: '4'
+  heading: Levy and charge of Tax
+  page: 1
+- path: 4 > (1)
+- path: 4 > (2)
+- path: '5'
+  heading: Employer's liability to deduct and pay tax on behalf of employees
+  page: 1
+- path: 5-A
+  heading: Licensing Turf clubs liability to collect and pay tax on behalf of the
+    licensed persons
+  page: 1
+- path: 5-B
+  page: 1
+- path: '6'
+  heading: Registration and enrolment
+  page: 1
+- path: 6 > (1)
+- path: 6 > (2)
+- path: 6 > (3)
+- path: 6 > (4)
+- path: 6 > (5)
+- path: 6 > (6)
+- path: '7'
+  heading: Returns
+  page: 1
+- path: 7 > (1)
+- path: 7 > (2)
+- path: 7 > (3)
+- path: '8'
+  heading: Assessment of an assessee
+  page: 1
+- path: 8 > (1)
+- path: 8 > (2)
+- path: 8 > (3)
+- path: 8 > (4)
+- path: 8 > (5)
+- path: '9'
+  heading: Assessment of escaped or under-assessed tax
+  page: 1
+- path: '10'
+  heading: Payment of tax by certain assessees
+  page: 1
+- path: '11'
+  heading: Consequences of failure to deduct or to pay tax
+  page: 1
+- path: 11 > (1)
+- path: 11 > (2)
+- path: '12'
+  heading: Penalty for non-payment of tax
+  page: 1
+- path: '13'
+  heading: Recovery of tax etc
+  page: 1
+- path: '14'
+  heading: Appointment of collecting agents
+  page: 1
+- path: 14 > (1)
+- path: 14 > (2)
+- path: 14 > (3)
+- path: 14 > (4)
+- path: '15'
+  heading: Appeals
+  page: 1
+- path: 15 > (1)
+- path: 15 > (2)
+- path: 15 > (3)
+- path: 15 > (4)
+- path: 15 > (5)
+- path: 15 > (6)
+- path: '16'
+  heading: Revision
+  page: 1
+- path: 16 > (1)
+- path: 16 > (2)
+- path: 16 > (3)
+- path: 16 > (4)
+- path: 16 > (5)
+- path: '17'
+  heading: Accounts
+  page: 1
+- path: 17 > (1)
+- path: 17 > (2)
+- path: '18'
+  heading: Special mode
+  page: 1
+- path: 18 > (1)
+- path: 18 > (2)
+- path: 18 > (3)
+- path: 18 > (4)
+- path: 18 > (5)
+- path: 18 > (6)
+- path: 18-A
+  heading: Special powers of Deputy Commissioner under the Revenue Recovery Act
+  page: 1
+- path: 18-A > (1)
+- path: 18-A > (2)
+- path: 18-A > (3)
+- path: '19'
+  heading: Recovery of tax where trade, calling etc. of employer is transferred
+  page: 1
+- path: '20'
+  heading: Production and inspection of accounts and documents and search of premises
+  page: 1
+- path: '21'
+  heading: Refund of excess
+  page: 1
+- path: '22'
+  heading: Offences and penalties
+  page: 1
+- path: '23'
+  heading: Offences by Companies
+  page: 1
+- path: 23 > (1)
+- path: 23 > (2)
+- path: '24'
+  heading: Power to transfer proceedings
+  page: 1
+- path: '25'
+  heading: Compounding of offences
+  page: 1
+- path: 25 > (1)
+- path: 25 > (2)
+- path: 25 > (3)
+- path: '26'
+  heading: Powers to enforce attendance etc
+  page: 1
+- path: '27'
+  heading: Bar of jurisdiction of Courts
+  page: 1
+- path: '28'
+  heading: Protection of acts done in good faith
+  page: 1
+- path: '29'
+  heading: Powers to delegate
+  page: 1
+- path: '30'
+  heading: Powers to make rules
+  page: 1
+- path: 30 > (1)
+- path: 30 > (2)
+- path: 30 > (3)
+- path: '31'
+  heading: Power to Exempt
+  page: 1
+- path: '32'
+  heading: Local authorities not to levy profession tax
+  page: 1
+- path: '33'
+  heading: Amendment of certain enactments
+  page: 1
+- path: 33 > (1)
+- path: 33 > (2)
+- path: 33 > (3)
+- path: '34'
+  heading: Cesses not be levied in certain cases
+  page: 1
+- path: '35'
+  heading: Grant to Local authority for loss of revenue
+  page: 1
+- path: '36'
+  heading: Power to remove difficulties
+  page: 1
+- path: '37'
+  heading: Power to amend First Schedule
+  page: 1
+- path: 37 > (1)
+- path: 37 > (2)
+- path: 37 > (3)

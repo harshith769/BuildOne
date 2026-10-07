@@ -1,0 +1,206 @@
+source: code_on_social_security_2020
+window:
+  pages:
+  - 1
+  - 15
+  unit: section
+basis: Gazette as enacted (No. 36 of 2020). Section headings are margin notes (left
+  or right margin, alternating), joined across their lines, final full stop dropped.
+  Sub-section counts from the text layer, checked against Tesseract OCR of the rendered
+  main column (italic "(1)" OCRs as "(/)" or "(J)"; the text layer was right in every
+  disagreement). s.13 begins mid-Chapter II; s.41 continues past the window. Clauses
+  and provisos not scored.
+outline:
+- path: CHAPTER II > 13
+  heading: Entrustment of additional functions to Social Security Organisations
+  page: 1
+- path: CHAPTER III
+  heading: EMPLOYEES’ PROVIDENT FUND
+  page: 1
+- path: CHAPTER III > 14
+  heading: Appointment of officers of Central Board
+  page: 1
+- path: CHAPTER III > 14 > (1)
+- path: CHAPTER III > 14 > (2)
+- path: CHAPTER III > 14 > (3)
+- path: CHAPTER III > 14 > (4)
+- path: CHAPTER III > 14 > (5)
+- path: CHAPTER III > 14 > (6)
+- path: CHAPTER III > 14 > (7)
+- path: CHAPTER III > 15
+  heading: Schemes
+  page: 2
+- path: CHAPTER III > 15 > (1)
+- path: CHAPTER III > 15 > (2)
+- path: CHAPTER III > 15 > (3)
+- path: CHAPTER III > 16
+  heading: Funds
+  page: 3
+- path: CHAPTER III > 16 > (1)
+- path: CHAPTER III > 16 > (2)
+- path: CHAPTER III > 17
+  heading: Contribution in respect of employees and contractors
+  page: 4
+- path: CHAPTER III > 17 > (1)
+- path: CHAPTER III > 17 > (2)
+- path: CHAPTER III > 17 > (3)
+- path: CHAPTER III > 18
+  heading: Fund to be recognised under Act 43 of 1961
+  page: 4
+- path: CHAPTER III > 19
+  heading: Priority of payment of contributions over other debts
+  page: 4
+- path: CHAPTER III > 20
+  heading: Chapter not to apply to certain establishments
+  page: 4
+- path: CHAPTER III > 20 > (1)
+- path: CHAPTER III > 20 > (2)
+- path: CHAPTER III > 21
+  heading: Authorising certain employers to maintain provident fund accounts
+  page: 5
+- path: CHAPTER III > 21 > (1)
+- path: CHAPTER III > 21 > (2)
+- path: CHAPTER III > 21 > (3)
+- path: CHAPTER III > 22
+  heading: Transfer of accounts
+  page: 5
+- path: CHAPTER III > 23
+  heading: Appeal to Tribunal
+  page: 5
+- path: CHAPTER III > 23 > (1)
+- path: CHAPTER III > 23 > (2)
+- path: CHAPTER III > 23 > (3)
+- path: CHAPTER III > 23 > (4)
+- path: CHAPTER IV
+  heading: EMPLOYEES STATE INSURANCE CORPORATION
+  page: 6
+- path: CHAPTER IV > 24
+  heading: Principal Officers and other staff
+  page: 6
+- path: CHAPTER IV > 24 > (1)
+- path: CHAPTER IV > 24 > (2)
+- path: CHAPTER IV > 24 > (3)
+- path: CHAPTER IV > 24 > (4)
+- path: CHAPTER IV > 24 > (5)
+- path: CHAPTER IV > 24 > (6)
+- path: CHAPTER IV > 24 > (7)
+- path: CHAPTER IV > 24 > (8)
+- path: CHAPTER IV > 24 > (9)
+- path: CHAPTER IV > 24 > (10)
+- path: CHAPTER IV > 25
+  heading: Employees’ State Insurance Fund
+  page: 7
+- path: CHAPTER IV > 25 > (1)
+- path: CHAPTER IV > 25 > (2)
+- path: CHAPTER IV > 25 > (3)
+- path: CHAPTER IV > 25 > (4)
+- path: CHAPTER IV > 26
+  heading: Purposes for which Employees’ State Insurance Fund may be expended
+  page: 7
+- path: CHAPTER IV > 27
+  heading: Holding of property, etc
+  page: 8
+- path: CHAPTER IV > 27 > (1)
+- path: CHAPTER IV > 27 > (2)
+- path: CHAPTER IV > 27 > (3)
+- path: CHAPTER IV > 27 > (4)
+- path: CHAPTER IV > 28
+  heading: All employees to be insured
+  page: 8
+- path: CHAPTER IV > 28 > (1)
+- path: CHAPTER IV > 28 > (2)
+- path: CHAPTER IV > 29
+  heading: Contributions
+  page: 9
+- path: CHAPTER IV > 29 > (1)
+- path: CHAPTER IV > 29 > (2)
+- path: CHAPTER IV > 29 > (3)
+- path: CHAPTER IV > 29 > (4)
+- path: CHAPTER IV > 30
+  heading: Administrative expenses
+  page: 9
+- path: CHAPTER IV > 31
+  heading: Provisions as to payment of contributions by employer, etc
+  page: 9
+- path: CHAPTER IV > 31 > (1)
+- path: CHAPTER IV > 31 > (2)
+- path: CHAPTER IV > 31 > (3)
+- path: CHAPTER IV > 31 > (4)
+- path: CHAPTER IV > 31 > (5)
+- path: CHAPTER IV > 31 > (6)
+- path: CHAPTER IV > 31 > (7)
+- path: CHAPTER IV > 31 > (8)
+- path: CHAPTER IV > 31 > (9)
+- path: CHAPTER IV > 32
+  heading: Benefits
+  page: 10
+- path: CHAPTER IV > 32 > (1)
+- path: CHAPTER IV > 32 > (2)
+- path: CHAPTER IV > 32 > (3)
+- path: CHAPTER IV > 32 > (4)
+- path: CHAPTER IV > 33
+  heading: Corporation’s power to promote measures for health, etc., of Insured Persons
+  page: 10
+- path: CHAPTER IV > 34
+  heading: Presumption as to accident arising in course of employment
+  page: 11
+- path: CHAPTER IV > 34 > (1)
+- path: CHAPTER IV > 34 > (2)
+- path: CHAPTER IV > 34 > (3)
+- path: CHAPTER IV > 34 > (4)
+- path: CHAPTER IV > 35
+  heading: Accidents happening while acting in breach of law, etc
+  page: 11
+- path: CHAPTER IV > 36
+  heading: Occupational disease
+  page: 11
+- path: CHAPTER IV > 36 > (1)
+- path: CHAPTER IV > 36 > (2)
+- path: CHAPTER IV > 36 > (3)
+- path: CHAPTER IV > 37
+  heading: References to medical board
+  page: 12
+- path: CHAPTER IV > 37 > (1)
+- path: CHAPTER IV > 37 > (2)
+- path: CHAPTER IV > 37 > (3)
+- path: CHAPTER IV > 37 > (4)
+- path: CHAPTER IV > 37 > (5)
+- path: CHAPTER IV > 37 > (6)
+- path: CHAPTER IV > 37 > (7)
+- path: CHAPTER IV > 38
+  heading: Dependants' benefit
+  page: 13
+- path: CHAPTER IV > 38 > (1)
+- path: CHAPTER IV > 38 > (2)
+- path: CHAPTER IV > 38 > (3)
+- path: CHAPTER IV > 38 > (4)
+- path: CHAPTER IV > 39
+  heading: Medical benefit
+  page: 13
+- path: CHAPTER IV > 39 > (1)
+- path: CHAPTER IV > 39 > (2)
+- path: CHAPTER IV > 39 > (3)
+- path: CHAPTER IV > 39 > (4)
+- path: CHAPTER IV > 39 > (5)
+- path: CHAPTER IV > 39 > (6)
+- path: CHAPTER IV > 40
+  heading: Provision of medical treatment by State Government or by Corporation
+  page: 14
+- path: CHAPTER IV > 40 > (1)
+- path: CHAPTER IV > 40 > (2)
+- path: CHAPTER IV > 40 > (3)
+- path: CHAPTER IV > 40 > (4)
+- path: CHAPTER IV > 40 > (5)
+- path: CHAPTER IV > 40 > (6)
+- path: CHAPTER IV > 40 > (7)
+- path: CHAPTER IV > 40 > (8)
+- path: CHAPTER IV > 40 > (9)
+- path: CHAPTER IV > 40 > (10)
+- path: CHAPTER IV > 40 > (11)
+- path: CHAPTER IV > 40 > (12)
+- path: CHAPTER IV > 41
+  heading: General provisions as to benefits
+  page: 15
+- path: CHAPTER IV > 41 > (1)
+- path: CHAPTER IV > 41 > (2)
+- path: CHAPTER IV > 41 > (3)

@@ -1,0 +1,33 @@
+source: cgst_rules_2017_part_b_forms
+window:
+  pages:
+  - 1
+  - 15
+  unit: form; parts and named blocks
+basis: Checked by reading. Forms are field tables; scored on form identifier, rule
+  reference, printed title, Parts and named blocks. REG-03 continues past the window.
+outline:
+- path: FORM GST REG-01
+  heading: Application for Registration
+  page: 1
+- path: FORM GST REG-01 > [See rule 8(1)]
+- path: FORM GST REG-01 > Part –A
+  page: 1
+- path: FORM GST REG-01 > Part –B
+  page: 1
+- path: FORM GST REG-01 > Verification (by authorised signatory)
+  page: 8
+- path: FORM GST REG-01 > Declaration for Authorised Signatory (Separate for each
+    signatory)
+  page: 11
+- path: FORM GST REG-01 > Instructions for submission of Application for Registration.
+  page: 12
+- path: FORM GST REG-02
+  heading: Acknowledgment
+  page: 14
+- path: FORM GST REG-02 > [See rule 8(5)]
+- path: FORM GST REG-03
+  heading: Notice for Seeking Additional Information / Clarification / Documents relating
+    to Application for <<Registration/Amendment/Cancellation >>
+  page: 15
+- path: FORM GST REG-03 > [See rule 9(2)]
