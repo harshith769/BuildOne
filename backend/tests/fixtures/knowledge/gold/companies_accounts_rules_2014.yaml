@@ -1,0 +1,102 @@
+source: companies_accounts_rules_2014
+window:
+  pages:
+  - 1
+  - 24
+  unit: rule; forms by identifier and printed title
+basis: Rules 1-13 checked by reading; forms AOC-I to AOC-4 scored on identifier and
+  printed title only (their bodies are field lists and tables). "Annexure" has no
+  heading of its own.
+outline:
+- path: '1'
+  heading: Short title and commencement
+  page: 1
+- path: 1 > (1)
+- path: 1 > (2)
+- path: '2'
+  heading: Definitions
+  page: 1
+- path: 2 > (1)
+- path: 2 > (2)
+- path: '3'
+  heading: Manner of books of account to be kept in electronic mode
+  page: 1
+- path: 3 > (1)
+- path: 3 > (2)
+- path: 3 > (3)
+- path: 3 > (4)
+- path: 3 > (5)
+- path: 3 > (6)
+- path: '4'
+  heading: Conditions regarding maintenance and inspection of certain financial information
+    by directors
+  page: 2
+- path: 4 > (1)
+- path: 4 > (2)
+- path: 4 > (3)
+- path: 4 > (4)
+- path: '5'
+  heading: Form of Statement containing salient features of financial statements of
+    subsidiaries
+  page: 2
+- path: '6'
+  heading: Manner of consolidation of accounts
+  page: 2
+- path: '7'
+  heading: Transitional provisions with respect to Accounting Standards
+  page: 2
+- path: 7 > (1)
+- path: 7 > (2)
+- path: '8'
+  heading: Matters to be included in Board’s report
+  page: 2
+- path: 8 > (1)
+- path: 8 > (2)
+- path: 8 > (3)
+- path: 8 > (4)
+- path: 8 > (5)
+- path: '9'
+  heading: Disclosures about CSR Policy
+  page: 3
+- path: '10'
+  heading: Statement containing salient features of financial statements
+  page: 3
+- path: '11'
+  heading: Manner of circulation of financial statements in certain cases
+  page: 3
+- path: '12'
+  heading: Filing of financial statements and fees to be paid thereon
+  page: 3
+- path: 12 > (1)
+- path: 12 > (2)
+- path: 12 > (3)
+- path: '13'
+  heading: Companies required to appoint internal auditor
+  page: 4
+- path: 13 > (1)
+- path: 13 > (2)
+- path: Annexure
+  page: 4
+- path: Form AOC-I
+  heading: Statement containing salient features of the financial statement of subsidiaries/associate
+    companies/joint ventures
+  page: 4
+- path: Form AOC-I > Part “A”
+  heading: Subsidiaries
+  page: 4
+- path: Form AOC-I > Part “B”
+  heading: Associates and Joint Ventures
+  page: 5
+- path: Form No. AOC-2
+  heading: Form for disclosure of particulars of contracts/arrangements entered into
+    by the company with related parties referred to in sub-section (1) of section
+    188 of the Companies Act, 2013 including certain arms length transactions under
+    third proviso thereto
+  page: 6
+- path: FORM AOC-3
+  heading: Statement containing salient features of Balance Sheet and Profit and Loss
+    Account
+  page: 7
+- path: FORM AOC-4
+  heading: Form for filing financial statement and other documents with the Registrar
+  page: 11

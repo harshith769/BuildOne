@@ -1,0 +1,205 @@
+source: companies_act_2013
+window:
+  pages:
+  - 1
+  - 15
+  unit: section
+basis: Draft from the text layer, every section heading checked against the page text;
+  s.11 is printed as omitted. This India Code copy predates the 2019 insertion of
+  s.10A (note for report).
+outline:
+- path: CHAPTER II
+  heading: INCORPORATION OF COMPANY AND MATTERS INCIDENTAL THERETO
+  page: 1
+- path: CHAPTER II > 3
+  heading: Formation of company
+  page: 1
+- path: CHAPTER II > 3 > (1)
+- path: CHAPTER II > 3 > (2)
+- path: CHAPTER II > 4
+  heading: Memorandum
+  page: 1
+- path: CHAPTER II > 4 > (1)
+- path: CHAPTER II > 4 > (2)
+- path: CHAPTER II > 4 > (3)
+- path: CHAPTER II > 4 > (4)
+- path: CHAPTER II > 4 > (5)
+- path: CHAPTER II > 4 > (6)
+- path: CHAPTER II > 4 > (7)
+- path: CHAPTER II > 5
+  heading: Articles
+  page: 3
+- path: CHAPTER II > 5 > (1)
+- path: CHAPTER II > 5 > (2)
+- path: CHAPTER II > 5 > (3)
+- path: CHAPTER II > 5 > (4)
+- path: CHAPTER II > 5 > (5)
+- path: CHAPTER II > 5 > (6)
+- path: CHAPTER II > 5 > (7)
+- path: CHAPTER II > 5 > (8)
+- path: CHAPTER II > 5 > (9)
+- path: CHAPTER II > 6
+  heading: Act to override memorandum, articles, etc
+  page: 3
+- path: CHAPTER II > 7
+  heading: Incorporation of company
+  page: 4
+- path: CHAPTER II > 7 > (1)
+- path: CHAPTER II > 7 > (2)
+- path: CHAPTER II > 7 > (3)
+- path: CHAPTER II > 7 > (4)
+- path: CHAPTER II > 7 > (5)
+- path: CHAPTER II > 7 > (6)
+- path: CHAPTER II > 7 > (7)
+- path: CHAPTER II > 8
+  heading: Formulation of companies with charitable objects, etc
+  page: 5
+- path: CHAPTER II > 8 > (1)
+- path: CHAPTER II > 8 > (2)
+- path: CHAPTER II > 8 > (3)
+- path: CHAPTER II > 8 > (4)
+- path: CHAPTER II > 8 > (5)
+- path: CHAPTER II > 8 > (6)
+- path: CHAPTER II > 8 > (7)
+- path: CHAPTER II > 8 > (8)
+- path: CHAPTER II > 8 > (9)
+- path: CHAPTER II > 8 > (10)
+- path: CHAPTER II > 8 > (11)
+- path: CHAPTER II > 9
+  heading: Effect of registration
+  page: 6
+- path: CHAPTER II > 10
+  heading: Effect of memorandum and articles
+  page: 6
+- path: CHAPTER II > 10 > (1)
+- path: CHAPTER II > 10 > (2)
+- path: CHAPTER II > 11
+  heading: '[Commencement of business, etc.] (omitted)'
+  page: 6
+- path: CHAPTER II > 12
+  heading: Registered office of company
+  page: 7
+- path: CHAPTER II > 12 > (1)
+- path: CHAPTER II > 12 > (2)
+- path: CHAPTER II > 12 > (3)
+- path: CHAPTER II > 12 > (4)
+- path: CHAPTER II > 12 > (5)
+- path: CHAPTER II > 12 > (6)
+- path: CHAPTER II > 12 > (7)
+- path: CHAPTER II > 12 > (8)
+- path: CHAPTER II > 13
+  heading: Alteration of memorandum
+  page: 8
+- path: CHAPTER II > 13 > (1)
+- path: CHAPTER II > 13 > (2)
+- path: CHAPTER II > 13 > (3)
+- path: CHAPTER II > 13 > (4)
+- path: CHAPTER II > 13 > (5)
+- path: CHAPTER II > 13 > (6)
+- path: CHAPTER II > 13 > (7)
+- path: CHAPTER II > 13 > (8)
+- path: CHAPTER II > 13 > (9)
+- path: CHAPTER II > 13 > (10)
+- path: CHAPTER II > 13 > (11)
+- path: CHAPTER II > 14
+  heading: Alteration of articles
+  page: 9
+- path: CHAPTER II > 14 > (1)
+- path: CHAPTER II > 14 > (2)
+- path: CHAPTER II > 14 > (3)
+- path: CHAPTER II > 15
+  heading: Alteration of memorandum or articles to be noted in every copy
+  page: 9
+- path: CHAPTER II > 15 > (1)
+- path: CHAPTER II > 15 > (2)
+- path: CHAPTER II > 16
+  heading: Rectification of name of company
+  page: 9
+- path: CHAPTER II > 16 > (1)
+- path: CHAPTER II > 16 > (2)
+- path: CHAPTER II > 16 > (3)
+- path: CHAPTER II > 17
+  heading: Copies of memorandum, articles, etc., to be given to members
+  page: 10
+- path: CHAPTER II > 17 > (1)
+- path: CHAPTER II > 17 > (2)
+- path: CHAPTER II > 18
+  heading: Conversion of companies already registered
+  page: 10
+- path: CHAPTER II > 18 > (1)
+- path: CHAPTER II > 18 > (2)
+- path: CHAPTER II > 18 > (3)
+- path: CHAPTER II > 19
+  heading: Subsidiary company not to hold shares in its holding company
+  page: 10
+- path: CHAPTER II > 19 > (1)
+- path: CHAPTER II > 19 > (2)
+- path: CHAPTER II > 20
+  heading: Service of documents
+  page: 10
+- path: CHAPTER II > 20 > (1)
+- path: CHAPTER II > 20 > (2)
+- path: CHAPTER II > 21
+  heading: Authentication of documents, proceedings and contracts
+  page: 11
+- path: CHAPTER II > 22
+  heading: Execution of bills of exchange, etc
+  page: 11
+- path: CHAPTER II > 22 > (1)
+- path: CHAPTER II > 22 > (2)
+- path: CHAPTER II > 22 > (3)
+- path: CHAPTER III
+  heading: PROSPECTUS AND ALLOTMENT OF SECURITIES
+  page: 11
+- path: CHAPTER III > PART I
+  heading: Public offer
+  page: 11
+- path: CHAPTER III > 23
+  heading: Public offer and private placement
+  page: 11
+- path: CHAPTER III > 23 > (1)
+- path: CHAPTER III > 23 > (2)
+- path: CHAPTER III > 24
+  heading: Power of Securities and Exchange Board to regulate issue and transfer of
+    securities, etc
+  page: 12
+- path: CHAPTER III > 24 > (1)
+- path: CHAPTER III > 24 > (2)
+- path: CHAPTER III > 25
+  heading: Document containing offer of securities for sale to be deemed prospectus
+  page: 12
+- path: CHAPTER III > 25 > (1)
+- path: CHAPTER III > 25 > (2)
+- path: CHAPTER III > 25 > (3)
+- path: CHAPTER III > 25 > (4)
+- path: CHAPTER III > 26
+  heading: Matters to be stated in prospectus
+  page: 13
+- path: CHAPTER III > 26 > (1)
+- path: CHAPTER III > 26 > (2)
+- path: CHAPTER III > 26 > (3)
+- path: CHAPTER III > 26 > (4)
+- path: CHAPTER III > 26 > (5)
+- path: CHAPTER III > 26 > (6)
+- path: CHAPTER III > 26 > (7)
+- path: CHAPTER III > 26 > (8)
+- path: CHAPTER III > 26 > (9)
+- path: CHAPTER III > 27
+  heading: Variation in terms of contract or objects in prospectus
+  page: 15
+- path: CHAPTER III > 27 > (1)
+- path: CHAPTER III > 27 > (2)
+- path: CHAPTER III > 28
+  heading: Offer of sale of shares by certain members of company
+  page: 15
+- path: CHAPTER III > 28 > (1)
+- path: CHAPTER III > 28 > (2)
+- path: CHAPTER III > 28 > (3)
+- path: CHAPTER III > 29
+  heading: Public offer of securities to be in dematerialised form
+  page: 15
+- path: CHAPTER III > 29 > (1)
+- path: CHAPTER III > 29 > (2)
+- path: CHAPTER III > 30
+  heading: Advertisement of prospectus
+  page: 15

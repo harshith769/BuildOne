@@ -1,0 +1,21 @@
+source: mca_general_circular
+window:
+  pages:
+  - 1
+  - 1
+  unit: paragraph
+basis: 'Read from the page. Identifier: General Circular no. 04/2026 (no printed heading).
+  First paragraph unnumbered, then 2-4 as printed.'
+outline:
+- path: General Circular no. 04/2026
+  page: 1
+- path: Subject
+  heading: Extension of Companies Compliance Facilitation Scheme, 2026 (CCFS-2026)
+    up to 15th September 2026-reg.
+  page: 1
+- path: ¶1
+- path: '2'
+- path: '3'
+- path: '4'
+- path: Copy forwarded to > i
+- path: Copy forwarded to > ii

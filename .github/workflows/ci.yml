@@ -57,6 +57,16 @@ jobs:
         with:
           enable-cache: true
           cache-dependency-glob: backend/uv.lock
+      # Parser tests and the retrieval gate OCR pages (S1: Tesseract 5, eng + hin).
+      - name: Install Tesseract
+        run: sudo apt-get update -q && sudo apt-get install -y -q tesseract-ocr tesseract-ocr-eng tesseract-ocr-hin
+      # Pinned embedding model files (SHA-256 checked) and cached fixture passage vectors (tests/support/retrieval_gate.py).
+      - name: Cache embedding model and fixture vectors
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/buildone
+          key: buildone-models-${{ hashFiles('backend/app/modules/knowledge/embedding/files.py', 'backend/tests/fixtures/knowledge/fixtures.yaml', 'backend/app/modules/knowledge/parsing/**', 'backend/app/modules/knowledge/chunking.py') }}
+          restore-keys: buildone-models-
       - name: Install (Python version from backend/.python-version)
         working-directory: backend
         run: uv sync --frozen
@@ -70,6 +80,8 @@ jobs:
         run: make test
       - name: Rules
         run: make rules-validate eval-rules
+      - name: Retrieval gate (fixture corpus, recall@10 >= 90%)
+        run: make eval-retrieval
       - name: Dependency audit
         run: make audit
 

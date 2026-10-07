@@ -1,0 +1,38 @@
+source: esic_circular
+window:
+  pages:
+  - 1
+  - 2
+  unit: paragraph
+  language: bilingual, interleaved
+basis: Read from the page images. Hindi and English paragraphs alternate; bilingual
+  headings are scored on their English part as printed. File no. printed "N-15011/4/2021-P&D"
+  in the body but "N-15011/4/2022-P and D" in the page header (both as printed).
+tables:
+- page: 2
+  in: ¶3 (status)
+  header: null
+  rows: 4
+  note: no printed header row; bilingual category label and count per row
+outline:
+- path: N-15011/4/2021-P&D
+  page: 1
+- path: परिपत्र / Circular
+  page: 1
+- path: Subject
+  heading: Notification under Section 1(4) of Code on Social Security in the entire
+    areas of 25 districts of Madhya Pradesh -reg.
+  page: 1
+- path: ¶1 (hi)
+- path: ¶2 (hi)
+- path: ¶1 (en)
+- path: ¶2 (en)
+- path: ¶3 (status)
+  heading: 'the current status of the notified/non-notified districts is as under:'
+  page: 1
+- path: संलग्नक
+  page: 2
+- path: सेवा में > 1
+  page: 2
+- path: सेवा में > 2
+  page: 2

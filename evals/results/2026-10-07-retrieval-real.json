@@ -1,0 +1,47 @@
+[
+ {
+  "date": "2026-10-07",
+  "suite": "retrieval",
+  "corpus": "real",
+  "labels": "../evals/retrieval.jsonl",
+  "answerable": 50,
+  "evaluated": 47,
+  "skipped": [
+   "r009",
+   "r040",
+   "r047"
+  ],
+  "unresolved_labels": [],
+  "recall@10": 0.8085106382978723,
+  "recall@5": 0.6595744680851063,
+  "mrr": 0.5020932759355788,
+  "by_group": {
+   "synthetic": {
+    "n": 47,
+    "recall@10": 0.8085106382978723
+   }
+  },
+  "partial": {
+   "n": 4,
+   "recall@10": 0.75
+  },
+  "misses": [
+   "r002",
+   "r012",
+   "r014",
+   "r024",
+   "r027",
+   "r029",
+   "r030",
+   "r035",
+   "r037"
+  ],
+  "latency_ms": {
+   "p50": 21.7,
+   "p95": 27.1,
+   "n": 57,
+   "includes": "glossary + query embedding (sidecar over its socket) + database"
+  },
+  "passed": false
+ }
+]

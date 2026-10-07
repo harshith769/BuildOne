@@ -47,6 +47,18 @@ class Settings(BaseSettings):
 
     sentry_dsn: str = ""
 
+    # Object storage (S3 API: SeaweedFS locally and in CI, R2 in production). Raw official sources live in
+    # `s3_bucket_sources` (data-pipeline.md §5).
+    s3_endpoint_url: str = ""
+    s3_access_key_id: str = ""
+    s3_secret_access_key: SecretStr = SecretStr("")
+    s3_bucket_sources: str = "buildone-sources"
+    s3_region: str = "auto"
+
+    # Query-embedder sidecar (ADR-0014): the API sends question text over this Unix socket.
+    embedder_socket: str = "/run/embedder/embedder.sock"
+    embedder_timeout_seconds: float = Field(default=2.0, gt=0, le=30)
+
     @model_validator(mode="after")
     def _check_identity(self) -> Self:
         if self.environment == "production":

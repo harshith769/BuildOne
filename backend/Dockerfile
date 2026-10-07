@@ -6,12 +6,14 @@ COPY --from=ghcr.io/astral-sh/uv:0.12 /uv /usr/local/bin/uv
 WORKDIR /app
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy UV_PROJECT_ENVIRONMENT=/opt/venv UV_PYTHON_DOWNLOADS=never
 COPY pyproject.toml uv.lock .python-version ./
-RUN uv sync --frozen --no-dev --no-install-project
+# --no-default-groups: neither dev tools nor the `ingest` group (PyMuPDF) go into the server image.
+RUN uv sync --frozen --no-default-groups --no-install-project
 COPY . .
-RUN uv sync --frozen --no-dev
+RUN uv sync --frozen --no-default-groups
 
 FROM python:3.14-slim
-RUN useradd --create-home --uid 10001 app
+RUN useradd --create-home --uid 10001 app \
+ && mkdir -p /models /run/embedder && chown app:app /models /run/embedder  # embedder volumes start owned by app
 WORKDIR /app
 COPY --from=build --chown=app:app /opt/venv /opt/venv
 COPY --from=build --chown=app:app /app /app

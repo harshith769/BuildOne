@@ -1,0 +1,39 @@
+source: cbdt_tds_notification
+window:
+  pages:
+  - 1
+  - 4
+  unit: document part
+basis: 'Read from the page. Gazette extract (pages 7-10 of the issue): G.S.R. 830(E),
+  22 Sep 2026, Income-tax (Fifth Amendment) Rules, 2026 under the Income-tax Act,
+  2025. No printed heading on the rules, so blocks are scored on identifiers. The
+  quoted Schedule E and Notes are inserted text and not part of the outline; Schedule
+  E spans pages 2-3 (detection only).'
+tables:
+- page: 2
+  in: 2 > (d)
+  rows: null
+  note: Schedule E, multi-page; detection only
+- page: 4
+  in: 2 > (d)
+  header:
+  - Sl. No.
+  - Status
+  - Description
+  rows: 10
+outline:
+- path: G.S.R. 830(E)
+  page: 1
+- path: '1'
+  page: 1
+- path: 1 > (1)
+- path: 1 > (2)
+- path: '2'
+  page: 1
+- path: 2 > (a)
+- path: 2 > (b)
+- path: 2 > (c)
+- path: 2 > (d)
+  page: 1
+- path: No. 121/2026 / F. No. 370142/29/2026-TPL
+  page: 4

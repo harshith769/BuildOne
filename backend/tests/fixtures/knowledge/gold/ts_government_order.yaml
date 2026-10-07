@@ -1,0 +1,42 @@
+source: ts_government_order
+window:
+  pages:
+  - 1
+  - 2
+  unit: paragraph
+basis: 'Read from the page. "A B S T R A C T" is printed above the G.O. number. ORDER:
+  first paragraph unnumbered, then 2. and 3. Amendment items printed (1), (2), (3)
+  then 3., 4., 5. (as printed).'
+outline:
+- path: ABSTRACT
+  heading: The Telangana Shops and Establishments Rules, 1990 – Certain amendments
+    and revision of the rates of the Fees – Notification – Orders – Issued.
+  page: 1
+- path: G.O.MS.No. 54
+  page: 1
+- path: Read > 1
+- path: Read > 2
+- path: Read > 3
+- path: ORDER
+  page: 1
+- path: ORDER > 2
+- path: ORDER > 3
+- path: NOTIFICATION
+  page: 1
+- path: AMENDMENT
+  page: 1
+- path: AMENDMENT > (1)
+- path: AMENDMENT > (2)
+- path: AMENDMENT > (3)
+- path: AMENDMENT > (3) > (i)
+- path: AMENDMENT > (3) > (ii)
+- path: AMENDMENT > 3
+  page: 2
+- path: AMENDMENT > 4
+  page: 2
+- path: AMENDMENT > 5
+  page: 2
+- path: To
+  page: 2
+- path: Copy to
+  page: 2

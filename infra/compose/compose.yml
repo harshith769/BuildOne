@@ -55,10 +55,40 @@ services:
     env_file: .env
     environment:
       DATABASE_URL: ${DATABASE_URL_API}
+      EMBEDDER_SOCKET: /run/embedder/embedder.sock
+    volumes:
+      - embedder-socket:/run/embedder
     depends_on:
       postgres: { condition: service_healthy }
     mem_limit: 450m
     networks: [internal, edge]
+
+  # Query-embedder sidecar (ADR-0014): holds bge-base-en-v1.5 int8 so the API process never loads a model.
+  # Question text only, over a Unix socket; no network. S2: 269 MiB peak RSS, p95 21 ms at 2 threads.
+  embedder:
+    image: ${BACKEND_IMAGE:-buildone-backend:local}
+    restart: unless-stopped
+    command: ["python", "-m", "app.modules.knowledge.embedding.sidecar"]
+    environment:
+      EMBEDDER_SOCKET: /run/embedder/embedder.sock
+      EMBEDDER_THREADS: "2"
+      EMBEDDER_MODEL_DIR: /models
+    volumes:
+      - embedder-socket:/run/embedder
+      - embedder-models:/models
+    mem_limit: 300m
+    network_mode: none  # never needs the network: the model files come from the embedder-models step
+
+  # One-shot: download the pinned model files (SHA-256 checked) into the volume. `make dev` runs it.
+  embedder-models:
+    image: ${BACKEND_IMAGE:-buildone-backend:local}
+    profiles: ["setup"]
+    command: ["python", "-c", "from app.modules.knowledge.embedding.files import ensure_model_files; ensure_model_files()"]
+    environment:
+      EMBEDDER_MODEL_DIR: /models
+    volumes:
+      - embedder-models:/models
+    networks: [edge]
 
   worker:
     image: ${BACKEND_IMAGE:-buildone-backend:local}
@@ -99,6 +129,8 @@ services:
 
 volumes:
   pgdata:
+  embedder-socket:
+  embedder-models:
 
 networks:
   internal:

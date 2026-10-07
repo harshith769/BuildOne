@@ -1,0 +1,11 @@
+# Gitleaks config: default rules plus one narrow allowlist.
+[extend]
+useDefault = true
+
+# SHA-256 pins of the public embedding model files (bge-base-en-v1.5), not secrets.
+# Both conditions must hold: only this file, and only a bare 64-hex digest.
+[allowlist]
+description = "Embedding model file SHA-256 pins"
+condition = "AND"
+paths = ['''^backend/app/modules/knowledge/embedding/files\.py$''']
+regexes = ['''^[0-9a-f]{64}$''']

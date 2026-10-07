@@ -1,0 +1,236 @@
+source: epf_scheme_2026
+window:
+  pages:
+  - 1
+  - 15
+  unit: paragraph
+  language: English half of the bilingual Gazette
+basis: 'Written by hand from the page text (structural lines listed, each checked
+  in context). Level: chapter > paragraph > sub-paragraph; clauses not scored. Separators
+  vary (".−", ". —", none for para 8); Chapter IV is printed "CHAPTER-IV". Para 26
+  continues past the window.'
+tables:
+- page: 4
+  in: CHAPTER III > 9 > (6)
+  header:
+  - Sl. No.
+  - Name of country
+  rows: 1
+- page: 13
+  in: CHAPTER V > 23 > (1)
+  header:
+  - Sl. No.
+  - Period of default
+  - Rate of Damages (Percentage of arrears per month)
+  rows: 3
+outline:
+- path: CHAPTER I
+  heading: Preliminary
+  page: 1
+- path: CHAPTER I > 1
+  heading: Short title, commencement and application
+  page: 1
+- path: CHAPTER I > 1 > (1)
+- path: CHAPTER I > 1 > (2)
+- path: CHAPTER I > 1 > (3)
+- path: CHAPTER I > 2
+  heading: Definitions
+  page: 1
+- path: CHAPTER I > 2 > (1)
+- path: CHAPTER I > 2 > (2)
+- path: CHAPTER II
+  heading: OFFICERS OF CENTRAL BOARD
+  page: 3
+- path: CHAPTER II > 3
+  heading: Central Provident Fund Commissioner and Financial Adviser and Chief Accounts
+    Officer
+  page: 3
+- path: CHAPTER II > 4
+  heading: Regional and local offices
+  page: 3
+- path: CHAPTER II > 5
+  heading: Appointment of officers and employees of the Central Board
+  page: 3
+- path: CHAPTER II > 6
+  heading: Information of appointment to Central Board
+  page: 3
+- path: CHAPTER II > 7
+  heading: Administrative and financial powers of Commissioner
+  page: 3
+- path: CHAPTER II > 7 > (1)
+- path: CHAPTER II > 7 > (2)
+- path: CHAPTER II > 8
+  heading: Staff Provident Fund and other benefits
+  page: 3
+- path: CHAPTER III
+  heading: MEMBERSHIP
+  page: 3
+- path: CHAPTER III > 9
+  heading: Membership of the fund
+  page: 3
+- path: CHAPTER III > 9 > (1)
+- path: CHAPTER III > 9 > (2)
+- path: CHAPTER III > 9 > (3)
+- path: CHAPTER III > 9 > (4)
+- path: CHAPTER III > 9 > (5)
+- path: CHAPTER III > 9 > (6)
+- path: CHAPTER III > 10
+  heading: Retention of membership
+  page: 4
+- path: CHAPTER III > 10 > (1)
+- path: CHAPTER III > 10 > (2)
+- path: CHAPTER III > 11
+  heading: Resolution of questions about membership
+  page: 4
+- path: CHAPTER III > 11 > (1)
+- path: CHAPTER III > 11 > (2)
+- path: CHAPTER III > 11 > (3)
+- path: CHAPTER IV
+  heading: EXEMPTION
+  page: 5
+- path: CHAPTER IV > 12
+  heading: Exemption of employee or class of employees
+  page: 5
+- path: CHAPTER IV > 12 > (1)
+- path: CHAPTER IV > 12 > (2)
+- path: CHAPTER IV > 12 > (3)
+- path: CHAPTER IV > 13
+  heading: Terms and conditions after exemption
+  page: 5
+- path: CHAPTER IV > 13 > (1)
+- path: CHAPTER IV > 13 > (2)
+- path: CHAPTER IV > 13 > (3)
+- path: CHAPTER IV > 13 > (4)
+- path: CHAPTER IV > 13 > (5)
+- path: CHAPTER IV > 13 > (6)
+- path: CHAPTER IV > 13 > (7)
+- path: CHAPTER IV > 13 > (8)
+- path: CHAPTER IV > 13 > (9)
+- path: CHAPTER IV > 13 > (10)
+- path: CHAPTER IV > 13 > (11)
+- path: CHAPTER IV > 13 > (12)
+- path: CHAPTER IV > 13 > (13)
+- path: CHAPTER IV > 13 > (14)
+- path: CHAPTER IV > 13 > (15)
+- path: CHAPTER IV > 13 > (16)
+- path: CHAPTER IV > 13 > (17)
+- path: CHAPTER IV > 13 > (18)
+- path: CHAPTER IV > 13 > (19)
+- path: CHAPTER IV > 13 > (20)
+- path: CHAPTER IV > 13 > (21)
+- path: CHAPTER IV > 13 > (22)
+- path: CHAPTER IV > 13 > (23)
+- path: CHAPTER IV > 13 > (24)
+- path: CHAPTER IV > 13 > (25)
+- path: CHAPTER IV > 13 > (26)
+- path: CHAPTER IV > 13 > (27)
+- path: CHAPTER IV > 13 > (28)
+- path: CHAPTER IV > 13 > (29)
+- path: CHAPTER IV > 13 > (30)
+- path: CHAPTER IV > 13 > (31)
+- path: CHAPTER IV > 13 > (32)
+- path: CHAPTER IV > 13 > (33)
+- path: CHAPTER IV > 13 > (34)
+- path: CHAPTER IV > 13 > (35)
+- path: CHAPTER IV > 13 > (36)
+- path: CHAPTER IV > 13 > (37)
+- path: CHAPTER IV > 13 > (38)
+- path: CHAPTER IV > 13 > (39)
+- path: CHAPTER IV > 13 > (40)
+- path: CHAPTER IV > 14
+  heading: Composition of board of trustees
+  page: 8
+- path: CHAPTER IV > 14 > (1)
+- path: CHAPTER IV > 14 > (2)
+- path: CHAPTER IV > 14 > (3)
+- path: CHAPTER IV > 14 > (4)
+- path: CHAPTER IV > 14 > (5)
+- path: CHAPTER IV > 14 > (6)
+- path: CHAPTER IV > 14 > (7)
+- path: CHAPTER IV > 14 > (8)
+- path: CHAPTER IV > 14 > (9)
+- path: CHAPTER IV > 14 > (10)
+- path: CHAPTER IV > 15
+  heading: Extension of exemption
+  page: 8
+- path: CHAPTER IV > 15 > (1)
+- path: CHAPTER IV > 15 > (2)
+- path: CHAPTER IV > 15 > (3)
+- path: CHAPTER IV > 15 > (4)
+- path: CHAPTER IV > 15 > (5)
+- path: CHAPTER IV > 16
+  heading: Cessation and surrender of exemption
+  page: 9
+- path: CHAPTER IV > 16 > (1)
+- path: CHAPTER IV > 16 > (2)
+- path: CHAPTER IV > 16 > (3)
+- path: CHAPTER IV > 16 > (4)
+- path: CHAPTER IV > 16 > (5)
+- path: CHAPTER IV > 16 > (6)
+- path: CHAPTER IV > 17
+  heading: Transfer of accumulation from existing provident fund
+  page: 9
+- path: CHAPTER IV > 17 > (1)
+- path: CHAPTER IV > 17 > (2)
+- path: CHAPTER IV > 17 > (3)
+- path: CHAPTER IV > 17 > (4)
+- path: CHAPTER V
+  heading: CONTRIBUTIONS AND CHARGES
+  page: 10
+- path: CHAPTER V > 18
+  heading: Contributions
+  page: 10
+- path: CHAPTER V > 18 > (1)
+- path: CHAPTER V > 18 > (2)
+- path: CHAPTER V > 18 > (3)
+- path: CHAPTER V > 18 > (4)
+- path: CHAPTER V > 18 > (5)
+- path: CHAPTER V > 19
+  heading: Additional voluntary contributions
+  page: 11
+- path: CHAPTER V > 19 > (1)
+- path: CHAPTER V > 19 > (2)
+- path: CHAPTER V > 19 > (3)
+- path: CHAPTER V > 19 > (4)
+- path: CHAPTER V > 19 > (5)
+- path: CHAPTER V > 20
+  heading: Responsibility for payment of contribution
+  page: 11
+- path: CHAPTER V > 20 > (1)
+- path: CHAPTER V > 20 > (2)
+- path: CHAPTER V > 20 > (3)
+- path: CHAPTER V > 20 > (4)
+- path: CHAPTER V > 21
+  heading: Employer's share not to be deducted from members
+  page: 12
+- path: CHAPTER V > 22
+  heading: Recovery of member’s share of Contributions
+  page: 12
+- path: CHAPTER V > 22 > (1)
+- path: CHAPTER V > 22 > (2)
+- path: CHAPTER V > 22 > (3)
+- path: CHAPTER V > 23
+  heading: Levy and Recovery of damages for default
+  page: 12
+- path: CHAPTER V > 23 > (1)
+- path: CHAPTER V > 23 > (2)
+- path: CHAPTER VI
+  heading: RESPONSIBILITIES, FORMS & RETURNS
+  page: 13
+- path: CHAPTER VI > 24
+  heading: Duties of employers
+  page: 13
+- path: CHAPTER VI > 24 > (1)
+- path: CHAPTER VI > 24 > (2)
+- path: CHAPTER VI > 24 > (3)
+- path: CHAPTER VI > 24 > (4)
+- path: CHAPTER VI > 25
+  heading: Duties of employee
+  page: 15
+- path: CHAPTER VI > 25 > (1)
+- path: CHAPTER VI > 25 > (2)
+- path: CHAPTER VI > 25 > (3)
+- path: CHAPTER VI > 26
+  heading: Employer to furnish particulars of ownership and authorised signatories
+  page: 15
+- path: CHAPTER VI > 26 > (1)

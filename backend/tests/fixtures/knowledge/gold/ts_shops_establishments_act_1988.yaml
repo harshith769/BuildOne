@@ -1,0 +1,145 @@
+source: ts_shops_establishments_act_1988
+window:
+  pages:
+  - 1
+  - 1
+  unit: section
+  format: html
+  scope: Chapters I-IV (ss. 1-19)
+  stop: ^CHAPTER\s*-?\s*V\b
+basis: Official HTML (labour.telangana.gov.in), one page. Chapter I is printed "CHAPTER
+  - I". Headings as printed at each section (bold, before ":-"), which differ from
+  the Arrangement of Sections list (e.g. s.6 "revocation" vs "provocation"). Text
+  is the 1988 Andhra Pradesh enactment, not consolidated. Sub-section (1) is printed
+  on the heading line for ss. 3, 4, 6, 7, 9, 12, 15, 16, 19. s.2's numbered definitions
+  are scored as its sub-entries.
+outline:
+- path: CHAPTER I
+  heading: Preliminary
+  page: 1
+- path: CHAPTER I > 1
+  heading: Short title, extent and commencement and application
+  page: 1
+- path: CHAPTER I > 1 > (1)
+- path: CHAPTER I > 1 > (2)
+- path: CHAPTER I > 1 > (3)
+- path: CHAPTER I > 1 > (4)
+- path: CHAPTER I > 2
+  heading: Definitions
+  page: 1
+- path: CHAPTER I > 2 > (1)
+- path: CHAPTER I > 2 > (2)
+- path: CHAPTER I > 2 > (3)
+- path: CHAPTER I > 2 > (4)
+- path: CHAPTER I > 2 > (5)
+- path: CHAPTER I > 2 > (6)
+- path: CHAPTER I > 2 > (7)
+- path: CHAPTER I > 2 > (8)
+- path: CHAPTER I > 2 > (9)
+- path: CHAPTER I > 2 > (10)
+- path: CHAPTER I > 2 > (11)
+- path: CHAPTER I > 2 > (12)
+- path: CHAPTER I > 2 > (13)
+- path: CHAPTER I > 2 > (14)
+- path: CHAPTER I > 2 > (15)
+- path: CHAPTER I > 2 > (16)
+- path: CHAPTER I > 2 > (17)
+- path: CHAPTER I > 2 > (18)
+- path: CHAPTER I > 2 > (19)
+- path: CHAPTER I > 2 > (20)
+- path: CHAPTER I > 2 > (21)
+- path: CHAPTER I > 2 > (22)
+- path: CHAPTER I > 2 > (23)
+- path: CHAPTER I > 2 > (24)
+- path: CHAPTER I > 2 > (25)
+- path: CHAPTER II
+  heading: Registration of Establishments
+  page: 1
+- path: CHAPTER II > 3
+  heading: Registration of establishments
+  page: 1
+- path: CHAPTER II > 3 > (1)
+- path: CHAPTER II > 3 > (2)
+- path: CHAPTER II > 3 > (3)
+- path: CHAPTER II > 3 > (4)
+- path: CHAPTER II > 3 > (5)
+- path: CHAPTER II > 4
+  heading: Renewal of registration certificates
+  page: 1
+- path: CHAPTER II > 4 > (1)
+- path: CHAPTER II > 4 > (2)
+- path: CHAPTER II > 4 > (3)
+- path: CHAPTER II > 5
+  heading: Revocation or suspension of the Registration certificate
+  page: 1
+- path: CHAPTER II > 6
+  heading: Appeal against revocation or suspension of the Registration certificate
+  page: 1
+- path: CHAPTER II > 6 > (1)
+- path: CHAPTER II > 6 > (2)
+- path: CHAPTER III
+  heading: Shops
+  page: 1
+- path: CHAPTER III > 7
+  heading: Opening and closing hours of shops
+  page: 1
+- path: CHAPTER III > 7 > (1)
+- path: CHAPTER III > 7 > (2)
+- path: CHAPTER III > 8
+  heading: Selling outside prohibited before opening and after closing hours of shops
+  page: 1
+- path: CHAPTER III > 9
+  heading: Daily and weekly hours of work in shops
+  page: 1
+- path: CHAPTER III > 9 > (1)
+- path: CHAPTER III > 9 > (2)
+- path: CHAPTER III > 9 > (3)
+- path: CHAPTER III > 10
+  heading: Interval for rest
+  page: 1
+- path: CHAPTER III > 11
+  heading: Spread over periods of work
+  page: 1
+- path: CHAPTER III > 12
+  heading: Closing of shops and grant of holidays
+  page: 1
+- path: CHAPTER III > 12 > (1)
+- path: CHAPTER III > 12 > (2)
+- path: CHAPTER III > 12 > (3)
+- path: CHAPTER III > 12 > (4)
+- path: CHAPTER III > 12 > (5)
+- path: CHAPTER III > 12 > (6)
+- path: CHAPTER III > 13
+  heading: Closing of shops in public interest during special occasions
+  page: 1
+- path: CHAPTER IV
+  heading: Establishments other than Shops
+  page: 1
+- path: CHAPTER IV > 14
+  heading: Application of this Chapter to establishments other than shops
+  page: 1
+- path: CHAPTER IV > 15
+  heading: Opening and closing hours
+  page: 1
+- path: CHAPTER IV > 15 > (1)
+- path: CHAPTER IV > 15 > (2)
+- path: CHAPTER IV > 16
+  heading: Daily and weekly hours of work
+  page: 1
+- path: CHAPTER IV > 16 > (1)
+- path: CHAPTER IV > 16 > (2)
+- path: CHAPTER IV > 16 > (3)
+- path: CHAPTER IV > 17
+  heading: Interval for rest
+  page: 1
+- path: CHAPTER IV > 18
+  heading: Spread over of periods of work
+  page: 1
+- path: CHAPTER IV > 19
+  heading: Holidays
+  page: 1
+- path: CHAPTER IV > 19 > (1)
+- path: CHAPTER IV > 19 > (2)
+- path: CHAPTER IV > 19 > (3)
+- path: CHAPTER IV > 19 > (4)
+- path: CHAPTER IV > 19 > (5)

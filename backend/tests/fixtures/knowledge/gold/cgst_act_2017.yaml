@@ -1,0 +1,105 @@
+source: cgst_act_2017
+window:
+  pages:
+  - 1
+  - 15
+  unit: section
+  context: opens inside s.2 (Definitions), clause (99)
+basis: 'Draft from the text layer, checked by reading. Inserted sub-sections printed
+  in brackets: s.7 [(1A)], s.10 [(2A)]. A wrapped "sub-section (1) [or sub-section
+  (2A)" on p.29 is not a sub-section. Section and sub-section numbers often sit alone
+  on their line.'
+outline:
+- path: CHAPTER I > 2 > (99)
+- path: CHAPTER I > 2 > (100)
+- path: CHAPTER I > 2 > (101)
+- path: CHAPTER I > 2 > (102)
+- path: CHAPTER I > 2 > (103)
+- path: CHAPTER I > 2 > (104)
+- path: CHAPTER I > 2 > (105)
+- path: CHAPTER I > 2 > (106)
+- path: CHAPTER I > 2 > (107)
+- path: CHAPTER I > 2 > (108)
+- path: CHAPTER I > 2 > (109)
+- path: CHAPTER I > 2 > (110)
+- path: CHAPTER I > 2 > (111)
+- path: CHAPTER I > 2 > (112)
+- path: CHAPTER I > 2 > (113)
+- path: CHAPTER I > 2 > (114)
+- path: CHAPTER I > 2 > (115)
+- path: CHAPTER I > 2 > (116)
+- path: CHAPTER I > 2 > (117)
+- path: CHAPTER I > 2 > (118)
+- path: CHAPTER I > 2 > (119)
+- path: CHAPTER I > 2 > (120)
+- path: CHAPTER I > 2 > (121)
+- path: CHAPTER II
+  heading: ADMINISTRATION
+  page: 4
+- path: CHAPTER II > 3
+  heading: Officers under this Act
+  page: 4
+- path: CHAPTER II > 4
+  heading: Appointment of Officers
+  page: 4
+- path: CHAPTER II > 4 > (1)
+- path: CHAPTER II > 4 > (2)
+- path: CHAPTER II > 5
+  heading: Powers of officers under GST
+  page: 5
+- path: CHAPTER II > 5 > (1)
+- path: CHAPTER II > 5 > (2)
+- path: CHAPTER II > 5 > (3)
+- path: CHAPTER II > 5 > (4)
+- path: CHAPTER II > 6
+  heading: Authorisation of officers of State tax or Union territory tax as proper
+    officer in certain circumstances
+  page: 5
+- path: CHAPTER II > 6 > (1)
+- path: CHAPTER II > 6 > (2)
+- path: CHAPTER II > 6 > (3)
+- path: CHAPTER III
+  heading: LEVY  AND COLLECTION OF TAX
+  page: 7
+- path: CHAPTER III > 7
+  heading: Scope of supply
+  page: 7
+- path: CHAPTER III > 7 > (1)
+- path: CHAPTER III > 7 > (1A)
+- path: CHAPTER III > 7 > (2)
+- path: CHAPTER III > 7 > (3)
+- path: CHAPTER III > 8
+  heading: Tax liability on composite and mixed supplies
+  page: 8
+- path: CHAPTER III > 9
+  heading: Levy and collection
+  page: 8
+- path: CHAPTER III > 9 > (1)
+- path: CHAPTER III > 9 > (2)
+- path: CHAPTER III > 9 > (3)
+- path: CHAPTER III > 9 > (4)
+- path: CHAPTER III > 9 > (5)
+- path: CHAPTER III > 10
+  heading: Composition levy
+  page: 9
+- path: CHAPTER III > 10 > (1)
+- path: CHAPTER III > 10 > (2)
+- path: CHAPTER III > 10 > (2A)
+- path: CHAPTER III > 10 > (3)
+- path: CHAPTER III > 10 > (4)
+- path: CHAPTER III > 10 > (5)
+- path: CHAPTER III > 11
+  heading: Power to grant Exemption
+  page: 13
+- path: CHAPTER III > 11 > (1)
+- path: CHAPTER III > 11 > (2)
+- path: CHAPTER III > 11 > (3)
+- path: CHAPTER IV
+  heading: TIME  AND  VALUE  OF SUPPLY
+  page: 15
+- path: CHAPTER IV > 12
+  heading: Time of Supply of Goods
+  page: 15
+- path: CHAPTER IV > 12 > (1)
+- path: CHAPTER IV > 12 > (2)
+- path: CHAPTER IV > 12 > (3)

@@ -1,0 +1,34 @@
+source: companies_amendment_gazette
+window:
+  pages:
+  - 1
+  - 2
+  unit: rule
+  language: English part scored; Hindi part reported
+basis: 'Read from the page. Bilingual Gazette (G.S.R. 300(E), 21 Apr 2026): the Hindi
+  text layer uses a legacy font encoding (e.g. "सा.का.जन." for सा.का.नि.), so Hindi
+  is compared OCR vs text layer, not scored for structure.'
+tables:
+- page: 2
+  in: '2'
+  header:
+  - Fee for Form No. DIR-3 KYC Web
+  - Amount (Rs.)
+  rows: 3
+outline:
+- path: G.S.R. 300(E)
+  page: 2
+- path: '1'
+  heading: Short title and commencement
+  page: 2
+- path: 1 > (1)
+- path: 1 > (2)
+- path: '2'
+  page: 2
+- path: 2 > (VII)
+  heading: FEE FOR FILING Form No. DIR-3 KYC Web under Rule 12A of the Companies (Appointment
+    and Qualification of Directors) Rules, 2014,–
+- path: 2 > (VII) > (i)
+- path: 2 > (VII) > (ii)
+- path: 2 > (VII) > (iii)
+- path: Note

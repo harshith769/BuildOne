@@ -1,11 +1,222 @@
-# Official source registry — docs/data-pipeline.md §3. Only government sources. Fill during M0/M5.
-# - key: companies_act_2013
-#   title: "Companies Act, 2013"
-#   authority: "Ministry of Corporate Affairs"
-#   jurisdiction: IN
-#   doc_type: act
-#   official_url: "<official government URL>"
-#   effective_from: YYYY-MM-DD
-#   published_on: null
-#   notes: ""
-[]
+# Official source registry — docs/data-pipeline.md §3. Only government sources; metadata only, never regulatory facts.
+# A source comes from `download_url`, or by hand (`manual`: where to get it) into knowledge/inbox/<key>.<ext>
+# (pdf, htm, or zip for an `html_bundle`: index.html plus one page per section). `bilingual` makes OCR use eng+hin;
+# `scanned` marks image-only sources (every OCR'd page below confidence 93 waits for review, data-pipeline §7).
+# Initial MVP set = the S1/S2 corpus (docs/spikes/S1-parsing.md). Gap sources are tracked in docs/status.md.
+- key: companies_act_2013
+  title: "Companies Act, 2013"
+  authority: "Ministry of Corporate Affairs"
+  jurisdiction: IN
+  doc_type: act
+  official_url: "https://www.indiacode.nic.in/handle/123456789/2114"
+  manual: "India Code handle 123456789/2114 -> PDF (current consolidated text, with s.10A)"
+  effective_from: 2013-08-30
+  published_on: 2013-08-30
+  notes: "s.1 in force on publication; other sections were notified later. The S1 copy predates s.10A (inserted 2019): replace it with the current consolidated text when India Code responds (it returned 504/timeouts 6-7 Oct 2026)."
+- key: companies_incorporation_rules_2014
+  title: "Companies (Incorporation) Rules, 2014"
+  authority: "Ministry of Corporate Affairs"
+  jurisdiction: IN
+  doc_type: rules
+  official_url: "https://www.mca.gov.in/"
+  manual: "mca.gov.in -> Acts & Rules -> Companies Rules -> Companies (Incorporation) Rules, 2014 (PDF, G.S.R. 250(E))"
+  effective_from: 2014-04-01
+  published_on: 2014-03-31
+  notes: "G.S.R. 250(E), 31 Mar 2014; rule 1(2): in force 1 Apr 2014. As notified (not consolidated)."
+- key: companies_accounts_rules_2014
+  title: "Companies (Accounts) Rules, 2014"
+  authority: "Ministry of Corporate Affairs"
+  jurisdiction: IN
+  doc_type: rules
+  official_url: "https://www.mca.gov.in/"
+  manual: "mca.gov.in -> Acts & Rules -> Companies Rules -> Companies (Accounts) Rules, 2014 (PDF, G.S.R. 239(E), with annexed forms)"
+  effective_from: 2014-04-01
+  published_on: 2014-03-31
+  notes: "G.S.R. 239(E), 31 Mar 2014; rule 1(2): in force 1 Apr 2014. As notified."
+- key: mca_general_circular
+  title: "MCA General Circular No. 04/2026 (CCFS-2026 extension)"
+  authority: "Ministry of Corporate Affairs"
+  jurisdiction: IN
+  doc_type: circular
+  official_url: "https://www.mca.gov.in/"
+  manual: "mca.gov.in -> Circulars -> General Circular No. 04/2026 (PDF)"
+  effective_from: 2026-08-31
+  published_on: 2026-08-31
+- key: companies_amendment_gazette
+  title: "MCA Notification G.S.R. 300(E), 21 Apr 2026 (Companies (Registration Offices and Fees) Amendment Rules, 2026)"
+  authority: "Ministry of Corporate Affairs / Gazette of India"
+  jurisdiction: IN
+  doc_type: notification
+  official_url: "https://egazette.gov.in/"
+  manual: "egazette.gov.in -> search G.S.R. 300(E), 21 Apr 2026 (bilingual Gazette PDF)"
+  bilingual: true
+  effective_from: 2026-04-21
+  published_on: 2026-04-21
+  notes: "In force on publication in the Gazette (rule 1(2))."
+- key: dpiit_startup_notification_2019
+  title: "DPIIT Notification G.S.R. 127(E), 19 Feb 2019 (startup definition)"
+  authority: "Department for Promotion of Industry and Internal Trade"
+  jurisdiction: IN
+  doc_type: notification
+  official_url: "https://www.startupindia.gov.in/"
+  manual: "startupindia.gov.in or dpiit.gov.in -> G.S.R. 127(E) dated 19 Feb 2019 (bilingual Gazette PDF)"
+  bilingual: true
+  effective_from: 2019-02-19
+  published_on: 2019-02-19
+- key: cgst_act_2017
+  title: "Central Goods and Services Tax Act, 2017"
+  authority: "Central Board of Indirect Taxes and Customs"
+  jurisdiction: IN
+  doc_type: act
+  official_url: "https://cbic-gst.gov.in/"
+  download_url: "https://cbic-gst.gov.in/pdf/CGST-Act-Updated-31082021.pdf"
+  effective_from: 2017-06-22
+  published_on: 2017-04-12
+  notes: "CBIC consolidated text updated to 31 Aug 2021. s.1(3): commencement by notification (first provisions 22 Jun 2017, most on 1 Jul 2017)."
+- key: cgst_rules_2017_part_a
+  title: "Central Goods and Services Tax Rules, 2017"
+  authority: "Central Board of Indirect Taxes and Customs"
+  jurisdiction: IN
+  doc_type: rules
+  official_url: "https://cbic-gst.gov.in/"
+  download_url: "https://cbic-gst.gov.in/pdf/24092021-CGST-Rules-2017-Part-A-Rules.pdf"
+  effective_from: 2017-06-22
+  published_on: 2017-06-19
+  notes: "Part A (rules), CBIC consolidated text of 24 Sep 2021; rule 1(2): in force 22 Jun 2017."
+- key: cgst_rules_2017_part_b_forms
+  title: "Central Goods and Services Tax Rules, 2017, Part B (Forms)"
+  authority: "Central Board of Indirect Taxes and Customs"
+  jurisdiction: IN
+  doc_type: form_instructions
+  official_url: "https://cbic-gst.gov.in/"
+  download_url: "https://cbic-gst.gov.in/pdf/24092021-CGST-Rules-2017-Part-B-Forms.pdf"
+  effective_from: 2017-06-22
+  published_on: 2017-06-19
+  notes: "CBIC consolidated forms of 24 Sep 2021."
+- key: income_tax_act_2025
+  title: "Income-tax Act, 2025"
+  authority: "Ministry of Law and Justice / Gazette of India"
+  jurisdiction: IN
+  doc_type: act
+  official_url: "https://egazette.gov.in/"
+  manual: "egazette.gov.in -> Gazette of India Extraordinary, Part II s.1, No. 35, 21 Aug 2025 (Act 30 of 2025)"
+  effective_from: 2026-04-01
+  published_on: 2025-08-21
+  notes: "As enacted, before the Finance Act 2026 amendments; s.1(3): in force 1 Apr 2026. Replace with a consolidated text when one is published."
+- key: cbdt_tds_notification
+  title: "CBDT Notification 121/2026, G.S.R. 830(E) (Income-tax (Fifth Amendment) Rules, 2026)"
+  authority: "Central Board of Direct Taxes"
+  jurisdiction: IN
+  doc_type: notification
+  official_url: "https://www.incometax.gov.in/"
+  download_url: "https://www.incometax.gov.in/iec/foportal/sites/default/files/2026-09/Notification-no-121-2026.pdf"
+  bilingual: true
+  effective_from: 2026-10-01
+  published_on: 2026-09-22
+  notes: "Rule 1(2): in force 1 Oct 2026."
+- key: cbdt_circular
+  title: "CBDT Circular No. 2/2026 (TDS certificate timeline, quarter ending 31 Dec 2025)"
+  authority: "Central Board of Direct Taxes"
+  jurisdiction: IN
+  doc_type: circular
+  official_url: "https://www.incometax.gov.in/"
+  manual: "incometaxindia.gov.in -> Circulars -> Circular No. 2/2026, F. No. 275/10/2026-IT(B)"
+  scanned: true
+  effective_from: 2026-03-25
+  published_on: 2026-03-25
+  notes: "Image page with the publisher's OCR layer (reviewed like a scan). Issued under the Income-tax Act, 1961 for a FY 2025-26 transitional matter."
+- key: code_on_social_security_2020
+  title: "Code on Social Security, 2020"
+  authority: "Ministry of Law and Justice / Gazette of India"
+  jurisdiction: IN
+  doc_type: act
+  official_url: "https://egazette.gov.in/"
+  download_url: "https://egazette.gov.in/WriteReadData/2020/222111.pdf"
+  effective_from: 2025-11-21
+  published_on: 2020-09-29
+  notes: "As enacted (No. 36 of 2020). In force from 21 Nov 2025 (S.O. 5319(E)); s.164 commenced only in part. India Code copy returned 504 on 6-7 Oct 2026."
+- key: epf_scheme_2026
+  title: "Employees' Provident Funds Scheme, 2026"
+  authority: "Ministry of Labour and Employment / Gazette of India"
+  jurisdiction: IN
+  doc_type: rules
+  official_url: "https://egazette.gov.in/"
+  manual: "egazette.gov.in -> G.S.R. 525(E), 29 Jun 2026 (bilingual Gazette PDF)"
+  bilingual: true
+  effective_from: 2026-06-29
+  published_on: 2026-06-29
+  notes: "A scheme under s.15(1)(a) of the Code on Social Security; in force on Gazette publication (para 1(2)). Supersedes the EPF Scheme, 1952."
+- key: esic_circular
+  title: "ESIC Circular N-15011/4/2021-P&D, 28 Sep 2026 (Code coverage in 25 Madhya Pradesh districts)"
+  authority: "Employees' State Insurance Corporation"
+  jurisdiction: IN
+  doc_type: circular
+  official_url: "https://esic.gov.in/"
+  manual: "esic.gov.in -> Circulars -> N-15011/4/2021-P&D dated 28 Sep 2026 (PDF)"
+  bilingual: true
+  effective_from: 2026-09-28
+  published_on: 2026-09-28
+  notes: "Coverage takes effect from 1 Oct 2026 per the circular. Hindi text layer has a broken ToUnicode map."
+- key: epfo_circular
+  title: "EPFO Circular INV-11/2/2021-INV, 3 Jun 2022 (interest rate 2021-22)"
+  authority: "Employees' Provident Fund Organisation"
+  jurisdiction: IN
+  doc_type: circular
+  official_url: "https://www.epfindia.gov.in/"
+  manual: "epfindia.gov.in -> Circulars -> INV-11/2/2021-INV dated 3 Jun 2022 (scanned PDF)"
+  bilingual: true
+  scanned: true
+  effective_from: 2022-06-03
+  published_on: 2022-06-03
+  notes: "Applies the EPF Scheme, 1952 (superseded by the 2026 Scheme): historical text."
+- key: ts_shops_establishments_act_1988
+  title: "Telangana Shops and Establishments Act, 1988"
+  authority: "Government of Telangana, Labour Department"
+  jurisdiction: IN-TG
+  doc_type: act
+  official_url: "https://labour.telangana.gov.in/content/ActsRules/TELANGANASHOPSANDESTABLISHMENTSACT1988.htm"
+  download_url: "https://labour.telangana.gov.in/content/ActsRules/TELANGANASHOPSANDESTABLISHMENTSACT1988.htm"
+  format: html
+  effective_from: 1988-01-01
+  notes: "TODO(owner): commencement date is not printed in the HTML; 1988-01-01 stands for the year of enactment only. Text as enacted for Andhra Pradesh (Act 20 of 1988), not consolidated; India Code PDF returned 504."
+- key: ts_professional_tax_act_1987
+  title: "Telangana Tax on Professions, Trades, Callings and Employments Act, 1987"
+  authority: "Government of Telangana, Commercial Taxes Department"
+  jurisdiction: IN-TG
+  doc_type: act
+  official_url: "https://www.tgct.gov.in/tgportal/AllActs/APPT/APPTAct.aspx"
+  manual: "tgct.gov.in -> AllActs -> APPT: save the index page as index.html plus every section page, zip them as <key>.zip"
+  format: html_bundle
+  effective_from: 1987-01-01
+  notes: "TODO(owner): commencement date is not printed in the HTML; 1987-01-01 stands for the year of enactment only. AP text as enacted with insertion notes; sections only (no Schedules)."
+- key: ts_government_order
+  title: "Telangana G.O.Ms.No. 54, LET&F (Lab) Department, 3 Aug 2016 (Shops Rules amendments and fees)"
+  authority: "Government of Telangana, LET&F Department"
+  jurisdiction: IN-TG
+  doc_type: notification
+  official_url: "https://labour.telangana.gov.in/"
+  download_url: "https://labour.telangana.gov.in/content/gos/2016LETF_MS54.PDF"
+  effective_from: 2016-08-03
+  published_on: 2016-08-03
+- key: ts_shops_holidays_2021_scan
+  title: "Telangana Labour Department Lr. No. H2/4860/2020 (holidays for 2021 under the Shops Act)"
+  authority: "Government of Telangana, Labour Department"
+  jurisdiction: IN-TG
+  doc_type: notification
+  official_url: "https://labour.telangana.gov.in/"
+  download_url: "https://labour.telangana.gov.in/content/cos/CamScanner%2012-17-2020%2013.41.30.pdf"
+  scanned: true
+  effective_from: 2020-12-16
+  published_on: 2020-12-16
+  notes: "Phone scan, 7 pages, no text layer: every page is reviewed before activation."
+- key: ts_shops_registration_memo_2019_scan
+  title: "Telangana LET&F Memo No. 337, 8 Mar 2019 (registration and renewal, BRAP 2019)"
+  authority: "Government of Telangana, LET&F Department"
+  jurisdiction: IN-TG
+  doc_type: circular
+  official_url: "https://labour.telangana.gov.in/"
+  download_url: "https://labour.telangana.gov.in/content/gos/Memo%20337%20%20dated.%2008.03.2019%20dispensing%20with%20renewals%20one%20day%20registration.pdf"
+  scanned: true
+  effective_from: 2019-03-08
+  published_on: 2019-03-08
+  notes: "Scan, 1 page, no text layer."

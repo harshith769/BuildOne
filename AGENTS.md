@@ -61,6 +61,8 @@ Targets become functional during milestone M1 ([docs/build-plan.md](docs/build-p
 - **Calendar feed URLs carry a capability token** (documented exception); never log full request URLs for `/v1/calendar/`.
 - **PyYAML parses dates into `date` objects**: normalise to ISO strings before JSON Schema validation.
 - **`rules/examples/` is illustrative**, not legal content; the scenario runner ignores it.
+- **Knowledge rows are never deleted**: a new source version supersedes the old one (`status`, `is_active`); DELETE is revoked so citations keep resolving. Ingestion (PyMuPDF, Tesseract, uv group `ingest`) runs only on the laptop and in CI, never in the server image; the embedding model loads only in the ingestion CLI and the embedder sidecar.
+- **Retrieval labels use M5 tree paths** (`<source_key>::CHAPTER II > 3 > (1)`); a parser or tree change that moves paths fails `make eval-retrieval` with "unresolved label" — fix the label, don't loosen the matcher.
 
 ## Related documentation
 
