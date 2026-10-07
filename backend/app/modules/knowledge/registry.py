@@ -24,6 +24,8 @@ OFFICIAL_SUFFIXES = (".gov.in", ".nic.in")
 Jurisdiction = Literal["IN", "IN-TG"]
 DocType = Literal["act", "rules", "notification", "circular", "form_instructions", "guidance"]
 SourceFormat = Literal["pdf", "html", "html_bundle"]
+# The rule schema's `domain` values (rules/schema): a search can be restricted to the sources of one domain.
+Domain = Literal["company_law", "gst", "income_tax", "labour", "state_tg", "launchpad"]
 
 
 def is_official_url(url: str) -> bool:
@@ -43,6 +45,7 @@ class Source(BaseModel):
     authority: str = Field(min_length=2)
     jurisdiction: Jurisdiction
     doc_type: DocType
+    domains: tuple[Domain, ...] = Field(min_length=1)
     official_url: str
     download_url: str | None = None
     manual: str | None = None

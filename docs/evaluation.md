@@ -15,7 +15,7 @@
 | Suite | Location | Format | Runs | Uses AI |
 |---|---|---|---|---|
 | Rule scenarios | `rules/scenarios/*.yaml` | [rules-engine.md §9](rules-engine.md#9-scenarios-rulesscenariosyaml) | Every PR (CI) | No |
-| Retrieval | `evals/retrieval.jsonl` | `{id, question, filters, relevant_chunk_keys[], answerable, source: synthetic\|interview, domain, note}`; optional `partial`, `conflict` + `match: every_source`, `near_miss`, `s2_chunk_keys` (the S2 key a re-keyed label replaced) ([S2](spikes/S2-retrieval.md#labelled-set-evalsretrievaljsonl)) | Every PR (CI gate on the fixture corpus); the real corpus on demand | No (local embeddings) |
+| Retrieval | `evals/retrieval.jsonl` | `{id, question, filters, relevant_chunk_keys[], answerable, source: synthetic\|interview, domain, domain_basis, note}` (`domain` = the rule-schema domain a rule on the question would carry, set from the question's intent, never from where its label sits; `out_of_scope` for the rest; `domain_basis` says why); optional `partial`, `conflict` + `match: every_source`, `near_miss`, `s2_chunk_keys` (the S2 key a re-keyed label replaced) ([S2](spikes/S2-retrieval.md#labelled-set-evalsretrievaljsonl)) | Every PR (CI gate on the fixture corpus); the real corpus on demand | No (local embeddings) |
 | Fact extraction | `evals/fact_extract.jsonl` | `{id, text, expected: {key: value}}` | On demand + before prompt/model change | Yes |
 | Clause extraction | `evals/clause_extract/` | Synthetic contracts + `expected.json` | On demand | Yes |
 | Copilot Q&A | `evals/copilot.jsonl` | `{id, question, org_facts, answerable: bool, required_chunk_keys[], key_points[]}` | On demand | Yes |

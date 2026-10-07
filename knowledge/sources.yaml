@@ -1,6 +1,7 @@
 # Official source registry — docs/data-pipeline.md §3. Only government sources; metadata only, never regulatory facts.
 # A source comes from `download_url`, or by hand (`manual`: where to get it) into knowledge/inbox/<key>.<ext>
 # (pdf, htm, or zip for an `html_bundle`: index.html plus one page per section). `bilingual` makes OCR use eng+hin;
+# `domains` = the rule-schema domains whose rules cite this source, by the document's own subject (search filter, M5.1).
 # `scanned` marks image-only sources (every OCR'd page below confidence 93 waits for review, data-pipeline §7).
 # Initial MVP set = the S1/S2 corpus (docs/spikes/S1-parsing.md). Gap sources are tracked in docs/status.md.
 - key: companies_act_2013
@@ -8,6 +9,7 @@
   authority: "Ministry of Corporate Affairs"
   jurisdiction: IN
   doc_type: act
+  domains: [company_law]
   official_url: "https://www.indiacode.nic.in/handle/123456789/2114"
   manual: "India Code handle 123456789/2114 -> PDF (current consolidated text, with s.10A)"
   effective_from: 2013-08-30
@@ -18,6 +20,7 @@
   authority: "Ministry of Corporate Affairs"
   jurisdiction: IN
   doc_type: rules
+  domains: [company_law]
   official_url: "https://www.mca.gov.in/"
   manual: "mca.gov.in -> Acts & Rules -> Companies Rules -> Companies (Incorporation) Rules, 2014 (PDF, G.S.R. 250(E))"
   effective_from: 2014-04-01
@@ -28,6 +31,7 @@
   authority: "Ministry of Corporate Affairs"
   jurisdiction: IN
   doc_type: rules
+  domains: [company_law]
   official_url: "https://www.mca.gov.in/"
   manual: "mca.gov.in -> Acts & Rules -> Companies Rules -> Companies (Accounts) Rules, 2014 (PDF, G.S.R. 239(E), with annexed forms)"
   effective_from: 2014-04-01
@@ -38,6 +42,7 @@
   authority: "Ministry of Corporate Affairs"
   jurisdiction: IN
   doc_type: circular
+  domains: [company_law]
   official_url: "https://www.mca.gov.in/"
   manual: "mca.gov.in -> Circulars -> General Circular No. 04/2026 (PDF)"
   effective_from: 2026-08-31
@@ -47,6 +52,7 @@
   authority: "Ministry of Corporate Affairs / Gazette of India"
   jurisdiction: IN
   doc_type: notification
+  domains: [company_law]
   official_url: "https://egazette.gov.in/"
   manual: "egazette.gov.in -> search G.S.R. 300(E), 21 Apr 2026 (bilingual Gazette PDF)"
   bilingual: true
@@ -58,6 +64,7 @@
   authority: "Department for Promotion of Industry and Internal Trade"
   jurisdiction: IN
   doc_type: notification
+  domains: [company_law, income_tax]  # startup recognition (entity status) + the s.56 angel-tax exemption it is issued for
   official_url: "https://www.startupindia.gov.in/"
   manual: "startupindia.gov.in or dpiit.gov.in -> G.S.R. 127(E) dated 19 Feb 2019 (bilingual Gazette PDF)"
   bilingual: true
@@ -68,6 +75,7 @@
   authority: "Central Board of Indirect Taxes and Customs"
   jurisdiction: IN
   doc_type: act
+  domains: [gst]
   official_url: "https://cbic-gst.gov.in/"
   download_url: "https://cbic-gst.gov.in/pdf/CGST-Act-Updated-31082021.pdf"
   effective_from: 2017-06-22
@@ -78,6 +86,7 @@
   authority: "Central Board of Indirect Taxes and Customs"
   jurisdiction: IN
   doc_type: rules
+  domains: [gst]
   official_url: "https://cbic-gst.gov.in/"
   download_url: "https://cbic-gst.gov.in/pdf/24092021-CGST-Rules-2017-Part-A-Rules.pdf"
   effective_from: 2017-06-22
@@ -88,6 +97,7 @@
   authority: "Central Board of Indirect Taxes and Customs"
   jurisdiction: IN
   doc_type: form_instructions
+  domains: [gst]
   official_url: "https://cbic-gst.gov.in/"
   download_url: "https://cbic-gst.gov.in/pdf/24092021-CGST-Rules-2017-Part-B-Forms.pdf"
   effective_from: 2017-06-22
@@ -98,6 +108,7 @@
   authority: "Ministry of Law and Justice / Gazette of India"
   jurisdiction: IN
   doc_type: act
+  domains: [income_tax]
   official_url: "https://egazette.gov.in/"
   manual: "egazette.gov.in -> Gazette of India Extraordinary, Part II s.1, No. 35, 21 Aug 2025 (Act 30 of 2025)"
   effective_from: 2026-04-01
@@ -108,6 +119,7 @@
   authority: "Central Board of Direct Taxes"
   jurisdiction: IN
   doc_type: notification
+  domains: [income_tax]
   official_url: "https://www.incometax.gov.in/"
   download_url: "https://www.incometax.gov.in/iec/foportal/sites/default/files/2026-09/Notification-no-121-2026.pdf"
   bilingual: true
@@ -119,6 +131,7 @@
   authority: "Central Board of Direct Taxes"
   jurisdiction: IN
   doc_type: circular
+  domains: [income_tax]
   official_url: "https://www.incometax.gov.in/"
   manual: "incometaxindia.gov.in -> Circulars -> Circular No. 2/2026, F. No. 275/10/2026-IT(B)"
   scanned: true
@@ -130,6 +143,7 @@
   authority: "Ministry of Law and Justice / Gazette of India"
   jurisdiction: IN
   doc_type: act
+  domains: [labour]
   official_url: "https://egazette.gov.in/"
   download_url: "https://egazette.gov.in/WriteReadData/2020/222111.pdf"
   effective_from: 2025-11-21
@@ -140,6 +154,7 @@
   authority: "Ministry of Labour and Employment / Gazette of India"
   jurisdiction: IN
   doc_type: rules
+  domains: [labour]
   official_url: "https://egazette.gov.in/"
   manual: "egazette.gov.in -> G.S.R. 525(E), 29 Jun 2026 (bilingual Gazette PDF)"
   bilingual: true
@@ -151,6 +166,7 @@
   authority: "Employees' State Insurance Corporation"
   jurisdiction: IN
   doc_type: circular
+  domains: [labour]
   official_url: "https://esic.gov.in/"
   manual: "esic.gov.in -> Circulars -> N-15011/4/2021-P&D dated 28 Sep 2026 (PDF)"
   bilingual: true
@@ -162,6 +178,7 @@
   authority: "Employees' Provident Fund Organisation"
   jurisdiction: IN
   doc_type: circular
+  domains: [labour]
   official_url: "https://www.epfindia.gov.in/"
   manual: "epfindia.gov.in -> Circulars -> INV-11/2/2021-INV dated 3 Jun 2022 (scanned PDF)"
   bilingual: true
@@ -174,6 +191,7 @@
   authority: "Government of Telangana, Labour Department"
   jurisdiction: IN-TG
   doc_type: act
+  domains: [state_tg]
   official_url: "https://labour.telangana.gov.in/content/ActsRules/TELANGANASHOPSANDESTABLISHMENTSACT1988.htm"
   download_url: "https://labour.telangana.gov.in/content/ActsRules/TELANGANASHOPSANDESTABLISHMENTSACT1988.htm"
   format: html
@@ -184,6 +202,7 @@
   authority: "Government of Telangana, Commercial Taxes Department"
   jurisdiction: IN-TG
   doc_type: act
+  domains: [state_tg]
   official_url: "https://www.tgct.gov.in/tgportal/AllActs/APPT/APPTAct.aspx"
   manual: "tgct.gov.in -> AllActs -> APPT: save the index page as index.html plus every section page, zip them as <key>.zip"
   format: html_bundle
@@ -194,6 +213,7 @@
   authority: "Government of Telangana, LET&F Department"
   jurisdiction: IN-TG
   doc_type: notification
+  domains: [state_tg]
   official_url: "https://labour.telangana.gov.in/"
   download_url: "https://labour.telangana.gov.in/content/gos/2016LETF_MS54.PDF"
   effective_from: 2016-08-03
@@ -203,6 +223,7 @@
   authority: "Government of Telangana, Labour Department"
   jurisdiction: IN-TG
   doc_type: notification
+  domains: [state_tg]
   official_url: "https://labour.telangana.gov.in/"
   download_url: "https://labour.telangana.gov.in/content/cos/CamScanner%2012-17-2020%2013.41.30.pdf"
   scanned: true
@@ -214,6 +235,7 @@
   authority: "Government of Telangana, LET&F Department"
   jurisdiction: IN-TG
   doc_type: circular
+  domains: [state_tg]
   official_url: "https://labour.telangana.gov.in/"
   download_url: "https://labour.telangana.gov.in/content/gos/Memo%20337%20%20dated.%2008.03.2019%20dispensing%20with%20renewals%20one%20day%20registration.pdf"
   scanned: true
