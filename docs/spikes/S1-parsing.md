@@ -207,13 +207,25 @@ Each parser cell shows recall / precision / order errors. Precision only exists 
 | Official HTML | **stdlib `html.parser`** with list numbering | 99.5% recall, 100% precision. Prefer HTML when India Code's PDF is unavailable; record that the text may be unconsolidated. |
 | Docling | **Not used** | Over the RAM budget, 29× slower, and it merges Gazette pages into single paragraphs. Revisit only for scanned tables (Follow-ups). |
 
-**OCR review threshold:** a page is sent to manual review before activation when its **mean Tesseract word confidence is below 93**.
+**OCR review threshold (provisional):** a page is sent to manual review before activation when its **mean Tesseract word confidence is below 93**.
 - **On the reference pages:** it flags the two pages with CER > 2% (90.9 and 90.7) and passes the memo (93.8, 1.0%).
 - **Inside a page that passes:** lines with mean confidence below **90** are marked low-confidence in the ingestion report. On the reference pages, that catches 14 of 21 wrong lines and flags 8 of 80 correct ones.
 - **Review load:** 9 of the 10 scanned pages in this corpus (all of the holiday scan and the EPFO circular). That is about 5% of the 182 window pages, so in practice almost every scan is reviewed by hand.
-- **Caution:** the threshold is fitted on only 3 typed pages; re-check it when M5 ingests more scans.
+- **Provisional:** 93 (and the line value 90) is fitted on only 3 typed pages. Re-check both against more typed scan pages in M5 before relying on them.
 - **Hindi:** `hin` OCR is never trusted for numbers.
 - **Bilingual pages:** citations use the English text. Hindi Gazette text layers use a legacy font encoding and are not indexed.
+
+### Where M5 ingestion runs, and Docling for scans
+
+- **Where it runs:** ingestion is a CLI job on the developer laptop, not on the 2 GB server ([data-pipeline.md §2](../data-pipeline.md#2-where-it-runs)). The server only embeds the query text. So the 2 GB result rules Docling out of anything server-side, not out of laptop ingestion.
+- **Was Docling's scan accuracy measured?** Yes. The full uncapped run on the laptop finished every source, scans included (3.19 GB peak). The 2 GB capped run was killed on the 4th source (CGST Rules) and never reached the scans. The scan numbers above come from the uncapped run:
+
+  | Parser (scans) | Recall | Mean CER | Tables |
+  |---|---|---|---|
+  | (c) Docling | 30.4% | 8.9% | 83% (5 of 6 holiday tables) |
+  | (b) Tesseract | 48.7% | 4.3% | 0% |
+
+- **Docling as a scan option:** because ingestion runs off-server, Docling stays an **option for scanned pages, mainly their tables**, run on the laptop one document per process. It is not the default: its scan text and structure were worse than Tesseract's. Using it changes no architecture; it is another implementation behind the same `Parser` seam.
 
 **Outcome against the plan: Partial.** Born-digital passes, scans don't, and scans are routed to manual review per data-pipeline §7.
 
@@ -256,6 +268,8 @@ uv run python trace.py <parser> <key>                     # per-entry match trac
 - **Before M5:**
   - **Scanned tables:** a table extractor for OCR pages. Options are Tesseract layout analysis, or Docling's TableFormer on one cropped table at a time on the laptop, if its RAM fits per table.
   - **CBIC notification:** fetch the missing bilingual Central Tax notification by hand, and rerun `score.py` on it.
+- **M5, annexed forms:** treat annexed forms and schedules as a **separate block type** in `DocumentTree`, never as rules or sub-rules. This fixes the Accounts Rules precision (74%), where numbered form rows were read as rules.
+- **M5, Hindi text layers:** when a page's Hindi text layer is undecodable (legacy font encoding, as in the Gazettes, or broken ToUnicode mapping, as in the ESIC circular), **OCR the page with Tesseract `eng+hin` instead of using the text layer**. Detect this with a check, e.g. a share of invalid Devanagari sequences, or a dictionary-hit rate. ESIC recall was 50% because of this.
 - **M5:** implement the mapping notes above in the `Parser` adapter, with the 21 gold outlines as its regression tests (public data, no personal data). Re-fit the 93 / 90 confidence values once more scans are typed.
 - **Content:**
   - The Companies Act copy predates s.10A. Use a current consolidated text for ingestion.
