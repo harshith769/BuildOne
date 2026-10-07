@@ -5,20 +5,21 @@ BE := cd backend &&
 FE := pnpm --dir frontend/app
 
 .PHONY: setup dev down db-roles test-role check lint fmt typecheck contracts test test-tenancy migrate migration openapi \
-        rules-validate eval-rules eval-retrieval eval-ai ingest rule-draft frontend-check e2e audit
+        rules-validate eval-rules eval-retrieval eval-retrieval-real eval-ai ingest embedder rule-draft frontend-check e2e audit
 
 setup:            ## install backend + frontend deps and git hooks
 	$(BE) uv sync
 	$(FE) install
 	pre-commit install
 
-dev:              ## start local stack (db, s3, migrations, api, worker) + SPA
+dev:              ## start local stack (db, s3, migrations, api, worker, embedder) + SPA
 	$(COMPOSE) build api
 	$(COMPOSE) up -d postgres s3
 	$(MAKE) db-roles
 	$(COMPOSE) run --rm migrate
 	$(MAKE) test-role
-	$(COMPOSE) up -d api worker
+	$(COMPOSE) run --rm embedder-models
+	$(COMPOSE) up -d api worker embedder
 	$(FE) dev
 
 down:
@@ -38,7 +39,7 @@ test-role:        ## create the local-only test superuser buildone_test if missi
 	  "DO \$$\$$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = 'buildone_test') THEN \
 	   CREATE ROLE buildone_test SUPERUSER LOGIN PASSWORD 'buildone-test-only'; END IF; END \$$\$$;"
 
-check: lint typecheck contracts test rules-validate eval-rules frontend-check  ## everything CI runs (except e2e)
+check: lint typecheck contracts test rules-validate eval-rules eval-retrieval frontend-check  ## everything CI runs (except e2e)
 
 lint:
 	$(BE) uv run ruff check . && uv run ruff format --check .
@@ -81,14 +82,23 @@ rules-validate:
 eval-rules:
 	$(BE) uv run python -m app.modules.rules.scenarios ../rules
 
-eval-retrieval:
-	$(BE) uv run python -m app.modules.knowledge.eval ../evals/retrieval.jsonl
+# CI gate: a fresh database with the fixture corpus (tests/fixtures/knowledge). EVAL_RECORD=1 appends the result.
+eval-retrieval:   ## retrieval recall@10 gate on the fixture corpus (needs TEST_DATABASE_ADMIN_URL, tesseract)
+	$(BE) uv run python -m tests.support.retrieval_gate ../evals/retrieval.jsonl
+
+# The real corpus loaded by `make ingest` (DATABASE_URL: any role that can read knowledge.*); records the result.
+eval-retrieval-real:
+	$(BE) uv run python -m app.modules.knowledge.eval ../evals/retrieval.jsonl --corpus real
 
 eval-ai:
 	$(BE) uv run python -m app.modules.ai.eval --task $(TASK) --n $(N)
 
-ingest:
-	$(BE) uv run python -m app.modules.knowledge.ingest --source $(SOURCE)
+# Laptop only (data-pipeline.md §2): INGEST_DATABASE_URL = app_ingest; S3_* = the sources bucket (SeaweedFS locally).
+ingest:           ## ingest one source: make ingest SOURCE=<key> (or SOURCE=--all)
+	$(BE) uv run python -m app.modules.knowledge.ingest $(if $(filter --all,$(SOURCE)),--all,--source $(SOURCE))
+
+embedder:         ## run the query-embedder sidecar locally (EMBEDDER_SOCKET)
+	$(BE) uv run python -m app.modules.knowledge.embedding.sidecar
 
 rule-draft:
 	$(BE) uv run python -m app.modules.rules.draft --topic "$(TOPIC)"
