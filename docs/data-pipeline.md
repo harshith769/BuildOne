@@ -20,7 +20,7 @@ sources.yaml ─► fetch ─► store raw (R2) ─► parse ─► normalise tr
 | Stage | Interface (seam) | MVP implementation |
 |---|---|---|
 | Fetch | `Fetcher.fetch(url) -> bytes` | `httpx`; manual file drop for sources that block automated download |
-| Parse | `Parser.parse(bytes, mime) -> DocumentTree` | Winner of spike S1 |
+| Parse | `Parser.parse(bytes, mime) -> DocumentTree` | Per [spike S1](spikes/S1-parsing.md): **PDF with a text layer:** PyMuPDF text layer + layout heuristic (margin notes as headings, running heads and footnotes dropped) and the PyMuPDF table finder. **Page without a text layer:** rendered at 300 dpi and OCR'd with Tesseract 5 (`eng`; `eng+hin` for bilingual sources). **Official HTML:** stdlib `html.parser`, with `<ol>` numbering kept. The adapter rules for building the tree are in the S1 report ("DocumentTree mapping notes") |
 | Chunk | `chunk(tree, policy) -> list[Chunk]` | §4 |
 | Embed | `Embedder.embed(texts) -> list[vector]` | Winner of spike S2 (local CPU model) |
 | Store raw | `ObjectStore.put(key, bytes)` | R2 via S3 API |
@@ -96,4 +96,4 @@ Output: `list[RetrievedChunk(chunk_id, section_path, text, source_title, officia
 
 - Ingestion is manual in MVP (run when sources change); v2 Change Radar automates detection.
 - Every ingestion run writes a report (`knowledge/reports/<date>-<key>.md`, gitignored): pages, chunks, tokens, warnings (e.g., OCR confidence).
-- Scanned PDFs with OCR confidence below the S1 threshold are flagged for manual review before activation.
+- Scanned PDFs with OCR confidence below the S1 threshold are flagged for manual review before activation. **Threshold ([S1](spikes/S1-parsing.md)):** a page is reviewed when its mean Tesseract word confidence is **< 93**. Inside other pages, lines with mean confidence **< 90** are listed as low-confidence in the ingestion report. Image pages that carry the publisher's own OCR layer are reviewed like scans. In S1, 9 of 10 scanned pages fell below 93, so in practice every scan is reviewed. Numbers read by Hindi (`hin`) OCR are never trusted.

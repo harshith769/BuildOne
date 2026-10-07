@@ -9,7 +9,7 @@
 - **Repo:** fresh start on 2026-10-05 from starter bundle v2. The earlier `harshith769/BuildOne` repo was deleted; nothing in it was lost that isn't in this bundle.
 - **Code:** M1 (foundation), M2 (sign-in and sessions) and M3 (tenancy, grants, audit) done on 2026-10-06, started before G0 on purpose: M1–M3 are needed whatever the interviews show. Rules content (M6) still waits for a CA reviewer.
 - **Build order (local-first, 6 Oct):** M1 ✓, M2 ✓, M3 ✓, M5, M6, M7, M8, M9, M10, M11, M12, M13, then M4 and M14 when hosting is approved. Spikes: S1 and S2 right before M5, S3 before real rules in M6, S4 before M7, S5 before M4. Detail: [roadmap.md](roadmap.md), [build-plan.md](build-plan.md).
-- **Next action:** spikes S1 and S2, then M5 (knowledge ingestion and retrieval), with the interview kit in parallel.
+- **Next action:** spike S2 (S1 report done, 2026-10-07), then M5 (knowledge ingestion and retrieval), with the interview kit in parallel.
 
 ## Direction (Refined Plan v3, 2026-10-05)
 
@@ -47,7 +47,7 @@ Exam weeks: _add your semester exam dates here and leave those weeks empty._
 | D-5 | Situation Check questionnaire-only lite in Phase 1 | Decided |
 | D-6 | "K Capital" = most likely Kae Capital; park until a live cohort | Decided |
 | D-7 | Prices to test: incubator ₹1–3L/cohort; pack ₹4,999–9,999; CA free; Pro later | Decided |
-| D-8 | Spike outcomes (parser, embeddings, `D`, reranker, τ, σ, models) | Open — S1, S2, S4 |
+| D-8 | Spike outcomes (parser, embeddings, `D`, reranker, τ, σ, models) | Parser decided by S1 (partial pass: PyMuPDF + heuristic, Tesseract for scans with review below confidence 93, stdlib HTML; Docling rejected; [report](spikes/S1-parsing.md)). Rest open — S2, S4 |
 | D-9 | `superseded` rule-version status | Open — recommend yes; decide at M6 |
 | D-10 | Final fact list, incl. small-company thresholds as versioned facts | Open — S3 with CA |
 | D-11 | Email provider | Open — M8 |
@@ -75,6 +75,7 @@ Exam weeks: _add your semester exam dates here and leave those weeks empty._
 - **M3 membership check — solved** by [ADR-0013](adr/0013-rls-check-functions-and-read-write-split.md): check functions owned by `app_rls_check` (NOLOGIN, BYPASSRLS). **S5 must confirm** the managed host's admin can create that role; otherwise apply ADR-0013's fallback.
 - **M10 (share screens):** an unverified organisation can call itself an incubator (or CA firm) and ask companies to share. The share/accept screen must show clearly who is asking (name, type, who created it, when) before a founder accepts.
 - **M8:** every company-data table uses `app.platform.rls.company_data_policies()`; the schema guard fails on any table it can't classify.
+- **Before M6 (labour law changed; no feature change):** the Code on Social Security, 2020 is in force from 21 Nov 2025 (S.O. 5319(E); [PIB](https://www.pib.gov.in/PressReleseDetailm.aspx?PRID=2192463)) and subsumes the ESI Act 1948 and the EPF & MP Act 1952; the EPF Scheme, 2026 (G.S.R. 525(E), 29 Jun 2026, in force on Gazette publication) supersedes the EPF Scheme 1952. Section 164 (repeal and savings) commenced only in part, so the CA must confirm which provisions of the old Acts still apply. Before rules are drafted in M6, check every doc that mentions PF/ESI (today: product-vision.md §4 wedge "threshold-based labour (PF/ESI)" and §6.3 A2 "review PF/ESI") and every PF/ESI rule and fact against the Code and the 2026 Scheme. Found during spike S1 (2026-10-06).
 
 ## Stack versions (checked 2026-10-05)
 
@@ -115,6 +116,7 @@ Python 3.14 · FastAPI 0.142 · Pydantic 2.13 · SQLAlchemy 2.1 · Alembic 1.20 
 
 | Date | Event |
 |---|---|
+| 2026-10-07 | S1 (parsing) report: partial pass on 21 official sources. Born-digital PyMuPDF + layout heuristic: 99.4% recall, 97.7% precision, 0 order errors, 97 MB. Scans: 48.7% recall, 4.3% CER, so they go to manual review (page confidence < 93). Docling rejected (3.19 GB, OOM under a 2 GB cap). India Code returned 504: the Code on Social Security came from the Gazette, the Telangana Acts from official HTML; one CBIC notification is missing |
 | 2026-10-06 | M3 done: organisations, memberships (last-owner trigger), invitations (token in fragment and body, link once), access grants (company → CA firm/incubator, either side initiates, read-only at the DB), audit log, idempotency keys, hourly session and idempotency sweepers, identity audit events, screens S3/S4 + invite page + org switcher; ADR-0013 (check functions owned by `app_rls_check`, read/write policy split); D-29; cross-tenant suite at the DB and over every org endpoint; 310 backend tests and 9 E2E tests green |
 | 2026-10-06 | M2 done: identity seam (fake + WorkOS adapters), sign-in with PKCE + state, server-side sessions (hash only, 30 d idle / 90 d absolute, rotation), CSRF double-submit + Origin check, 18+ and terms consent with no user row before acceptance (D-28), `/v1/me`, sessions list/revoke, screens S1/S2; 132 backend tests and 7 E2E tests green. Local test DB access via the `buildone_test` role (`make test-role`, local dev only, never CI or hosted) so `infra/compose/.env` is never read |
 | 2026-10-06 | Session A: docs brought in line with this file; owner decisions D-17…D-27 recorded; local-first build order; [deferred.md](deferred.md) created; AGENTS.md rule 19 |
