@@ -234,17 +234,20 @@ Displayed urgency (`upcoming`, `due_soon`, `overdue`) is **derived at read time*
 
 **`knowledge.sources`** — `id uuid PK`, `key text UNIQUE NOT NULL` (from `knowledge/sources.yaml`), `title`, `authority`, `jurisdiction text CHECK (jurisdiction IN ('IN','IN-TG'))`, `doc_type text CHECK (doc_type IN ('act','rules','notification','circular','form_instructions','guidance'))`, `official_url text NOT NULL`
 
-**`knowledge.source_versions`** — `id uuid PK`, `source_id FK`, `version int`, UNIQUE `(source_id, version)`, `content_sha256 text NOT NULL`, `storage_key text NOT NULL` (R2), `published_on date NULL`, `effective_from date NOT NULL`, `effective_to date NULL`, `parser text NOT NULL` (name@version), `status text CHECK (status IN ('active','superseded'))`, `fetched_at`
+**`knowledge.source_versions`** — `id uuid PK`, `source_id FK`, `version int`, UNIQUE `(source_id, version)`, `content_sha256 text NOT NULL`, `storage_key text NOT NULL` (object storage), `published_on date NULL`, `effective_from date NOT NULL`, `effective_to date NULL`, `parser text NOT NULL` (name@version), `status text CHECK (status IN ('active','superseded','pending_review'))`, `review jsonb NOT NULL` (pages below the OCR threshold, low-confidence lines), `fetched_at`; at most one `active` version per source (partial unique index)
 
 **`knowledge.chunks`**
 - `id uuid PK`, `source_version_id FK ON DELETE RESTRICT`, `parent_id uuid NULL FK chunks`
-- `section_path text NOT NULL` (e.g., `Companies Act, 2013 > Chapter II > Section 10A > (1)`), `heading text NOT NULL`, `ordinal int NOT NULL`
+- `kind text CHECK (kind IN ('section','annex','table','parent'))` — `parent` chunks are context only and have no embedding
+- `section_path text NOT NULL` (without the title, e.g. `CHAPTER II > 10A > (1)`; the service prefixes the source title), `node_paths text[] NOT NULL` (every tree node a merged chunk covers), `heading text NOT NULL`, `ordinal int NOT NULL` (piece of a split leaf)
 - `text text NOT NULL`, `token_count int NOT NULL CHECK (token_count > 0)`
 - Denormalised filters: `jurisdiction`, `doc_type`, `effective_from`, `effective_to`, `is_active bool NOT NULL`
 - `tsv tsvector GENERATED ALWAYS AS (to_tsvector('english', heading || ' ' || text)) STORED` + GIN index
 - Index `(is_active, jurisdiction, effective_from)`
 
 **`knowledge.chunk_embeddings`** — PK `(chunk_id, model_id)`, `embedding vector(768) NOT NULL`, HNSW index (`vector_cosine_ops`, `m = 16`, `ef_construction = 64`). **`D = 768`** (`bge-base-en-v1.5` int8, fixed by [spike S2](spikes/S2-retrieval.md)). Changing the model later = new rows under a new `model_id` + backfill + config switch (additive).
+
+**Grants:** `app_api`/`app_worker` SELECT only; `app_ingest` SELECT, INSERT, UPDATE. Nobody has DELETE or TRUNCATE: superseded versions and their chunks stay for citations (migration 0007).
 
 ### 4.8 `ai`
 

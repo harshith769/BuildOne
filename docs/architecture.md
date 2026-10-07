@@ -97,7 +97,7 @@ A module may call only the **public service interface** of the modules listed; i
 | `facts` | platform, tenancy, audit, ai |
 | `rules` | platform, knowledge (citations only) |
 | `obligations` | platform, tenancy, audit, facts, rules |
-| `knowledge` | platform, ai (embeddings) |
+| `knowledge` | platform (the `Embedder` seam lives in `knowledge.embedding`, not `ai`: `rules` depends on `knowledge`, so `knowledge` must never reach `ai`) |
 | `ai` | platform |
 | `explainer` | platform, tenancy, obligations, rules, knowledge, ai |
 | `copilot` | platform, tenancy, obligations, knowledge, ai, explainer |
@@ -144,7 +144,8 @@ buildone/
 │   └── scenarios/                # CA-verified company scenarios + expected obligations
 ├── knowledge/
 │   ├── sources.yaml          # registry of official sources + metadata
-│   └── ingestion/            # CLI: fetch → parse → chunk → embed → load
+│   ├── query-glossary.yaml   # versioned query abbreviation glossary (ADR-0014)
+│   └── inbox/                # hand-downloaded source files (gitignored); code: backend/app/modules/knowledge/
 ├── evals/                    # golden sets + runners for AI quality gates
 ├── frontend/
 │   ├── app/                  # React + Vite SPA
