@@ -41,7 +41,7 @@
 | AI with user data | Groq free-tier open-weight models, **Zero Data Retention enabled**, via in-house gateway with hard daily budget | [0008](adr/0008-llm-gateway-provider-agnostic.md) |
 | AI with public text only | Gemini free tier (rule drafting from official sources) | [0008](adr/0008-llm-gateway-provider-agnostic.md) |
 | Explanations | **Deterministic by default** (rule trace + CA-approved summary + citations); AI rephrasing optional | [0009](adr/0009-rules-as-code.md) |
-| Embeddings | Small open-source embedding model running locally on the one-box (exact model chosen in spike S2) | [0003](adr/0003-postgres-single-datastore.md) |
+| Embeddings | Small open-source embedding model on CPU: `bge-base-en-v1.5` int8 ONNX, `D = 768` ([S2](spikes/S2-retrieval.md)); corpus embedded by the ingestion CLI on the laptop, query embedded in a sidecar process on the server | [0003](adr/0003-postgres-single-datastore.md) |
 | Rules | YAML in git, JSON Schema, custom Python evaluator, published to Postgres | [0009](adr/0009-rules-as-code.md) |
 | Object storage | Cloudflare R2 via S3 API, private buckets, signed URLs | [0010](adr/0010-object-storage-r2.md) |
 | Reminders | In-app notifications + private calendar feed (ICS) as primary; email as secondary channel | [requirements.md FR-CORE-06](requirements.md#fr-core-06-reminders-c6--must) |
@@ -63,8 +63,8 @@
 | Decision | Candidates | Resolved by | Criteria |
 |---|---|---|---|
 | Document parser | ~~Docling~~ · PyMuPDF · Tesseract OCR | **Decided by [S1](spikes/S1-parsing.md) (partial pass):** PyMuPDF text layer + layout heuristic for born-digital PDFs; Tesseract 5 (`eng`/`eng+hin`, 300 dpi) for pages without a text layer, with manual review below mean word confidence 93; stdlib `html.parser` for official HTML. Docling rejected (3.19 GB peak, OOM under a 2 GB cap; merges Gazette pages) | Structure fidelity on 20 real sources; OCR on scans; RAM on 2 GB |
-| Embedding model | Small open-source models runnable on CPU within the one-box RAM budget | Spike S2 | Recall@10 ([NFR-AI-06](nfr.md#7-ai-quality-gates)), latency, RAM |
-| Reranker | None (fusion only) · small CPU cross-encoder | Spike S2 | Quality gain vs latency and RAM |
+| Embedding model | Small open-source models runnable on CPU within the one-box RAM budget | **Decided by [S2](spikes/S2-retrieval.md):** `bge-base-en-v1.5` int8 ONNX, **`D = 768`**, query abbreviations expanded from `knowledge/query-glossary.yaml`, vector-only ranking ([ADR-0014](adr/0014-retrieval-query-glossary-and-vector-only-ranking.md)); recall@10 94%, p95 2.6 ms at 50k chunks, query embedder 269 MiB in a sidecar process. **`τ`** not gated in the MVP; calibrated before the Copilot ([deferred.md §13](deferred.md)) | Recall@10 ([NFR-AI-06](nfr.md#7-ai-quality-gates)), latency, RAM |
+| Reranker | None · ~~small CPU cross-encoder~~ | **Decided by [S2](spikes/S2-retrieval.md): none.** MiniLM-L6 cross-encoder 1.8 s and 1.2 GiB per query on 2 vCPU; bge-reranker-base 11 s and 2.6 GiB | Quality gain vs latency and RAM |
 | Groq models per task | Open-weight models available on the Groq free plan | Spike S4 | Faithfulness, citation precision, tokens per task |
 | Email provider | Resend · Brevo · Amazon SES | At implementation | Free-tier limits, Indian inbox deliverability |
 

@@ -270,7 +270,7 @@ uv run python trace.py <parser> <key>                     # per-entry match trac
   - **CBIC notification:** fetch the missing bilingual Central Tax notification by hand, and rerun `score.py` on it.
 - **M5, annexed forms:** treat annexed forms and schedules as a **separate block type** in `DocumentTree`, never as rules or sub-rules. This fixes the Accounts Rules precision (74%), where numbered form rows were read as rules.
 - **M5, Hindi text layers:** when a page's Hindi text layer is undecodable (legacy font encoding, as in the Gazettes, or broken ToUnicode mapping, as in the ESIC circular), **OCR the page with Tesseract `eng+hin` instead of using the text layer**. Detect this with a check, e.g. a share of invalid Devanagari sequences, or a dictionary-hit rate. ESIC recall was 50% because of this.
-- **M5:** implement the mapping notes above in the `Parser` adapter, with the 21 gold outlines as its regression tests (public data, no personal data). Re-fit the 93 / 90 confidence values once more scans are typed.
+- **M5:** implement the mapping notes above in the `Parser` adapter, with the 21 gold outlines as its regression tests (public data, no personal data).
 - **Content:**
   - The Companies Act copy predates s.10A. Use a current consolidated text for ingestion.
   - The Telangana Acts are unconsolidated AP texts. Track that in `knowledge/sources.yaml` until a consolidated official copy is available.

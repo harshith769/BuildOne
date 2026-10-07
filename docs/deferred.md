@@ -1,6 +1,6 @@
 # BuildOne — Deferred Work
 
-> **Status:** v1.0 · 2026-10-06 · Owner: @harshith769
+> **Status:** v1.1 · 2026-10-07 · Owner: @harshith769
 > Decisions: [status.md](status.md) (D-4, D-5, D-17…D-23). Rule: nothing is cut; deferred work keeps its **full scope** here until a trigger brings it back ([AGENTS.md rule 19](../AGENTS.md)).
 
 **What this document answers**
@@ -29,6 +29,8 @@ When an item comes back: move it into the build order in [roadmap.md](roadmap.md
 | 9 | Document fact extraction at intake | D-21: stretch goal | Time left after M7/M8 MUST scope, or start of Phase 2 | Stretch |
 | 10 | Paid CA firm plan | D-17: CA firms free in Phases 1–2 | End of Phase 2 (owner decision), or earlier only with the owner's explicit OK | Deferred |
 | 11 | Founder Pro | D-18: Phase 2 | Start of Phase 2 | Deferred |
+| 12 | `manage` grant write scope | D-29: write scope undecided | CA Workspace milestone (Phase 2), after an ADR | Deferred |
+| 13 | Retrieval confidence threshold `τ` | D-30: S2 could not calibrate it; MVP retrieval has a human in the loop | Before the Copilot (Phase 2) | Deferred |
 
 ---
 
@@ -44,7 +46,7 @@ When an item comes back: move it into the build order in [roadmap.md](roadmap.md
   - **A. Azure for Students, Central India (proposed):** API + worker in Docker Compose on a B2ats v2 VM (2 vCPU, 1 GiB); PostgreSQL 18 on Flexible Server B1MS (2 GiB, 32 GB); files and nightly `pg_dump` in Cloudflare R2. ₹0 for 12 months. Managed Postgres has no superuser: roles, grants and extensions (`vector`, `pg_trgm`, `citext`) come from plain SQL run by the admin role. 1 GiB RAM means one Uvicorn worker, a lean job worker and no embedding model in a long-running process.
   - **B. DigitalOcean Bangalore, paid (fallback):** the original ADR-0006 one-box design without the credit; confirm price at checkout and record it in ADR-0012.
   - Rejected: Hetzner (no India region, prices up after 15 Jun 2026); Oracle Always Free (allowance cut June 2026, idle reclaim).
-- **Before M4, spike S5 must show** (ADR-0012 items 1–4): API + worker within ~900 MiB; `initdb` SQL runs without superuser rights; nightly `pg_dump` to R2 and restore into a fresh Postgres 18 both work and are timed; the Azure *Free services* page lists the VM sizes and Flexible Server B1MS for the owner's student account. If any item fails, choose B.
+- **Before M4, spike S5 must show** (ADR-0012 items 1–4): API + worker + query-embedder sidecar within ~900 MiB; `initdb` SQL runs without superuser rights; nightly `pg_dump` to R2 and restore into a fresh Postgres 18 both work and are timed; the Azure *Free services* page lists the VM sizes and Flexible Server B1MS for the owner's student account. If any item fails, choose B.
 
 **Trigger:** S5 report written and passing (an M4 entry condition, D-25), and the owner approves a host. M4 then runs after M13 and before M14.
 
@@ -109,6 +111,7 @@ When an item comes back: move it into the build order in [roadmap.md](roadmap.md
   - **Build:** conversations/messages, routing, determination route (no generation of facts), interpretive route with retrieval + abstention, SSE streaming, verification, quotas, feedback; screen S14.
   - **Done when:** Copilot eval meets NFR-AI-02/03/04 on the on-demand set; `limit_reached` path covered by E2E.
 - Data: `copilot.conversations`, `copilot.messages` ([data-model.md §4.9](data-model.md#49-copilot-explainer)); AI tasks `copilot_route`, `copilot_answer` ([ai-system.md](ai-system.md)); golden set `evals/copilot.jsonl` ([evaluation.md](evaluation.md)); NFR-PERF-05, NFR-COST-02.
+- Needs the retrieval confidence threshold `τ` first ([§13](#13-retrieval-confidence-threshold-τ)).
 - Phase 3 continues Copilot work (G3 scope in [roadmap.md](roadmap.md)).
 
 **Trigger:** start of Phase 2.
@@ -162,6 +165,18 @@ When an item comes back: move it into the build order in [roadmap.md](roadmap.md
 **Full scope:** manage grant write scope — CA Workspace (A2 client event feed, A3 review/sign-off/staff tasks). Needs an ADR before enabling. Open question for the CA interviews: may a CA firm change the company's own data (facts, obligations), or only its own workflow data on the client, with changes to company data going to the founder as suggestions to approve?
 
 **Trigger:** the CA Workspace milestone (Phase 2), after the CA interviews answer the open question; an ADR comes first ([ADR-0013](adr/0013-rls-check-functions-and-read-write-split.md)).
+
+## 13. Retrieval confidence threshold `τ`
+
+**Why deferred:** D-30 (2026-10-07, spike S2). MVP retrieval serves rule drafting and citations with a human in the loop, so it does not need to abstain. S2 showed the frozen signal cannot carry `τ`: RRF scores are rank-only (with an AND lexical query 43 of 50 answerable questions came out `low`; with OR, none did), and no absolute signal met the rule robustly on the S2 set (best: top-1 cosine with multilingual-e5-small at exactly 10% answerable / 80% out-of-scope `low`, fitted on the same 60 questions; for the chosen bge-base int8 model, 20% / 90%) ([S2 report](spikes/S2-retrieval.md#τ-confidence-data), [ADR-0014](adr/0014-retrieval-query-glossary-and-vector-only-ranking.md)).
+
+**Full scope:**
+- Choose the confidence signal: top-1 cosine similarity of the query vector, a margin between the top results, a reranker score if one fits the budget then, or a combination; replace data-pipeline.md §6 step 7 accordingly (ADR-0014 update).
+- Calibrate `τ` on **held-out real interview questions** (`source: interview`, no names or personal details), not on the S2 set used to choose the model: at least the plan's rule, ≥ 80% of out-of-scope questions `low` while ≤ 10% of answerable ones are; more out-of-scope questions than S2's 10 (each one moved the rate by 10 points), including near misses such as "GST rate on SaaS" (the provision is in the corpus, the rate is not).
+- Record `τ` in tech-stack.md §3 and the Copilot config; wire abstention (FR-CORE-05) and the abstention-correctness metric ([evaluation.md §2](evaluation.md)).
+- Re-check `τ` whenever the embedding model, the glossary or the corpus changes materially.
+
+**Trigger:** before the Copilot (Phase 2, [§7](#7-copilot-phase-2)); the Copilot cannot ship without it.
 
 ---
 

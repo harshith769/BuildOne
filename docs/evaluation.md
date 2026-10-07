@@ -15,13 +15,13 @@
 | Suite | Location | Format | Runs | Uses AI |
 |---|---|---|---|---|
 | Rule scenarios | `rules/scenarios/*.yaml` | [rules-engine.md §9](rules-engine.md#9-scenarios-rulesscenariosyaml) | Every PR (CI) | No |
-| Retrieval | `evals/retrieval.jsonl` | `{id, question, filters, relevant_chunk_keys[]}` | Every PR touching `knowledge/` or retrieval code | No (local embeddings) |
+| Retrieval | `evals/retrieval.jsonl` | `{id, question, filters, relevant_chunk_keys[], answerable, source: synthetic\|interview, domain, note}`; optional `partial`, `conflict` + `match: every_source`, `near_miss` ([S2](spikes/S2-retrieval.md#labelled-set-evalsretrievaljsonl)) | Every PR touching `knowledge/` or retrieval code | No (local embeddings) |
 | Fact extraction | `evals/fact_extract.jsonl` | `{id, text, expected: {key: value}}` | On demand + before prompt/model change | Yes |
 | Clause extraction | `evals/clause_extract/` | Synthetic contracts + `expected.json` | On demand | Yes |
 | Copilot Q&A | `evals/copilot.jsonl` | `{id, question, org_facts, answerable: bool, required_chunk_keys[], key_points[]}` | On demand | Yes |
 | Rephrase | `evals/rephrase.jsonl` | `{id, obligation_fixture, must_keep: [dates, forms]}` | On demand | Yes |
 
-`relevant_chunk_keys` use stable `source_key + section_path` (not UUIDs) so datasets survive re-ingestion.
+`relevant_chunk_keys` use stable `source_key + section_path` (not UUIDs) so datasets survive re-ingestion: `"<source_key>::<section_path>"` matches every chunk at or under that path; `"…#<n>"` matches one piece of a split section. Retrieval recall is reported per `source` group (synthetic, interview), with `partial` items also reported separately; a `match: every_source` item counts only when every labelled source is in the top k.
 
 **Data rule:** golden sets contain only public legal text, synthetic company facts, and **synthetic** contracts. No real user data, ever.
 

@@ -1,6 +1,6 @@
 # BuildOne — Knowledge Data Pipeline (RAG)
 
-> **Status:** v1.0 (frozen for MVP build; parser and embedding model chosen by spikes S1/S2) · 2026-09-28 · Owner: @harshith769
+> **Status:** v1.1 (frozen for MVP build; parser and embedding model chosen by spikes S1/S2; §6 changed by [ADR-0014](adr/0014-retrieval-query-glossary-and-vector-only-ranking.md)) · 2026-10-07 · Owner: @harshith769
 > Tables: [data-model.md §4.7](data-model.md#47-knowledge-global-writable-by-app_ingest-read-by-services). Quality gates: [evaluation.md](evaluation.md).
 
 **What this document answers**
@@ -22,7 +22,7 @@ sources.yaml ─► fetch ─► store raw (R2) ─► parse ─► normalise tr
 | Fetch | `Fetcher.fetch(url) -> bytes` | `httpx`; manual file drop for sources that block automated download |
 | Parse | `Parser.parse(bytes, mime) -> DocumentTree` | Per [spike S1](spikes/S1-parsing.md): **PDF with a text layer:** PyMuPDF text layer + layout heuristic (margin notes as headings, running heads and footnotes dropped) and the PyMuPDF table finder. **Page without a text layer:** rendered at 300 dpi and OCR'd with Tesseract 5 (`eng`; `eng+hin` for bilingual sources). **Official HTML:** stdlib `html.parser`, with `<ol>` numbering kept. The adapter rules for building the tree are in the S1 report ("DocumentTree mapping notes") |
 | Chunk | `chunk(tree, policy) -> list[Chunk]` | §4 |
-| Embed | `Embedder.embed(texts) -> list[vector]` | Winner of spike S2 (local CPU model) |
+| Embed | `Embedder.embed(texts) -> list[vector]` | Per [spike S2](spikes/S2-retrieval.md): **`bge-base-en-v1.5`, int8 ONNX** (`Xenova/bge-base-en-v1.5`, `onnx/model_int8.onnx`; CLS pooling, normalised; via fastembed/onnxruntime, no PyTorch), **`D = 768`**. Passages are embedded as in §4 rule 6; queries get the prefix "Represent this sentence for searching relevant passages: " after glossary expansion (§6 step 0). No reranker |
 | Store raw | `ObjectStore.put(key, bytes)` | R2 via S3 API |
 
 Swapping a parser or embedder changes only the implementation behind its interface ([ADR-0011](adr/0011-portability-rules.md)).
@@ -33,7 +33,7 @@ Swapping a parser or embedder changes only the implementation behind its interfa
 
 - **Ingestion CLI runs on the developer machine**, not on the 2 GB server: `uv run python -m app.modules.knowledge.ingest --source <key>` (or `--all`).
 - Connects to production Postgres through an SSH tunnel using the `app_ingest` role (DML on `knowledge.*` only) and to R2 with a sources-bucket key.
-- **Query-time embedding** (one short text per question) runs on the server with the same model and version, pinned in configuration.
+- **Query-time embedding** (one short text per question) runs on the server with the same model and version, pinned in configuration, in a **separate sidecar process** (never in the API process): the API sends the expanded question over a local socket and gets the vector back. S2 measured 269 MiB peak RSS and p95 17 ms end to end at 2 threads ([S2](spikes/S2-retrieval.md#embedding-placement-measured-not-decided-by-the-spike); owner decision 2026-10-07). It counts against the VM budget in [ADR-0012](adr/0012-hosting-after-student-pack-change.md).
 
 ---
 
@@ -78,17 +78,20 @@ One transaction per source version: insert `source_versions` → `chunks` → `c
 
 ## 6. Retrieval (Frozen algorithm; parameters tunable via evaluation)
 
-Input: `query`, filters `{jurisdictions: [IN, IN-TG], as_of: date, doc_types?: [...]}`.
+Input: `query`, filters `{jurisdictions: [IN, IN-TG], as_of: date, doc_types?: [...]}`. Changed on 2026-10-07 by [ADR-0014](adr/0014-retrieval-query-glossary-and-vector-only-ranking.md) on the [S2](spikes/S2-retrieval.md) results.
 
+0. **Expand abbreviations:** the first occurrence of each abbreviation in [`knowledge/query-glossary.yaml`](../knowledge/query-glossary.yaml) (versioned) gets its expansion appended in brackets ("TCS" → "TCS (tax collected at source, collection of tax at source)"). Deterministic, no AI. The expanded text is embedded.
 1. **Filter:** `is_active AND jurisdiction = ANY(:j) AND effective_from <= :as_of AND (effective_to IS NULL OR effective_to > :as_of)`.
-2. **Lexical:** `websearch_to_tsquery('english', :q)` ranked by `ts_rank_cd`, top 50.
+2. **Lexical:** **off in the MVP.** S2: `websearch_to_tsquery` (AND of all terms) found a relevant chunk for 6% of founder questions; OR of all terms took p95 441 ms at 50k chunks; OR of the ≤ 5 highest-IDF terms ("idf5") was fast enough (116 ms) but lost one question against vector-only. The `tsv` column and GIN index stay, so idf5 can return via an ADR-0014 update.
 3. **Vector:** cosine distance on `chunk_embeddings` for the configured `model_id`, top 50 (`hnsw.ef_search = 64`).
-4. **Fuse:** Reciprocal Rank Fusion, `score = Σ 1/(60 + rank)`; keep top 20.
-5. **Rerank (optional):** only if spike S2 shows gain within RAM/latency budget.
+4. **Fuse:** none while there is one list (Reciprocal Rank Fusion, `score = Σ 1/(60 + rank)`, applies if the lexical list returns); keep top 20.
+5. **Rerank:** off (S2: 1.8–11 s and 1.2–2.6 GiB per query on 2 vCPU).
 6. **Select:** top 5 chunks; add each chunk's parent chunk if the total stays ≤ 3,000 tokens.
-7. **Confidence:** `low` if the top chunk appears in only one of the two lists **and** its fused score < threshold `τ` (set from S2/S4 data). Low confidence → Copilot abstains (FR-CORE-05).
+7. **Confidence:** **not gated in the MVP** (retrieval serves rule drafting and citations with a human in the loop). S2 showed RRF scores are rank-only and cannot carry `τ`; calibrating a confidence signal on held-out real interview questions is required before the Copilot ([deferred.md §13](deferred.md)). Low confidence → Copilot abstains (FR-CORE-05).
 
-Output: `list[RetrievedChunk(chunk_id, section_path, text, source_title, official_url, score)]`.
+Output: `list[RetrievedChunk(chunk_id, section_path, text, source_title, official_url, score)]` (`score` = cosine similarity).
+
+Measured in S2 (bge-base int8, glossary, vector-only): recall@10 94% on `evals/retrieval.jsonl`; p95 2.6 ms database time at 50k chunks on a 1-vCore, 2 GiB Postgres (70.5 ms right after a restart); query embedding p95 21 ms.
 
 ---
 

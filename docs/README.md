@@ -34,15 +34,15 @@ Each fact has one home; other documents link to it. **Start here:** [status.md](
 | [auth-and-tenancy.md](auth-and-tenancy.md) | Sign-in, sessions, CSRF, role matrix, enforcement layers | 🧊 |
 | [api-conventions.md](api-conventions.md) | URLs, errors, pagination, idempotency, streaming, client generation | 🧊 |
 | [rules-engine.md](rules-engine.md) | Rule and fact formats, three-valued logic, schedules, publication | 🧊 (validated by S3) |
-| [data-pipeline.md](data-pipeline.md) | Ingestion, chunking, retrieval algorithm | 🧊 (parser/embedder by S1/S2) |
+| [data-pipeline.md](data-pipeline.md) | Ingestion, chunking, retrieval algorithm | 🧊 (parser and embedder decided by S1/S2; §6 per ADR-0014) |
 | [ai-system.md](ai-system.md) | Gateway, task registry, budgets, privacy, citation verification | 🧊 (models by S4) |
 | [deployment.md](deployment.md) | Containers, CI/CD, backups/restore, observability, runbook list | 🧊 (validated by S5) |
 | [security-design.md](security-design.md) | Threats, controls, secrets, known limitations | ✅ |
 | [testing-strategy.md](testing-strategy.md) | Test levels, doubles, CI budget | ✅ |
 | [evaluation.md](evaluation.md) | Golden sets, metrics, when they run | ✅ |
 | [rule-operations.md](rule-operations.md) | Rule SOP, CA checklist, incidents | ✅ · 🔒 CA reviewer |
-| [adr/](adr/) | ADR-0001…0013: Accepted except ADR-0009 (🟡 until spike S3) and ADR-0012 (🟡 Proposed, decided by S5); ADR-0006 superseded in part; ADR-0013 (RLS check functions, read/write split) Accepted, host capability checked by S5 | ✅ / 🟡 |
-| [spikes/](spikes/) | Spike reports S1–S5 (template provided); [S1 parsing](spikes/S1-parsing.md) done | ✅ S1 · ⬜ S2–S5 in their build-order slots |
+| [adr/](adr/) | ADR-0001…0014: Accepted except ADR-0009 (🟡 until spike S3) and ADR-0012 (🟡 Proposed, decided by S5); ADR-0006 superseded in part; ADR-0013 (RLS check functions, read/write split) Accepted, host capability checked by S5; ADR-0014 (query glossary, vector-only retrieval) Accepted after S2 | ✅ / 🟡 |
+| [spikes/](spikes/) | Spike reports S1–S5 (template provided); [S1 parsing](spikes/S1-parsing.md) and [S2 retrieval](spikes/S2-retrieval.md) done | ✅ S1, S2 · ⬜ S3–S5 in their build-order slots |
 | [runbooks/](runbooks/) | Operational procedures (list in [deployment.md §7](deployment.md#7-runbooks-written-in-m4-and-m13-under-docsrunbooks)) | ⬜ M4, M13 |
 
 ## Repository and agents

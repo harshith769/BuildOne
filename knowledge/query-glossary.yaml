@@ -1,0 +1,34 @@
+# Query abbreviation glossary — ADR-0014, data-pipeline.md §6 step 0. Terminology only, never regulatory facts
+# (no thresholds, rates, dates or forms). Expansion: the first occurrence of each abbreviation in a question gets
+# its expansion appended in brackets ("TCS" -> "TCS (tax collected at source, collection of tax at source)").
+# Matching is case-sensitive on whole words. Any change bumps `version` and needs before/after
+# `make eval-retrieval` numbers in the PR (evaluation.md §4).
+version: 1
+updated: 2026-10-07
+terms:
+  AGM: annual general meeting
+  AoA: articles of association
+  CIN: corporate identity number
+  DIN: director identification number
+  DPIIT: Department for Promotion of Industry and Internal Trade
+  EPF: employees' provident fund
+  EPFO: employees' provident fund organisation
+  ESI: employees' state insurance
+  ESIC: employees' state insurance corporation
+  GST: goods and services tax
+  GSTIN: goods and services tax identification number
+  ITC: input tax credit
+  LLP: limited liability partnership
+  MCA: Ministry of Corporate Affairs
+  MoA: memorandum of association
+  NRI: non-resident Indian
+  OPC: One Person Company
+  PAN: permanent account number
+  PF: provident fund
+  PT: professional tax, tax on professions, trades, callings and employments
+  RCM: reverse charge
+  ROC: Registrar of Companies
+  TAN: tax deduction account number
+  TCS: tax collected at source, collection of tax at source
+  TDS: tax deducted at source, deduction of tax at source
+  UAN: universal account number

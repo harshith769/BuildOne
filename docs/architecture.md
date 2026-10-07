@@ -41,7 +41,8 @@ flowchart LR
   subgraph BOX[One-box server - Bangalore]
     CADDY[Caddy]
     API[API]
-    WRK[Worker + local embedding model]
+    WRK[Worker]
+    EMB[Query embedder sidecar]
     DB[(PostgreSQL + pgvector)]
     BKP[Backup agent]
   end
@@ -49,6 +50,7 @@ flowchart LR
   OPS -->|rules PRs, CLI| GIT[GitHub repo + CI] -->|publish| API
   API --> DB
   WRK --> DB
+  API -->|question text, local socket| EMB
   BKP -->|WAL + nightly dumps| R2[(Cloudflare R2)]
   API & WRK -->|files| R2
   API -->|sign-in| IDP[WorkOS AuthKit]
@@ -253,7 +255,8 @@ Browser ─► Cloudflare (DNS, CDN, firewall, TLS)
              └─► api.<domain> ─► ONE server (host per ADR-0012, Proposed), Docker Compose
                                    ├─ Caddy (accepts Cloudflare IPs only)
                                    ├─ api (Uvicorn workers)
-                                   ├─ worker (queue + schedules + local embedding model)
+                                   ├─ worker (queue + schedules)
+                                   ├─ embedder sidecar (query embedding only; ADR-0014)
                                    ├─ postgres + pgvector (internal network only)
                                    └─ backup agent (wal-g) ──► R2 backup bucket
 Files: Cloudflare R2 (private buckets)
@@ -292,8 +295,8 @@ Each stage changes configuration and deployment only — never application code 
 
 - The MVP one-box is a single point of failure; availability target is 99.5% and recovery relies on backups ([nfr.md §2](nfr.md#2-availability-and-reliability)).
 - The owner patches the OS, Postgres, and containers monthly until stage 2.
-- ~2 GB RAM limits parser, embedding, and reranker choices (spikes S1/S2 measure this).
+- ~2 GB RAM limits parser, embedding, and reranker choices: S1 rejected Docling; S2 chose a 269 MiB int8 query embedder and no reranker ([S2](spikes/S2-retrieval.md)).
 - AI capacity is bounded by free-tier limits; heavy Copilot use degrades rather than costs money.
 - AI providers and object storage may process data outside India — permitted today, minimised and disclosed ([nfr.md §6](nfr.md#6-privacy-and-data-protection)).
-- Built-in Postgres full-text ranking is not BM25; acceptable until spike S2 says otherwise ([ADR-0003](adr/0003-postgres-single-datastore.md)).
+- Built-in Postgres full-text ranking is not BM25. S2 found it adds nothing for founder questions, so MVP ranking is vector-only plus a query glossary ([ADR-0014](adr/0014-retrieval-query-glossary-and-vector-only-ranking.md)); the GIN index stays for a later lexical list.
 - One operator: every manual operational task needs a runbook before paid launch.
