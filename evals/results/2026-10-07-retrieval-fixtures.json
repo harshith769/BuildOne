@@ -1,0 +1,42 @@
+[
+ {
+  "date": "2026-10-07",
+  "suite": "retrieval",
+  "corpus": "fixtures",
+  "labels": "../evals/retrieval.jsonl",
+  "answerable": 50,
+  "evaluated": 47,
+  "skipped": [
+   "r040",
+   "r045",
+   "r047"
+  ],
+  "unresolved_labels": [],
+  "recall@10": 0.9148936170212766,
+  "recall@5": 0.8297872340425532,
+  "mrr": 0.6005748979153235,
+  "by_group": {
+   "synthetic": {
+    "n": 47,
+    "recall@10": 0.9148936170212766
+   }
+  },
+  "partial": {
+   "n": 4,
+   "recall@10": 0.75
+  },
+  "misses": [
+   "r012",
+   "r014",
+   "r027",
+   "r035"
+  ],
+  "latency_ms": {
+   "p50": 23.9,
+   "p95": 28.6,
+   "n": 57,
+   "includes": "glossary + query embedding (in-process, 2 threads) + database"
+  },
+  "passed": true
+ }
+]

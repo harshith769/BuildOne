@@ -204,7 +204,7 @@ def _is_block_heading(text: str) -> bool:
         not bare.startswith(_NOT_BLOCKS)
         and 3 <= len(bare) <= 40
         and bare.upper() == bare
-        and any(ch.isalpha() for ch in bare)
+        and re.search(r"[AEIOU]", bare) is not None  # a word, not OCR debris ("KRKKKK" for "*****")
         and not any(ch.isdigit() for ch in bare)
         and len(bare.split()) <= 4
     )

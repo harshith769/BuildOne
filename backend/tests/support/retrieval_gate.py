@@ -23,7 +23,11 @@ from app.modules.knowledge.registry import load_registry
 from app.platform.db import CONNECT_OPTIONS
 from tests.support.db import create_database, drop_database
 
-CACHE = Path(os.environ.get("EMBEDDING_CACHE", Path.home() / ".cache" / "buildone" / "fixture-embeddings.npz"))
+CACHE = Path(
+    os.environ.get(
+        "EMBEDDING_CACHE", Path.home() / ".cache" / "buildone" / "fixture-embeddings.npz"
+    )
+)
 
 
 class CachingEmbedder:
@@ -57,7 +61,11 @@ class CachingEmbedder:
 
 
 def main(argv: list[str]) -> int:
-    labels = Path(argv[1]) if len(argv) > 1 else Path(__file__).resolve().parents[3] / "evals" / "retrieval.jsonl"
+    labels = (
+        Path(argv[1])
+        if len(argv) > 1
+        else Path(__file__).resolve().parents[3] / "evals" / "retrieval.jsonl"
+    )
     registry = load_registry()
     db = create_database("buildone_eval")
     try:
@@ -67,7 +75,15 @@ def main(argv: list[str]) -> int:
             if entry.get("raster_of"):
                 continue
             data = (FIXTURES / entry["file"]).read_bytes()
-            ingest_source(engine, registry[entry["key"]], data, embedder=embedder, store=None, approve=True, report=False)
+            ingest_source(
+                engine,
+                registry[entry["key"]],
+                data,
+                embedder=embedder,
+                store=None,
+                approve=True,
+                report=False,
+            )
         engine.dispose()
         embedder.save()
         print(f"fixture corpus loaded ({embedder.misses} passages embedded, rest cached)")  # noqa: T201

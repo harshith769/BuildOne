@@ -178,7 +178,9 @@ def main(argv: list[str] | None = None) -> int:
     group.add_argument("--fixtures", nargs="?", const=str(FIXTURES), metavar="DIR")
     parser.add_argument("--file", type=Path)
     parser.add_argument(
-        "--force", action="store_true", help="load a new version even if the bytes are unchanged (parser change)"
+        "--force",
+        action="store_true",
+        help="load a new version even if the bytes are unchanged (parser change)",
     )
     parser.add_argument("--registry", type=Path, default=DEFAULT_REGISTRY)
     args = parser.parse_args(argv)
@@ -215,7 +217,11 @@ def main(argv: list[str] | None = None) -> int:
             raise SystemExit(f"unknown source {key!r} (see {args.registry})")
         try:
             data = fetch(registry[key], args.file if args.source else None)
-            _out(ingest_source(engine, registry[key], data, embedder=embedder, store=store, force=args.force))
+            _out(
+                ingest_source(
+                    engine, registry[key], data, embedder=embedder, store=store, force=args.force
+                )
+            )
         except (ingestion.IngestionError, httpx.HTTPError) as exc:
             failures += 1
             _out(f"{key}: FAILED: {exc}")
