@@ -1,9 +1,11 @@
-# Query abbreviation glossary — ADR-0014, data-pipeline.md §6 step 0. Terminology only, never regulatory facts
+# Query abbreviation and Hinglish glossary — ADR-0014, data-pipeline.md §6 step 0. Terminology only, never regulatory facts
 # (no thresholds, rates, dates or forms). Expansion: the first occurrence of each abbreviation in a question gets
 # its expansion appended in brackets ("TCS" -> "TCS (tax collected at source, collection of tax at source)").
 # Matching is case-sensitive on whole words. Any change bumps `version` and needs before/after
 # `make eval-retrieval` numbers in the PR (evaluation.md §4).
-version: 1
+# v2 (M5.1): common Hinglish words founders use in compliance questions, expanded to the English the statutes use.
+# A general list (most words appear in no labelled question); lowercase only, as typed mid-sentence.
+version: 2
 updated: 2026-10-07
 terms:
   AGM: annual general meeting
@@ -32,3 +34,33 @@ terms:
   TCS: tax collected at source, collection of tax at source
   TDS: tax deducted at source, deduction of tax at source
   UAN: universal account number
+  # Hinglish (v2)
+  kitna: how much, rate, amount
+  kitni: how much, how many
+  kitne: how many, how much
+  kab: when, by when, due date
+  kaise: how, procedure
+  kya: whether
+  karein: do, file, submit
+  karna: do, file
+  padega: have to, must, required
+  padegi: have to, must, required
+  chahiye: required, should
+  zaroori: mandatory, required
+  jaruri: mandatory, required
+  kaatna: deduct
+  katna: deduct
+  kaatni: deduct
+  jama: deposit, pay
+  bharna: pay, file
+  dena: pay, give
+  milta: get, entitled to, benefit
+  milega: get, entitled to, benefit
+  maanga: asked for, sought, required
+  maangi: asked for, sought, required
+  jawab: reply, response
+  jurmana: penalty
+  vetan: salary, wages
+  tankhwah: salary, wages
+  karmachari: employee
+  hissa: share, contribution
