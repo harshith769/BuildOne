@@ -43,7 +43,7 @@ Copilot starts in Phase 2 (D-4); the Phase 3 scope continues it.
 
 ## 3. Build order (local-first)
 
-**M1 ✓ → M2 → M3 → S1, S2 → M5 → S3 → M6 → S4 → M7 → M8 → M9 → M10 → M11 → M12 → M13 → (hosting approved) S5 → M4 → M14**
+**M1 ✓ → M2 → M3 → S1, S2 → M5 → M5.1 → S3 → M6 → S4 → M7 → M8 → M9 → M10 → M11 → M12 → M13 → (hosting approved) S5 → M4 → M14**
 
 | Step | What | Notes |
 |---|---|---|
@@ -52,6 +52,7 @@ Copilot starts in Phase 2 (D-4); the Phase 3 scope continues it.
 | M3 | Tenancy (incl. `ca_firm`, `incubator`, access grants), audit, idempotency | |
 | **S1, S2** | Parsing; retrieval (fixes embedding dimension `D`) | Right before M5 |
 | M5 | Knowledge ingestion and retrieval | |
+| M5.1 | Retrieval at full scale (real-corpus recall@10 ≥ 90%, D-31) | Before M9 |
 | **S3** | Rule schema with the CA reviewer (30 real obligations, 10 scenarios; `eligibility` kind, threshold facts) | Before real rules in M6; engine work in M6 can start first |
 | M6 | Rules engine, fact registry, publication, scenarios | Rules content waits for a signed CA reviewer |
 | **S4** | Model per task | Right before M7 |

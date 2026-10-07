@@ -87,7 +87,7 @@ Each brief lists: **Read** (docs), **Build**, **Done when**. Dates and gates fol
 
 ### 4.0 Build order (local-first, D-23)
 
-**M1 ✓ → M2 → M3 → S1, S2 → M5 → S3 → M6 → S4 → M7 → M8 → M9 → M10 → M11 → M12 → M13 → (hosting approved) S5 → M4 → M14**
+**M1 ✓ → M2 → M3 → S1, S2 → M5 → M5.1 → S3 → M6 → S4 → M7 → M8 → M9 → M10 → M11 → M12 → M13 → (hosting approved) S5 → M4 → M14**
 
 Spike slots: S1 and S2 right before M5 · S3 before real rules in M6 · S4 before M7 · S5 before M4. Reports S1–S4 are due by G0 (13 Dec 2026) at the latest; S5's report is an entry condition of M4 (D-25). Everything up to M13 runs locally; M4 and M14 wait until the owner approves hosting ([deferred.md §1–§2](deferred.md)). The briefs below follow this order.
 
@@ -115,6 +115,12 @@ Spike slots: S1 and S2 right before M5 · S3 before real rules in M6 · S4 befor
 - **Read:** data-pipeline.md, data-model.md §4.7, S1/S2 reports, evaluation.md
 - **Build:** source registry loader; ingest CLI (fetch, R2 raw store, parser seam, chunking policy, embedder seam, transactional load, supersede); retrieval service; `make eval-retrieval` in CI; load initial MVP sources
 - **Done when:** retrieval recall@10 ≥ 90% on the labelled set; p95 retrieval < 300 ms measured locally under the production memory limits (re-checked on the production host in M4)
+- **Status:** merged with an exception (D-31): recall@10 91.5% on the fixture corpus, 80.9% on the real corpus. The 90% criterion on the real corpus moves to M5.1.
+
+### M5.1 — Retrieval at full scale (after M5, before M9)
+- **Read:** M5 log entry and D-31 in status.md, ADR-0014, S2 report, evaluation.md
+- **Build:** measure on the real corpus, each alone and combined, recall@10 and p95: (a) domain/jurisdiction filter (questions tagged by domain in `evals/retrieval.jsonl`; search restricted to that domain's sources), (b) the idf5 hybrid, (c) finer leaves for long sections. Ship the filter only if the product can always supply the domain. A change to ranking needs an ADR superseding the relevant part of ADR-0014
+- **Done when:** real-corpus recall@10 ≥ 90% on the labelled set (target unchanged) with p95 < 300 ms under the production memory limits; due before M9 (first founder-facing use)
 
 ### M6 — Rules engine, fact registry, publication, scenarios (real rules after S3)
 - **Read:** rules-engine.md, rule-operations.md, data-model.md §4.4–4.6, S3 report
