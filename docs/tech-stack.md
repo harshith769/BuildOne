@@ -62,7 +62,7 @@
 
 | Decision | Candidates | Resolved by | Criteria |
 |---|---|---|---|
-| Document parser | Docling · PyMuPDF · Tesseract OCR | Spike S1 | Structure fidelity on 20 real sources; OCR on scans; RAM on 2 GB |
+| Document parser | ~~Docling~~ · PyMuPDF · Tesseract OCR | **Decided by [S1](spikes/S1-parsing.md) (partial pass):** PyMuPDF text layer + layout heuristic for born-digital PDFs; Tesseract 5 (`eng`/`eng+hin`, 300 dpi) for pages without a text layer, with manual review below mean word confidence 93; stdlib `html.parser` for official HTML. Docling rejected (3.19 GB peak, OOM under a 2 GB cap; merges Gazette pages) | Structure fidelity on 20 real sources; OCR on scans; RAM on 2 GB |
 | Embedding model | Small open-source models runnable on CPU within the one-box RAM budget | Spike S2 | Recall@10 ([NFR-AI-06](nfr.md#7-ai-quality-gates)), latency, RAM |
 | Reranker | None (fusion only) · small CPU cross-encoder | Spike S2 | Quality gain vs latency and RAM |
 | Groq models per task | Open-weight models available on the Groq free plan | Spike S4 | Faithfulness, citation precision, tokens per task |
