@@ -1,6 +1,6 @@
 # BuildOne — Status
 
-> **Owner:** @harshith769 (Harshith, sole owner and builder) · **Updated:** 2026-10-06
+> **Owner:** @harshith769 (Harshith, sole owner and builder) · **Updated:** 2026-10-07
 > This file is the single place for current phase, decisions and the next action. Update it when a milestone or spike merges.
 
 ## Current state
@@ -9,7 +9,7 @@
 - **Repo:** fresh start on 2026-10-05 from starter bundle v2. The earlier `harshith769/BuildOne` repo was deleted; nothing in it was lost that isn't in this bundle.
 - **Code:** M1 (foundation), M2 (sign-in and sessions) and M3 (tenancy, grants, audit) done on 2026-10-06, started before G0 on purpose: M1–M3 are needed whatever the interviews show. Rules content (M6) still waits for a CA reviewer.
 - **Build order (local-first, 6 Oct):** M1 ✓, M2 ✓, M3 ✓, M5, M6, M7, M8, M9, M10, M11, M12, M13, then M4 and M14 when hosting is approved. Spikes: S1 and S2 right before M5, S3 before real rules in M6, S4 before M7, S5 before M4. Detail: [roadmap.md](roadmap.md), [build-plan.md](build-plan.md).
-- **Next action:** spike S2 (S1 report done, 2026-10-07), then M5 (knowledge ingestion and retrieval), with the interview kit in parallel.
+- **Next action:** M5 (knowledge ingestion and retrieval; S1 and S2 reports done, 2026-10-07), with the interview kit in parallel. Before M5 ships: CA review of the S2 labels and the first interview questions in `evals/retrieval.jsonl`.
 
 ## Direction (Refined Plan v3, 2026-10-05)
 
@@ -47,7 +47,7 @@ Exam weeks: _add your semester exam dates here and leave those weeks empty._
 | D-5 | Situation Check questionnaire-only lite in Phase 1 | Decided |
 | D-6 | "K Capital" = most likely Kae Capital; park until a live cohort | Decided |
 | D-7 | Prices to test: incubator ₹1–3L/cohort; pack ₹4,999–9,999; CA free; Pro later | Decided |
-| D-8 | Spike outcomes (parser, embeddings, `D`, reranker, τ, σ, models) | Parser decided by S1 (partial pass: PyMuPDF + heuristic, Tesseract for scans with review below confidence 93, stdlib HTML; Docling rejected; [report](spikes/S1-parsing.md)). Rest open — S2, S4 |
+| D-8 | Spike outcomes (parser, embeddings, `D`, reranker, τ, σ, models) | Parser decided by S1 (partial pass: PyMuPDF + heuristic, Tesseract for scans with review below confidence 93, stdlib HTML; Docling rejected; [report](spikes/S1-parsing.md)). Embeddings decided by S2: `bge-base-en-v1.5` int8, `D = 768`, vector-only ranking + query glossary, no reranker, τ deferred (D-30; [report](spikes/S2-retrieval.md)). σ and models open — S4 |
 | D-9 | `superseded` rule-version status | Open — recommend yes; decide at M6 |
 | D-10 | Final fact list, incl. small-company thresholds as versioned facts | Open — S3 with CA |
 | D-11 | Email provider | Open — M8 |
@@ -68,6 +68,7 @@ Exam weeks: _add your semester exam dates here and leave those weeks empty._
 | D-26 | Phase 0 interview targets: 30 founders, 10 CAs, 3 incubators, plus 1 CA reviewer and 1 lawyer; ~10 pre-founders optional. Pilot (M14) = one incubator cohort (10–20 companies) + 2–3 CA firms | Decided 2026-10-06 |
 | D-27 | Founder Pro price hypothesis ₹1,499–2,499/yr (refines D-7 "Pro later") | Decided 2026-10-06 |
 | D-29 | `manage` access grants reserved: a valid scope, but the DB write check never accepts any grant and the API refuses to create `manage` (422 `grant_scope_not_available`); write scope decided with the CA Workspace via an ADR ([deferred.md §12](deferred.md)) | Decided 2026-10-06 (M3) |
+| D-30 | Retrieval after S2 ([ADR-0014](adr/0014-retrieval-query-glossary-and-vector-only-ranking.md), Accepted): query abbreviations expanded from the versioned `knowledge/query-glossary.yaml`; vector-only ranking in the MVP (frozen AND lexical step found 6%; the owner's idf5 OR variant lost one question); query embedder in a sidecar process; τ not gated in the MVP, calibrated on held-out interview questions before the Copilot ([deferred.md §13](deferred.md)) | Decided 2026-10-07 (S2) |
 | D-28 | No user row before 18+ and terms acceptance: a new user's verified profile waits in a signed 30-minute cookie; under-18 stores nothing. `identity.users.age_confirmed_at` stays `NOT NULL` ([auth-and-tenancy.md §1](auth-and-tenancy.md)) | Decided 2026-10-06 (M2) |
 
 ## Carry-forward notes
@@ -116,6 +117,7 @@ Python 3.14 · FastAPI 0.142 · Pydantic 2.13 · SQLAlchemy 2.1 · Alembic 1.20 
 
 | Date | Event |
 |---|---|
+| 2026-10-07 | S2 (retrieval) report: 50 founder questions + 10 out-of-scope over 904 real chunks. `bge-base-en-v1.5` int8 (`D = 768`) + query glossary, vector-only: recall@10 94%, p95 2.6 ms at 50k chunks (1-vCore 2 GiB Postgres), query embedder 269 MiB / p95 21 ms. Without the glossary the best is 84%; rerankers 1.2–2.6 GiB and 1.8–11 s per query; τ not calibratable, deferred. ADR-0014 Accepted. Owner spot check not done; CA review of labels pending |
 | 2026-10-07 | S1 (parsing) report: partial pass on 21 official sources. Born-digital PyMuPDF + layout heuristic: 99.4% recall, 97.7% precision, 0 order errors, 97 MB. Scans: 48.7% recall, 4.3% CER, so they go to manual review (page confidence < 93). Docling rejected (3.19 GB, OOM under a 2 GB cap). India Code returned 504: the Code on Social Security came from the Gazette, the Telangana Acts from official HTML; one CBIC notification is missing |
 | 2026-10-06 | M3 done: organisations, memberships (last-owner trigger), invitations (token in fragment and body, link once), access grants (company → CA firm/incubator, either side initiates, read-only at the DB), audit log, idempotency keys, hourly session and idempotency sweepers, identity audit events, screens S3/S4 + invite page + org switcher; ADR-0013 (check functions owned by `app_rls_check`, read/write policy split); D-29; cross-tenant suite at the DB and over every org endpoint; 310 backend tests and 9 E2E tests green |
 | 2026-10-06 | M2 done: identity seam (fake + WorkOS adapters), sign-in with PKCE + state, server-side sessions (hash only, 30 d idle / 90 d absolute, rotation), CSRF double-submit + Origin check, 18+ and terms consent with no user row before acceptance (D-28), `/v1/me`, sessions list/revoke, screens S1/S2; 132 backend tests and 7 E2E tests green. Local test DB access via the `buildone_test` role (`make test-role`, local dev only, never CI or hosted) so `infra/compose/.env` is never read |

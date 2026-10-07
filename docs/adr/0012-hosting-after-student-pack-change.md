@@ -26,12 +26,12 @@ What changes against ADR-0006:
 
 - The database is **managed** in the pilot, which removes wal-g from the critical path (the provider's point-in-time restore replaces it). The self-hosted Postgres image with pinned wal-g stays in `infra/postgres/` for option B and for local development.
 - No superuser on managed Postgres: roles, grants and extensions must be created by the admin role from plain SQL, and every extension used (`vector`, `pg_trgm`, `citext`) must be on the allowlist. Spike S5 verifies this.
-- The VM has only **1 GiB RAM**: one Uvicorn worker, a lean job worker, and no embedding model in a long-running process. If S2's embedding model doesn't fit, ingestion runs as a CLI on the laptop and loads results over the network.
+- The VM has only **1 GiB RAM**: one Uvicorn worker, a lean job worker, and no embedding model in the API or worker. Ingestion runs as a CLI on the laptop and loads results over the network. **Exception (owner, 2026-10-07, [ADR-0014](0014-retrieval-query-glossary-and-vector-only-ranking.md)):** the query embedder runs as a small sidecar process (S2: 269 MiB peak RSS).
 - **Do not sign up before M4.** The 12 months of free services start at signup.
 
 ## What S5 must show before this is Accepted
 
-1. The API + worker containers run within ~900 MiB total with realistic limits.
+1. The API + worker + query-embedder sidecar run within ~900 MiB total with realistic limits (the sidecar alone measured 269 MiB in [S2](../spikes/S2-retrieval.md)); also re-check query-embedding latency on the VM's CPU.
 2. The `initdb` SQL runs on a managed-Postgres-like setup without superuser rights (locally: a non-superuser admin role). This includes `10-rls-check-role.sql`: the admin role must be able to create `app_rls_check` with `BYPASSRLS` ([ADR-0013](0013-rls-check-functions-and-read-write-split.md)); if it can't, apply ADR-0013's fallback.
 3. Nightly `pg_dump` to R2 and restore into a fresh Postgres 18 both work and are timed.
 4. Eligibility: the Azure portal's *Free services* page lists the VM sizes and Flexible Server B1MS for Harshith's student account.

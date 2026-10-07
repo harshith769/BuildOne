@@ -23,10 +23,10 @@ Modular monolith and module boundaries ([architecture.md §3](architecture.md#3-
 | Seam | Interface | Decided by |
 |---|---|---|
 | Document parser | `Parser` | S1 |
-| Embedding model + dimension `D` | `Embedder` | S2 (right before M5; fix `D` before the M5 migration) |
-| Reranker (on/off, which) | `Reranker` | S2 |
+| Embedding model + dimension `D` | `Embedder` | **S2 decided:** `bge-base-en-v1.5` int8, `D = 768`, query embedded in a sidecar process ([report](spikes/S2-retrieval.md), [ADR-0014](adr/0014-retrieval-query-glossary-and-vector-only-ranking.md)) |
+| Reranker (on/off, which) | `Reranker` | **S2 decided: off** |
 | Model per AI task | task registry config | S4 |
-| Thresholds `τ` (retrieval confidence), `σ` (citation similarity) | config | S2/S4 |
+| Thresholds `τ` (retrieval confidence), `σ` (citation similarity) | config | `τ`: not gated in the MVP, calibrated before the Copilot ([deferred.md §13](deferred.md)); `σ`: S4 |
 | Email provider | `EmailSender` | M8 |
 
 ### 1.3 Change control

@@ -244,7 +244,7 @@ Displayed urgency (`upcoming`, `due_soon`, `overdue`) is **derived at read time*
 - `tsv tsvector GENERATED ALWAYS AS (to_tsvector('english', heading || ' ' || text)) STORED` + GIN index
 - Index `(is_active, jurisdiction, effective_from)`
 
-**`knowledge.chunk_embeddings`** — PK `(chunk_id, model_id)`, `embedding vector(D) NOT NULL`, HNSW index (`vector_cosine_ops`). **`D` is fixed by spike S2 before the first migration.** Changing the model later = new rows under a new `model_id` + backfill + config switch (additive).
+**`knowledge.chunk_embeddings`** — PK `(chunk_id, model_id)`, `embedding vector(768) NOT NULL`, HNSW index (`vector_cosine_ops`, `m = 16`, `ef_construction = 64`). **`D = 768`** (`bge-base-en-v1.5` int8, fixed by [spike S2](spikes/S2-retrieval.md)). Changing the model later = new rows under a new `model_id` + backfill + config switch (additive).
 
 ### 4.8 `ai`
 
