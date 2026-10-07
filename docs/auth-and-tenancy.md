@@ -81,7 +81,7 @@ The organisation always comes from the URL path validated against membership —
 - The link is `<app>/invite#token=<token>`: the token sits in the **fragment**, which browsers never send to a server, and the SPA keeps it in `sessionStorage` (that tab only) across sign-in, then removes it from the URL.
 - `POST /v1/invitations/lookup` and `POST /v1/invitations/accept` take the token **in the body** (`{token, confirm_email_mismatch}`). Unknown, expired or used → 404; different email without confirmation → 409 `invitation_email_mismatch`; already a member → 409.
 - The link is returned **once**, in the creation response. A replay with the same `Idempotency-Key` returns the invitation with `invite_link: null`, `link_available: false`; the token is not rotated (that would break a link already copied) — revoke and invite again if it's lost.
-- At the database the accepting user proves the token with `SET LOCAL app.invitation_token_hash`; the membership insert and the `accepted_at` update are allowed only for that invitation's org and role ([data-model.md §4.2](data-model.md#42-tenancy)).
+- At the database the accepting user proves the token with `SET LOCAL app.invitation_token_hash`; the membership insert and the `accepted_at` update are allowed only for that invitation's org and role, and only while it is unaccepted and unexpired by the database's own clock (a backstop for the API's expiry check; a refusal is answered with the same 404) ([data-model.md §4.2](data-model.md#42-tenancy)).
 
 ## 7. Calendar feed capability URL
 

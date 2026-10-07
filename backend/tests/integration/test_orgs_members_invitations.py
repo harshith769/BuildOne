@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import uuid
 from collections.abc import AsyncIterator
-from datetime import timedelta
+from datetime import UTC, datetime, timedelta
 
 import psycopg
 import pytest
 
+from app.platform.clock import FrozenClock
 from app.platform.config import Settings
 from tests.integration.auth_support import AuthHarness, auth_harness
 from tests.integration.tenancy_support import (
@@ -19,6 +20,7 @@ from tests.integration.tenancy_support import (
     idem,
     invite,
     new_actor,
+    real_time_clock,
     token_from_link,
     unique_email,
 )
@@ -27,7 +29,7 @@ from tests.support.db import EphemeralDatabase, admin_connection, role_connectio
 
 @pytest.fixture
 async def h(api_settings: Settings) -> AsyncIterator[AuthHarness]:
-    async with auth_harness(api_settings) as harness:
+    async with auth_harness(api_settings, clock=real_time_clock()) as harness:
         yield harness
 
 
@@ -423,3 +425,20 @@ async def test_invitation_tokens_never_appear_in_urls(h: AuthHarness) -> None:
     org_id = await create_org(owner)
     token = await invite(owner, org_id, unique_email())
     assert (await owner.client.get(f"/v1/invitations/{token}")).status_code in (404, 405)
+
+
+async def test_database_refuses_an_invitation_its_clock_says_is_expired(
+    api_settings: Settings,
+) -> None:
+    """The app's clock runs 8 days behind real time, so the API thinks the invitation is still valid;
+    the database (migration 0006) refuses it, and the answer is the usual 404, not a 500."""
+    lagging = FrozenClock(datetime.now(UTC).replace(microsecond=0) - timedelta(days=8))
+    async with auth_harness(api_settings, clock=lagging) as h:
+        owner = await new_actor(h, "owner")
+        org_id = await create_org(owner)
+        invitee = await new_actor(h, "late")
+        token = await invite(owner, org_id, invitee.email)  # expires 1 day before real now
+        response = await accept(invitee, token)
+        assert response.status_code == 404, response.text
+        assert response.json()["code"] == "not_found"
+        assert (await invitee.client.get(f"/v1/orgs/{org_id}")).status_code == 404

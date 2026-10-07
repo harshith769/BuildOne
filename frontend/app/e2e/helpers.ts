@@ -19,4 +19,6 @@ export async function completeSignup(page: Page) {
   await page.getByLabel("I am 18 years old or older.").check();
   await page.getByLabel(/I accept the terms of use/).check();
   await page.getByRole("button", { name: "Create my account" }).click();
+  // Wait until the account exists and the app has moved on, so the next navigation has a session.
+  await expect(page).not.toHaveURL(/\/welcome/);
 }
