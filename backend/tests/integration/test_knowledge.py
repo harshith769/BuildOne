@@ -47,6 +47,7 @@ def _source(key: str, **overrides: object) -> Source:
         "authority": "Test Ministry",
         "jurisdiction": "IN",
         "doc_type": "act",
+        "domains": ["company_law"],
         "official_url": "https://www.indiacode.nic.in/test",
         "manual": "test",
         "effective_from": dt.date(2020, 1, 1),

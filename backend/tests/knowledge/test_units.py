@@ -27,6 +27,7 @@ def _source(**overrides: object) -> dict[str, object]:
         "authority": "Ministry",
         "jurisdiction": "IN",
         "doc_type": "act",
+        "domains": ["company_law"],
         "official_url": "https://www.indiacode.nic.in/handle/1",
         "manual": "by hand",
         "effective_from": dt.date(2020, 1, 1),
@@ -64,7 +65,7 @@ def test_registry_needs_an_origin_and_ordered_dates() -> None:
 def test_registry_rejects_duplicates(tmp_path: Path) -> None:
     path = tmp_path / "sources.yaml"
     entry = (
-        "- {key: a_act, title: A Act, authority: MCA, jurisdiction: IN, doc_type: act, "
+        "- {key: a_act, title: A Act, authority: MCA, jurisdiction: IN, doc_type: act, domains: [company_law], "
         "official_url: 'https://x.gov.in/', manual: m, effective_from: 2020-01-01}\n"
     )
     path.write_text(entry * 2, encoding="utf-8")

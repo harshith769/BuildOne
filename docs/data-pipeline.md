@@ -46,6 +46,7 @@ Swapping a parser or embedder changes only the implementation behind its interfa
   authority: "Ministry of Corporate Affairs"
   jurisdiction: IN                     # IN | IN-TG
   doc_type: act                        # act | rules | notification | circular | form_instructions | guidance
+  domains: [company_law]               # rule-schema domains whose rules cite it, by the document's own subject (M5.1; not yet a search filter)
   official_url: "<official URL>"       # https, *.gov.in or *.nic.in (validated)
   download_url: "<direct file URL>"    # optional, official domain; else `manual`
   manual: "<where to download by hand>"  # file goes to knowledge/inbox/<key>.<ext>
