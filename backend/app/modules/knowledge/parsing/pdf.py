@@ -31,8 +31,9 @@ pymupdf.TOOLS.mupdf_display_errors(
 )  # malformed-content noise from official PDFs; text is unaffected
 
 PARSER_NAME = "pymupdf-layout"
-PARSER_VERSION = "1"
+PARSER_VERSION = "2"
 TEXT_LAYER_MIN_CHARS = 50
+SUPERSCRIPT = 1  # PyMuPDF span flag bit: footnote markers
 SAME_LINE_PT = (
     6.0  # an OCR line within this many points of a text-layer line is the same printed line
 )
@@ -147,7 +148,10 @@ def _text_layer_page(page: pymupdf.Page, number: int) -> Page:
             and not _LIST_START.match(first)
         )
         for line in block["lines"]:
-            text = "".join(span["text"] for span in line["spans"]).strip()
+            # Superscript spans are footnote markers ("ENR-02" + "28"); gluing them on corrupts identifiers.
+            text = "".join(
+                span["text"] for span in line["spans"] if not span["flags"] & SUPERSCRIPT
+            ).strip()
             if not text:
                 continue
             lx0, ly0, lx1, ly1 = line["bbox"]
@@ -242,6 +246,12 @@ def _insert_notes(lines: list[tuple[float, Line]], notes: list[_Fragment], numbe
         lines.insert(nearest, (lines[nearest][0], note))
 
 
+# Headings that repeat with only their number changed ("FORM GST REG-01", "REG-02" at page tops) are not running
+# heads, although they look alike once digits are ignored.
+_NEVER_RUNNING = re.compile(r"^\[?\s*(?:FORM|Form|SCHEDULE|ANNEXURE|Annexure|APPENDIX)\b")
+# (Chapter headings are left out: CBIC repeats "CHAPTER III" as a running head on every page.)
+
+
 def _running_key(text: str) -> str:
     return re.sub(r"[\d\s]+", " ", text).strip().lower()
 
@@ -262,6 +272,7 @@ def _drop_running_lines(pages: list[Page]) -> None:
             for i, ln in enumerate(lines)
             if not (
                 (i < 2 or i >= n - 2)
+                and not _NEVER_RUNNING.match(ln.text)
                 and _running_key(ln.text) in running
                 and not (i > 0 and _running_key(lines[i - 1].text) == _running_key(ln.text))
             )

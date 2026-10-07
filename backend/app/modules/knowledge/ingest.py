@@ -8,6 +8,7 @@ production) keyed by SHA-256, parse, chunk, embed, load in one transaction, and 
 
   --source KEY [--file PATH]   one source          --all            every registered source with a file
   --approve KEY@VERSION        activate a version waiting for review (after checking its report)
+  --force                      re-load unchanged bytes as a new version (after a parser or chunking change)
   --fixtures [DIR]             load the test fixture corpus (CI retrieval gate); fixtures are approved
 """
 
@@ -123,12 +124,13 @@ def ingest_source(
     store: S3ObjectStore | None,
     approve: bool = False,
     report: bool = True,
+    force: bool = False,
 ) -> str:
     clock = SystemClock()
     digest = ingestion.sha256(data)
     with engine.connect() as conn:
         existing = ingestion.find_version_by_digest(conn, source.key, digest)
-    if existing is not None:
+    if existing is not None and not force:
         return f"{source.key}: unchanged (version {existing[0]}, {existing[1]})"
     document = parse(data, format=source.format, bilingual=source.bilingual)
     prepared = ingestion.prepare(
@@ -175,6 +177,9 @@ def main(argv: list[str] | None = None) -> int:
     group.add_argument("--approve", metavar="KEY@VERSION")
     group.add_argument("--fixtures", nargs="?", const=str(FIXTURES), metavar="DIR")
     parser.add_argument("--file", type=Path)
+    parser.add_argument(
+        "--force", action="store_true", help="load a new version even if the bytes are unchanged (parser change)"
+    )
     parser.add_argument("--registry", type=Path, default=DEFAULT_REGISTRY)
     args = parser.parse_args(argv)
     registry = load_registry(args.registry)
@@ -210,7 +215,7 @@ def main(argv: list[str] | None = None) -> int:
             raise SystemExit(f"unknown source {key!r} (see {args.registry})")
         try:
             data = fetch(registry[key], args.file if args.source else None)
-            _out(ingest_source(engine, registry[key], data, embedder=embedder, store=store))
+            _out(ingest_source(engine, registry[key], data, embedder=embedder, store=store, force=args.force))
         except (ingestion.IngestionError, httpx.HTTPError) as exc:
             failures += 1
             _out(f"{key}: FAILED: {exc}")

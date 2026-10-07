@@ -88,6 +88,8 @@ _HEADING_ONLY = re.compile(r"^\[?\s*\d{1,3}[A-Z]{0,3}\s*\.\s+[^()]{1,150}$")
 _HEADING_TAIL = re.compile(
     r"^(?!\[?\s*\d{1,3}[A-Z]{0,3}\s*\.)[^()]{0,160}?(?:[.:]\s*-+|-{2,})\s*\(\d{1,2}\)"
 )
+# A table-of-contents entry: dot leaders then a page number ("FORM GST REG-01 ........ 12"). Not content.
+_TOC_ENTRY = re.compile(r"\.{6,}\s*\d{1,4}\s*$")
 _SPACED_CAPS = re.compile(r"^((?:[A-Z] ){2,}[A-Z])\b")
 
 
@@ -120,7 +122,7 @@ def prepare_lines(doc: ParsedDocument, *, include_hindi: bool = False) -> list[P
         if line.lang == "hi" and not include_hindi:
             continue
         text = _collapse_spaced_caps(normalise(strip_ocr_debris(line.text)))
-        if text:
+        if text and not _TOC_ENTRY.search(text):
             raw.append(PreparedLine(text, line.page, line.kind, line.table))
     joined: list[PreparedLine] = []
     for item in raw:
@@ -332,6 +334,7 @@ class _Builder:
         self._flush_note()
         ident = re.sub(r"\s+", " ", m.group(1)).strip(" .")
         ident = re.sub(r"^Form\b", "FORM", ident)
+        ident = re.sub(r"\s*-\s*", "-", ident)  # "REG - 31" -> "REG-31"
         heading = (m.group(2) or "").strip()
         self._open_container(
             Node(kind="annex", ident=ident, heading=heading, page=page), self._top_level_parent()
